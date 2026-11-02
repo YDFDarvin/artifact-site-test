@@ -1,0 +1,18 @@
+{
+  "artifacts": [
+    {
+      "name": "AI Agentic People Market Research @ Upstars",
+      "ids": ["WvQXmHeMw1rJ6ptBdf4PeW"],
+      "url": "https://claude.ai/artifact/WvQXmHeMw1rJ6ptBdf4PeW",
+      "src": "src/agentic-engineering-ladder.html",
+      "page": "docs/agentic-engineering-ladder.html"
+    },
+    {
+      "name": "Enterprise Agent Platform",
+      "ids": ["5xmhoP9XrYSYALJ3Lagh3i", "282e02ef-66b4-4501-a92c-33e933db2445"],
+      "url": "https://claude.ai/artifact/5xmhoP9XrYSYALJ3Lagh3i",
+      "src": "src/enterprise-agent-platform.html",
+      "page": "docs/enterprise-agent-platform.html"
+    }
+  ]
+}
