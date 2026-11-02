@@ -1,0 +1,293 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Agentic Engineering Ladder</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: one column of small focused panels, deck style (dark first). Each panel shows one point. */
+:root{
+  --bg:#05070d;--panel:#0a0f1a;--panel2:#0d1424;--line:#1c2638;--line2:#263247;
+  --ink:#e6eaf2;--muted:#93a0b4;--dim:#64748b;
+  --accent:#3b82f6;--accent-ink:#93c5fd;--accent-fill:rgba(59,130,246,.14);
+  --or:#f97316;--or-ink:#fdba74;--or-fill:rgba(249,115,22,.12);
+  --ok:#22c55e;--ok-ink:#86efac;--ok-fill:rgba(34,197,94,.12);
+  --vi:#a78bfa;--vi-fill:rgba(167,139,250,.14);
+  --f-sans:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#f6f7fa;--panel:#ffffff;--panel2:#eef1f6;--line:#dde3ec;--line2:#c9d2df;
+  --ink:#0d1422;--muted:#4a5568;--dim:#6b7789;
+  --accent:#2563eb;--accent-ink:#1d4ed8;--accent-fill:rgba(37,99,235,.10);
+  --or:#ea580c;--or-ink:#c2410c;--or-fill:rgba(234,88,12,.10);
+  --ok:#16a34a;--ok-ink:#15803d;--ok-fill:rgba(22,163,74,.10);
+  --vi:#7c3aed;--vi-fill:rgba(124,58,237,.10);
+  color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f6f7fa;--panel:#ffffff;--panel2:#eef1f6;--line:#dde3ec;--line2:#c9d2df;
+  --ink:#0d1422;--muted:#4a5568;--dim:#6b7789;
+  --accent:#2563eb;--accent-ink:#1d4ed8;--accent-fill:rgba(37,99,235,.10);
+  --or:#ea580c;--or-ink:#c2410c;--or-fill:rgba(234,88,12,.10);
+  --ok:#16a34a;--ok-ink:#15803d;--ok-fill:rgba(22,163,74,.10);
+  --vi:#7c3aed;--vi-fill:rgba(124,58,237,.10);
+  color-scheme:light}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 var(--f-sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+a{color:var(--accent-ink);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.eyebrow{font:500 11px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+h1{margin:0;font:600 30px/1.15 var(--f-sans);letter-spacing:-.02em;text-wrap:balance}
+h2{margin:0;font:600 17px/1.25 var(--f-sans);text-wrap:balance}
+.sub{color:var(--muted);font-size:13px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ph{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ph .eyebrow{margin-left:auto}
+.mono{font-family:var(--f-mono)}
+.tab{font-variant-numeric:tabular-nums}
+.scroll{overflow-x:auto;min-width:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.hd{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.kpis{display:flex;flex-wrap:wrap;gap:6px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 12px;display:flex;flex-direction:column}
+.kpi b{font:600 20px var(--f-sans);font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi span{font:10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.04em}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:var(--panel2)}
+.seg button{all:unset;cursor:pointer;padding:6px 11px;font:500 12px var(--f-sans);color:var(--muted);border-left:1px solid var(--line2)}
+.seg button:first-child{border-left:0}
+.seg button[aria-checked="true"]{background:var(--accent-fill);color:var(--accent-ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.lg{display:flex;flex-wrap:wrap;gap:4px 10px;margin-left:auto;font:11px var(--f-mono);color:var(--muted);align-items:center}
+.lg span{display:inline-flex;align-items:center;gap:4px}
+.ramp{display:inline-block;width:90px;height:8px;border-radius:4px}
+.d{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.d.o{background:transparent!important;box-shadow:inset 0 0 0 1.5px var(--c)}
+/* heatmap */
+.hm{display:grid;gap:3px;min-width:760px}
+.hc{font:500 10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding-bottom:4px}
+.hc svg{color:var(--accent-ink)}
+.hc b{font:600 11.5px var(--f-sans);color:var(--ink);text-transform:none;letter-spacing:0}
+.hc .ma{width:100%;height:4px;border-radius:2px;background:var(--line)}
+.hc .ma i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+.hr{display:flex;flex-direction:column;justify-content:center;padding-right:8px;min-width:0}
+.hr b{font-size:12.5px;white-space:nowrap}
+.hr small{font:10.5px var(--f-mono);color:var(--dim)}
+.cell{all:unset;box-sizing:border-box;cursor:pointer;border-radius:7px;min-height:52px;padding:6px 7px;display:flex;flex-direction:column;justify-content:space-between;gap:4px;border:1px solid transparent;position:relative}
+.cell:hover{border-color:var(--line2)}
+.cell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cell[aria-pressed="true"]{border-color:var(--ink)}
+.cell .n{font:600 18px var(--f-sans);font-variant-numeric:tabular-nums;line-height:1}
+.cell .u{font:500 9.5px var(--f-mono);color:var(--muted);margin-left:2px}
+.cell .ds{display:flex;flex-wrap:wrap;gap:3px}
+.cell.z{cursor:default;background:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--line) 70%,transparent) 6px 7px)}
+.rt{display:flex;align-items:center;gap:6px;padding-left:6px;font:600 11.5px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.rt i{display:block;height:6px;border-radius:3px;background:var(--accent)}
+.gap{grid-column:1/-1;height:10px;display:flex;align-items:center;gap:8px;font:500 10px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.gap::after{content:"";flex:1;border-top:1px dashed var(--line2)}
+/* detail */
+.det{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.det h3{margin:0;font:600 13px var(--f-sans);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.det h3 span{font:11px var(--f-mono);color:var(--dim)}
+.pl{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:4px 14px}
+.pl a{display:grid;grid-template-columns:10px 42px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12px;color:var(--ink);padding:4px 6px;border-radius:6px}
+.pl a:hover{background:var(--panel2);text-decoration:none}
+.pl .co{font:600 10.5px var(--f-mono);color:var(--muted)}
+.pl .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pl .p{font:11px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.foot{font-size:10.5px;color:var(--dim)}
+</style>
+<div class="wrap">
+<header class="hd">
+  <div><div class="eyebrow">People · Enterprise Agent Platform</div><h1>Agentic Engineering Ladder</h1></div>
+  <div class="kpis" id="kpis"></div>
+</header>
+<section class="panel">
+  <div class="bar">
+    <div class="seg" role="radiogroup" aria-label="Slice" id="slice"></div>
+    <div class="seg" role="radiogroup" aria-label="Metric" id="metric"></div>
+    <div class="lg" id="lg"></div>
+  </div>
+  <div class="scroll"><div class="hm" id="hm"></div></div>
+  <div class="det" id="det" aria-live="polite"></div>
+</section>
+<div class="foot mono">2026-11-01 · 64 postings · base pay = midpoint of posted range, USD postings only · ● open, page checked · ○ closed or title only</div>
+</div>
+<script>
+const CO={ant:["ANTH","Anthropic"],oai:["OAI","OpenAI"],goo:["GOOG","Google"],msf:["MSFT","Microsoft"],gh:["GH","GitHub"],aws:["AMZN","Amazon AWS"],sf:["SFDC","Salesforce"],meta:["META","Meta"]};
+const RUNGS=[["e","Engineer","no level word"],["s","Senior",""],["st","Staff",""],["ss","Senior Staff",""],["p","Principal",""],["d","Distinguished",""],["m","Manager","EM, SDM"],["sm","Senior Manager","Senior, Principal EM"],["dir","Director+",""]];
+const V=[
+ {k:"prod",n:"Agent Product",cl:"SWE",own:"Agents in the product",ic:"box",pil:"Business value"},
+ {k:"plat",n:"Agent Platform",cl:"Platform Engineering",own:"Runtime, harness, sandboxes",ic:"layers",pil:"Performance Efficiency"},
+ {k:"sdk",n:"Agent SDK",cl:"DevEx",own:"SDK, protocols, tool use",ic:"code",pil:"Operational Excellence"},
+ {k:"eval",n:"Agent Evals",cl:"AQA + MQA",own:"Evals, harness, judges",ic:"check",pil:"Operational Excellence"},
+ {k:"rel",n:"Agent Reliability",cl:"SRE + DevOps",own:"Autonomy gates, latency, cost",ic:"pulse",pil:"Reliability + Cost"},
+ {k:"sec",n:"Agent Security",cl:"AppSec",own:"Controls, governance",ic:"shield",pil:"Security"},
+ {k:"fde",n:"Forward Deployed",cl:"Solutions Architect",own:"Customer agent deployments",ic:"users",pil:"Business value"},
+ {k:"int",n:"Internal Agents",cl:"Internal Tools",own:"Agents for own teams",ic:"bot",pil:"Business value"}
+];
+/* s: ok = page fetched and open; cl = closed; so = title only (search result or page without text) */
+const P=[
+ ["prod","e","ant","Software Engineer, Claude Code","US","$320k–560k","ok","build and maintain new agentic coding tools for developers","https://job-boards.greenhouse.io/anthropic/jobs/4816198008"],
+ ["prod","e","oai","Software Engineer, Codex Cloud Apps","San Francisco","$230k–325k","ok","delegate increasingly complex work to AI","https://openai.com/careers/software-engineer-codex-cloud-apps-san-francisco"],
+ ["prod","e","aws","Software Development Engineer, Kiro","Seattle","$168.1k–227.4k","ok","a frontier developer tool that independently tackles development tasks","https://www.amazon.jobs/en/jobs/10454129/software-development-engineer-kiro"],
+ ["prod","e","aws","Software Development Engineer, Amazon Q","Arlington","$143.7k–194.4k","ok","agentic experiences that can reason, retrieve information, invoke tools","https://amazon.jobs/en/jobs/10563983/software-development-engineer-amazon-q"],
+ ["prod","e","aws","Software Development Engineer, Agentic Workspaces","Seattle","$143.7k–194.4k","ok","tomorrow those workspaces will host AI agents alongside humans","https://amazon.jobs/en/jobs/10501321/software-development-engineer-agentic-workspaces"],
+ ["prod","s","sf","SMTS Back End Software Engineer, Agentforce","San Francisco","$148.5k–223.9k","ok","ultimately building the next generation of intelligent agents","https://jobs.omegavp.com/companies/salesforce-2/jobs/82357716-smts-back-end-software-engineer-agentforce"],
+ ["prod","s","sf","Senior AI Engineer, Agentforce Operations","San Francisco, Seattle, New York","$148.5k–223.9k","ok","enable agents to execute multi-step workflows autonomously","https://www.purpose.jobs/discover/companies/salesforce-2/jobs/95230810-senior-ai-engineer-agentforce-operations"],
+ ["prod","st","gh","Staff Software Engineer, AI Agents","United Kingdom","—","so","","https://www.github.careers/careers-home/jobs/5740"],
+ ["prod","st","gh","Staff Software Engineer, GitHub Intelligence (Copilot Agents)","United States","—","so","","https://www.github.careers/early-in-profession/jobs/5733?lang=en-us"],
+ ["prod","m","ant","Engineering Manager, Claude Code","US","$320k–485k","ok","Claude Code engineering team","https://job-boards.greenhouse.io/anthropic/jobs/4738189008"],
+ ["prod","m","aws","Software Development Manager, Alexa for shopping (Rufus)","London","—","ok","The team is building agentic AI systems powered by LLMs","https://amazon.jobs/en/jobs/10506805/software-development-manager-alexa-for-shopping-rufus"],
+ ["prod","m","aws","Software Development Manager, Kiro IDE","—","—","so","","https://www.amazon.jobs/en/jobs/10408981/software-development-manager-kiro-ide"],
+ ["prod","dir","sf","Senior Director - Agentic Builder","—","—","so","","https://salesforce.wd12.myworkdayjobs.com/en-US/External_Career_Site/job/Senior-Director---Agentic-Builder_JR338170"],
+
+ ["plat","e","ant","Software Engineer, Agent Platform","US","$300k–485k","ok","delegate large amounts of work to Claude","https://job-boards.greenhouse.io/anthropic/jobs/4965172008"],
+ ["plat","e","oai","Software Engineer, Agent Infrastructure","San Francisco","$230k–385k","ok","the deployment and execution of agents in production","https://openai.com/careers/software-engineer-agent-infrastructure"],
+ ["plat","e","oai","Software Engineer, API Agents","San Francisco","$293k–385k","ok","Design, build, and operate the shared agent harness","https://openai.com/careers/software-engineer-api-agents-san-francisco/"],
+ ["plat","e","oai","Software Engineer, Codex Core Agents","San Francisco","$230k–385k","ok","Design and build execution environments for AI agents","https://openai.com/careers/software-engineer-codex-core-agents-san-francisco/"],
+ ["plat","e","goo","Software Engineer, Enterprise AI Platforms and Agent Architecture","Sunnyvale","$207k–300k","ok","multi-agent workflows","https://www.google.com/about/careers/applications/jobs/results/91999936312156870-software-engineer/"],
+ ["plat","s","aws","Senior Software Engineer, AWS Agentic AI","Bellevue","$168.1k–227.4k","ok","build new or enhance existing Bedrock AgentCore services","https://amazon.jobs/en/jobs/10467664/senior-software-engineer-aws-agentic-ai"],
+ ["plat","s","aws","Sr Software Development Engineer - AgentCore, AWS Agentic AI","—","—","so","","https://www.amazon.jobs/en/jobs/10478272/sr-software-development-engineer-agentcore-aws-agentic-ai"],
+ ["plat","s","msf","Senior Software Engineer, Foundry Agents - CoreAI","Mountain View, Redmond","$119.8k–274.8k","ok","across the end-to-end agent lifecycle","https://jobs.anitab.org/companies/microsoft/jobs/78256447-senior-software-engineer-foundry-agents-coreai"],
+ ["plat","s","gh","Senior Software Engineer, CoPilot Agent Platform","Remote US","$124k–329.2k","ok","enables agents to autonomously perform complex software-development tasks","https://arc.dev/remote-jobs/j/github-senior-software-engineer-copilot-agent-platform-pelbdst5lj"],
+ ["plat","ss","goo","Senior Staff Software Engineer, AI Agent Platform, Vertex","Warsaw","PLN 640k–655k","ok","As a part of the Cloud AI Agent Platform team","https://www.google.com/about/careers/applications/jobs/results/81332285520913094-senior-staff-software-engineer-ai-agent-platform-vertex"],
+ ["plat","p","msf","Principal Software Engineer, Foundry Agents - CoreAI","Redmond","$142.8k–296.4k","ok","deploy and run agents securely at enterprise scale","https://www.builtinseattle.com/job/principal-software-engineer-foundry-agents-coreai/10218910"],
+ ["plat","p","msf","Principal AI Software Engineer (Agent 365)","Redmond","$165.6k–296.4k","cl","AI agents acting as digital co-workers","https://jobs.anitab.org/companies/microsoft-2/jobs/91196486-principal-ai-software-engineer"],
+ ["plat","m","aws","Sofware Development Manager, Ring Agent Platforms","Hawthorne","$184.9k–250.2k","ok","autonomous AI agents that collaborate with each other and with humans","https://www.amazon.jobs/en/jobs/10411159/sofware-development-manager-ring-agent-platforms"],
+ ["plat","m","oai","Engineering Manager, API Agents","San Francisco","—","cl","Directly manage ICs / MLEs on API Agents","https://jobs.coatue.com/companies/openai/jobs/45349604-engineering-manager-api-agents"],
+ ["plat","sm","gh","Principal Engineering Manager, Copilot agent platform","United States","—","so","","https://www.github.careers/careers-home/jobs/5808?lang=en-us"],
+ ["plat","sm","msf","Principal Engineering Manager - AI Agents","Dublin","—","cl","AI agents acting as digital co-workers","https://jobs.anitab.org/companies/microsoft/jobs/60433655-principal-engineering-manager-ai-agents"],
+
+ ["sdk","e","oai","Software Engineer, API SDK","Seattle","$293k–385k","ok","through the Responses API, Agents SDK, Realtime API, and more","https://openai.com/careers/software-engineer-api-sdk-seattle/"],
+ ["sdk","s","goo","Senior Software Engineer, Agent Development Kit","Warsaw","PLN 364k–374k","cl","framework for the next generation of AI agents","https://jobs.anitab.org/companies/google-24698/jobs/84882673-senior-software-engineer-agent-development-kit"],
+ ["sdk","st","goo","Staff Software Engineer, Agent Development Kit","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/104878274315723462-staff-software-engineer-agent-development-kit"],
+ ["sdk","ss","goo","Senior Staff Software Engineer, Agent Protocol, Cloud AI","—","—","so","","https://careers.google.com/jobs/results/107073090919244486-senior-staff-software-engineer/"],
+ ["sdk","m","ant","Engineering Manager, Claude Developer Platform","US","$320k–405k","ok","core capabilities including vision, tool use, and computer use","https://job-boards.greenhouse.io/anthropic/jobs/4721383008"],
+ ["sdk","m","goo","Engineering Manager, Agent Development Kit","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/93280377195373254-engineering-manager/"],
+ ["sdk","sm","aws","Senior Engineering Manager, Strands, AWS Velocity Labs","—","—","so","","https://www.amazon.jobs/en/jobs/10522143/senior-engineering-manager-strands-aws-velocity-labs"],
+
+ ["eval","e","oai","Applied AI Engineer, Codex Core Agent","San Francisco","$230k–385k","ok","Design and iterate on agent behaviors across real-world coding tasks","https://openai.com/careers/applied-ai-engineer-codex-core-agent-san-francisco/"],
+ ["eval","st","ant","Staff Software Engineer, Safeguards Evals","US","$320k–485k","ok","Build and own the evaluation harness for an agentic investigation system","https://jobs.generalcatalyst.com/companies/anthropic/jobs/85283130-staff-software-engineer-safeguards-evals"],
+
+ ["rel","e","aws","Software Development Engineer, Infrastructure Reliability Engineering","Nashville, Arlington","$136.5k–194.4k","ok","Build the foundations that gate agent autonomy","https://www.amazon.jobs/en/jobs/10545098/software-development-engineer-infrastructure-reliability-engineering"],
+ ["rel","e","oai","Performance & Systems Engineer, Codex","San Francisco","$295k–445k","ok","make Codex agents significantly faster and cheaper to serve","https://openai.com/careers/performance-and-systems-engineer-codex-san-francisco/"],
+ ["rel","m","goo","Software Engineering Manager, Site Reliability Engineering, Gemini Enterprise Agent Platform","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/89872784502465222-software-engineering-manager-site-reliability-engineering-gemini-enterprise-agent-platform-google-cloud"],
+
+ ["sec","e","oai","Security Engineer, Agent Security","US","$234.4k–385k","ok","Architecting security controls for agentic AI","https://openai.com/careers/security-engineer-agent-security/"],
+ ["sec","e","goo","Software Engineer, AI Agent Security","Seattle","$147k–210k","ok","secure agent interactions across different environments","https://www.google.com/about/careers/applications/jobs/results/122951453848281798-software-engineer/"],
+ ["sec","e","msf","AI Security Engineer (Red Team)","Remote US","$102.1k–234.7k","ok","frontier AI models and agentic systems","https://www.builtinseattle.com/job/ai-security-engineer/11251152"],
+ ["sec","ss","goo","Senior Staff Software Engineer, Cloud AI, Agent Governance","Sunnyvale","$262k–364k","ok","close the last mile of agentic governance","https://www.google.com/about/careers/applications/jobs/results/140827762716746438-senior-staff-software-engineer-cloud-ai-agent-governance"],
+ ["sec","p","msf","Principal Software Engineer - AI Safety and Security","Redmond","$142.8k–274.8k","ok","Deep understanding of agentic systems","https://www.builtinseattle.com/job/principal-software-engineer-ai-safety-and-security/11196870"],
+
+ ["fde","e","ant","Forward Deployed Engineer, Applied AI","Paris","€205k–220k","ok","agent development, evaluation frameworks, and deployment at scale","https://job-boards.greenhouse.io/anthropic/jobs/5121563008"],
+ ["fde","e","oai","Forward Deployed Software Engineer","San Francisco","—","ok","customer-focused software engineers to build effective custom software","https://openai.com/careers/forward-deployed-software-engineer-sf/"],
+ ["fde","e","msf","Forward Deployed Engineer","United Kingdom","—","cl","summon intelligent, bespoke AI agents","https://jobs.anitab.org/companies/microsoft/jobs/71225774-forward-deployed-engineer"],
+ ["fde","e","sf","Forward Deployed Engineer (Multiple Levels)","Milan, Rome","—","ok","design and build custom intelligent agents using the Agentforce platform","https://www.themuse.com/jobs/salesforce/forward-deployed-engineer-multiple-levels-063f3d"],
+ ["fde","e","meta","Business Engineer, Business Agents","San Francisco","$149k–210k","cl","Experience working with LLMs, agentic AI","https://jobs.accel.com/companies/facebook-2-07d2eb1b-d3ad-4084-93df-74a124ac9233/jobs/82032009-business-engineer-business-agents"],
+ ["fde","s","aws","Senior Specialist Solutions Architect - Agentic AI","10 US cities","$153.6k–239k","ok","security & safety for AI agents","https://www.amazon.jobs/en-gb/jobs/10528482/senior-specialist-solutions-architect-agentic-ai-ags-specialist-solutions-architects"],
+ ["fde","s","aws","Senior Solutions Architect, AI-Applied Guidance, Well-Architected Solutions Innovation","Bellevue, Irvine, Dallas","$153.6k–207.8k","ok","Agentic AI patterns: autonomous agents, multi-agent systems, tool-use architectures","https://www.amazon.jobs/en/jobs/10552038/senior-solutions-architect-ai-applied-guidance-well-architected-solutions-innovation"],
+ ["fde","s","aws","Sr Delivery Consultant: Agentic AI FullStack SDE","Perth, Sydney, Melbourne","—","ok","Architect AI agent and multi-agent systems using emerging protocols","https://www.amazon.jobs/en/jobs/10476203/sr-delivery-consultant-agentic-ai-fullstack-sde-aws-professional-services"],
+ ["fde","s","aws","Senior AI Engineer, DevTx LATAM","Sao Paulo, Belo Horizonte","—","ok","design and deploy agentic systems using Amazon Bedrock","https://amazon.jobs/en/jobs/10469707/senior-ai-engineer-devtx-latam"],
+ ["fde","s","msf","Senior Solution Engineer - AI Apps & Agents, Public Sector","Schiphol","€86.3k–170.8k","cl","building and proving agentic applications on Azure AI Foundry","https://jobs.anitab.org/companies/microsoft-2/jobs/92125434-senior-solution-engineer-ai-apps-agents-public-sector"],
+ ["fde","st","goo","Staff Applied AI Agent Developer","Waterloo, Toronto","$207k–300k","ok","build, deploy, and optimize sophisticated AI agents on our platform","https://www.google.com/about/careers/applications/jobs/results/114910825608553158-staff-applied-ai-agent-developer/"],
+ ["fde","st","goo","Staff Applied AI Agent Engineer","Sunnyvale, Kirkland","$207k–300k","ok","Experience developing and deploying agentic solutions","https://www.google.com/about/careers/applications/jobs/results/123603248421446342-staff-applied-ai-agent-engineer/"],
+ ["fde","d","sf","Distinguished Forward Deployed Engineer","Singapore","—","ok","complex AI agentic deployments","https://www.themuse.com/jobs/salesforce/distinguished-forward-deployed-engineer"],
+ ["fde","m","ant","Manager of Forward Deployed Engineering","London","£255k–325k","ok","focus this team on a portfolio of agent deployments","https://job-boards.greenhouse.io/anthropic/jobs/5183983008"],
+ ["fde","m","oai","Manager, AI Deployment Engineering - Codex","London","—","ok","Own the operating model and engagement strategy for Codex deployment efforts","https://openai.com/careers/manager-ai-deployment-engineering-codex-london-uk/"],
+ ["fde","m","goo","Forward Deployed Engineer Manager, Applied AI, Google Cloud","San Francisco, New York","$262k–364k","ok","jointly deploys bespoke agentic solutions directly within customer environments","https://www.google.com/about/careers/applications/jobs/results/95987882165969606"],
+
+ ["int","st","ant","Staff Software Engineer, GTM AI Engineering","US","$320k–405k","ok","build agents that run complete autonomous motions","https://jobs.generalcatalyst.com/companies/anthropic-2-329084eb-3341-4fee-bf5f-ca45f33adaab/jobs/91163623-staff-software-engineer-gtm-ai-engineering"],
+ ["int","st","oai","Software Engineer, Agent Productivity (Staff in text)","San Francisco","$293k–342k","ok","enable teams to build, connect, and deploy agents quickly and safely","https://openai.com/careers/software-engineer-agent-productivity-san-francisco/"]
+];
+/* Ladder rows: rung, then cells per company in order G, Meta, Amazon, Microsoft, OpenAI, Anthropic, Salesforce */
+const LAD=[
+ ["Engineer I",["L3 · SWE II","E3","L4 · SDE I","59–60 · SDE","L3","—","AMTS"]],
+ ["Engineer II",["L4 · SWE III","E4","L5 · SDE II","61–62 · SDE II","L4","Software Engineer","MTS"]],
+ ["Senior",["L5 · Senior","E5","L6 · SDE III","63 · Senior","L5","Senior","SMTS"]],
+ ["Staff",["L6 · Staff","E6","—","—","L6","Staff · Lead","LMTS"]],
+ ["Senior Staff",["L7 · Senior Staff","E7","—","—","—","Senior Staff","—"]],
+ ["Principal",["L8 · Principal","E8","L7–L8 · Principal","64–66 · Principal","L7","Principal","PMTS"]],
+ ["Distinguished",["L9 · Distinguished","E9","L10 · Distinguished","67–68 · Distinguished","L7+","Principal+","Distinguished"]]
+];
+const LADSRC=[["Google","https://www.levels.fyi/view.html"],["Meta","https://hackernoon.com/metas-software-engineer-levels-explained"],["Amazon","https://www.levels.fyi/blog/amazon-leveling-progress.html"],["Microsoft","https://shiftmag.dev/microsofts-software-engineering-career-ladder-9318/"],["OpenAI","https://www.ctaio.dev/en/salary/ai-lab-levels-explained/"],["Anthropic","https://www.levels.fyi/companies/anthropic/salaries/software-engineer/levels/staff-software-engineer"],["Salesforce","https://www.levels.fyi/companies/salesforce/salaries/software-engineer?country=254"]];
+const MGR=[["Engineering Manager","Senior","Staff"],["Senior EM","Staff","Senior Staff"],["Principal EM","Senior Staff","Principal"],["Director+","Principal","Distinguished"]];
+const DEF=[
+ ["prod","Workflow vs agent","Anthropic · Dec 2024","https://www.anthropic.com/research/building-effective-agents"],
+ ["prod","Context engineering","Anthropic · Sep 2025","https://anthropic.com/engineering/effective-context-engineering-for-ai-agents"],
+ ["eval","Evals for agents","Anthropic · Jan 2026","https://anthropic.com/engineering/demystifying-evals-for-ai-agents"],
+ ["eval","Eval best practices","OpenAI","https://developers.openai.com/api/docs/guides/evaluation-best-practices"],
+ ["eval","LLM evals FAQ","Hamel Husain","https://hamel.dev/blog/posts/evals-faq/what-are-llm-evals.html"],
+ ["rel","AgentOps observability","arXiv 2411.05285","https://arxiv.org/abs/2411.05285"],
+ ["sec","Top 10 agentic risks","OWASP · Dec 2025","https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026"],
+ ["sec","Top 10 LLM risks","OWASP · 2025","https://genai.owasp.org/llm-top-10/"],
+ ["fde","FDE origin","Palantir posting","https://jobs.lever.co/palantir/bf718bd3-b2ef-451e-8033-cb4d2d9c094b"],
+ ["fde","FDE partner network","Salesforce · Apr 2026","https://www.salesforce.com/news/stories/salesforce-launches-forward-deployed-engineer-partner-network-announcement/"],
+ ["fde","AWS FDE org","HR Executive","https://hrexecutive.com/aws-joins-openai-and-anthropic-in-race-to-embed-engineers-inside-enterprises/"],
+ ["plat","VP for Agentic AI","AWS · Jun 2026","https://aws.amazon.com/blogs/machine-learning/how-frontier-teams-are-reinventing-ai-native-development/"],
+ ["all","AI engineer #1 role","LinkedIn Jobs on the Rise 2026","https://www.hrleader.com.au/business/27698-ai-engineer-tops-linkedin-s-2026-jobs-on-the-rise-list"],
+ ["all","AI engineer ≠ ML engineer","swyx · Latent Space 2023","https://www.latent.space/p/ai-engineer"],
+ ["all","Dual ladder IC vs manager","levels.fyi","https://www.levels.fyi/blog/what-are-career-levels-ladders.html"],
+ ["all","Staff archetypes","Will Larson · StaffEng","https://staffeng.com/guides/staff-archetypes/"]
+];
+(function(){
+const IC={box:'<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',layers:'<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',code:'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',check:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',pulse:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/>',users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',bot:'<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>'};
+const svg=k=>'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[k]+'</svg>';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=id=>document.getElementById(id);
+const CC={ant:"#e0794f",oai:"#14b8a6",goo:"#3b82f6",msf:"#a78bfa",gh:"#94a3b8",aws:"#eab308",sf:"#22c55e",meta:"#ec4899"};
+const CK=Object.keys(CO);
+/* ladder top = most senior */
+const IC_R=[["d","Distinguished","L9"],["p","Principal","L8"],["ss","Senior Staff","L7"],["st","Staff","L6"],["s","Senior","L5"],["e","Engineer","no level word"]];
+const MG_R=[["dir","Director+","—"],["sm","Senior Manager","Principal EM"],["m","Manager","EM, SDM"]];
+const ROWS={level:{ic:IC_R,mg:MG_R,key:1,name:"Level"},company:{ic:CK.map(c=>[c,CO[c][1],CO[c][0]]),mg:[],key:2,name:"Company"}};
+const COLS={vertical:{list:V.map(v=>[v.k,v.n,v.cl,v.ic]),key:0},company:{list:CK.map(c=>[c,CO[c][1],"",null]),key:2}};
+const SL=[["lv","Level × Vertical","level","vertical"],["cv","Company × Vertical","company","vertical"],["lc","Level × Company","level","company"]];
+const ME=[["n","Postings"],["pay","Base pay, $k"]];
+let st={s:"lv",m:"n",sel:null};
+function pay(p){const m=/^\$([\d.]+)k–([\d.]+)k$/.exec(p[5]);return m?(+m[1]+ +m[2])/2:null;}
+function med(a){if(!a.length)return null;a=a.slice().sort((x,y)=>x-y);const k=a.length>>1;return Math.round(a.length%2?a[k]:(a[k-1]+a[k])/2);}
+const usd=P.map(pay).filter(x=>x!=null);
+$("kpis").innerHTML=[[P.length,"postings"],[P.filter(p=>p[6]==="ok").length,"open"],[CK.length,"companies"],[V.length,"verticals"],[9,"rungs"],["$"+med(usd)+"k","median base"]].map(k=>'<div class="kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>').join("");
+function seg(id,opts,cur,fn){$(id).innerHTML=opts.map(o=>'<button role="radio" aria-checked="'+(o[0]===cur)+'" data-v="'+o[0]+'">'+o[1]+'</button>').join("");$(id).onclick=e=>{const b=e.target.closest("button");if(b)fn(b.dataset.v);};}
+function fill(v,max,m){if(v==null)return"";const t=max?v/max:0;const hue=m==="n"?"var(--accent)":"var(--vi)";return "background:color-mix(in srgb,"+hue+" "+Math.round(12+t*70)+"%,var(--panel2))";}
+function render(){
+ seg("slice",SL.map(s=>[s[0],s[1]]),st.s,v=>{st.s=v;st.sel=null;render();});
+ seg("metric",ME,st.m,v=>{st.m=v;render();});
+ const s=SL.find(x=>x[0]===st.s),R=ROWS[s[2]],C=COLS[s[3]];
+ const rows=R.ic.concat(R.mg),cols=C.list;
+ const cellP=(r,c)=>P.map((p,i)=>[p,i]).filter(x=>x[0][R.key]===r&&x[0][C.key]===c);
+ const val=ps=>st.m==="n"?(ps.length||null):med(ps.map(x=>pay(x[0])).filter(x=>x!=null));
+ let max=0;rows.forEach(r=>cols.forEach(c=>{const v=val(cellP(r[0],c[0]));if(v>max)max=v;}));
+ const colT=cols.map(c=>P.filter(p=>p[C.key]===c[0]).length),cmax=Math.max(...colT);
+ const rowT=rows.map(r=>P.filter(p=>p[R.key]===r[0]).length),rmax=Math.max(...rowT);
+ const hm=$("hm");hm.style.gridTemplateColumns="minmax(96px,130px) repeat("+cols.length+",minmax(0,1fr)) 64px";
+ let h='<div></div>'+cols.map((c,i)=>'<div class="hc">'+(c[3]?svg(c[3]):'<i class="d" style="background:'+CC[c[0]]+';width:10px;height:10px"></i>')+'<b>'+esc(c[1])+'</b>'+(c[2]?'<span>'+esc(c[2])+'</span>':'')+'<span class="ma" title="'+colT[i]+' postings"><i style="width:'+Math.round(colT[i]/cmax*100)+'%"></i></span></div>').join("")+'<div class="hc" style="justify-content:flex-end">Σ</div>';
+ rows.forEach((r,ri)=>{
+  if(R.mg.length&&ri===R.ic.length)h+='<div class="gap">Manager track</div>';
+  if(R.mg.length&&ri===0)h+='<div class="gap">IC track</div>';
+  h+='<div class="hr"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></div>';
+  cols.forEach(c=>{const ps=cellP(r[0],c[0]),v=val(ps),k=r[0]+"|"+c[0];
+   if(!ps.length){h+='<div class="cell z" aria-label="no posting"></div>';return;}
+   const dots=s[3]==="company"||s[2]==="company"?"":ps.map(x=>'<i class="d'+(x[0][6]==="ok"?"":" o")+'" style="background:'+CC[x[0][2]]+';--c:'+CC[x[0][2]]+'"></i>').join("");
+   h+='<button class="cell" style="'+fill(v,max,st.m)+'" data-k="'+k+'" aria-pressed="'+(st.sel===k)+'" aria-label="'+esc(r[1]+", "+c[1]+": "+ps.length+" postings")+'"><span><span class="n">'+(v==null?"–":v)+'</span><span class="u">'+(st.m==="n"?"":"k")+'</span></span><span class="ds">'+dots+'</span></button>';});
+  h+='<div class="rt"><i style="width:'+Math.round(rowT[ri]/rmax*34)+'px"></i>'+rowT[ri]+'</div>';});
+ hm.innerHTML=h;
+ hm.onclick=e=>{const b=e.target.closest("button.cell");if(!b)return;st.sel=b.dataset.k;render();};
+ /* legend */
+ $("lg").innerHTML=(st.m==="n"?'<span>1</span><i class="ramp" style="background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 12%,var(--panel2)),var(--accent))"></i><span>'+max+' postings</span>':'<span>low</span><i class="ramp" style="background:linear-gradient(90deg,color-mix(in srgb,var(--vi) 12%,var(--panel2)),var(--vi))"></i><span>$'+max+'k</span>')+((s[2]==="company"||s[3]==="company")?"":CK.map(c=>'<span><i class="d" style="background:'+CC[c]+'"></i>'+CO[c][0]+'</span>').join(""));
+ /* detail */
+ let sel=st.sel;
+ if(!sel){let best=null,bn=0;rows.forEach(r=>cols.forEach(c=>{const n=cellP(r[0],c[0]).length;if(n>bn){bn=n;best=r[0]+"|"+c[0];}}));sel=best;
+  const b=hm.querySelector('[data-k="'+sel+'"]');if(b)b.setAttribute("aria-pressed","true");}
+ const [rk,ck]=sel.split("|"),rr=rows.find(r=>r[0]===rk),cc=cols.find(c=>c[0]===ck),ps=cellP(rk,ck);
+ const pm=med(ps.map(x=>pay(x[0])).filter(x=>x!=null));
+ $("det").innerHTML='<h3>'+esc(rr[1])+' × '+esc(cc[1])+'<span>'+ps.length+' postings'+(pm?' · median base $'+pm+'k':'')+'</span></h3><div class="pl">'+ps.map(x=>{const p=x[0],py=pay(p);return '<a href="'+esc(p[8])+'" target="_blank" rel="noopener" title="'+esc(p[3]+(p[7]?' — "'+p[7]+'"':''))+'"><i class="d'+(p[6]==="ok"?"":" o")+'" style="background:'+CC[p[2]]+';--c:'+CC[p[2]]+'"></i><span class="co">'+CO[p[2]][0]+'</span><span class="t">'+esc(p[3])+'</span><span class="p">'+(py?"$"+Math.round(py)+"k":esc(p[5]))+' ↗</span></a>';}).join("")+'</div>';
+}
+render();
+})();
+</script>
+
+</body></html>
