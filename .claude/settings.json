@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/artifact-sync.py\" start" }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Artifact",
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/artifact-sync.py\" pre" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Artifact",
+        "hooks": [
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/scripts/artifact-sync.py\" post" }
+        ]
+      }
+    ]
+  }
+}
