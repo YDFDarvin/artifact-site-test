@@ -11,3 +11,9 @@
 - **Net profit**: Gross profit − Shared platform (People, Services, Infrastructure).
 - **Engagement plan**: the stakeholder map by power × interest. It tells who to engage and how often.
 - **Rollout plan**: the stakeholder map by usage × will. It tells where to start AI pilots.
+- **Role**: an agent team name in the market research, such as Agent Platform. Each role has 1 classic role, such as Platform Engineering.
+- **Grade**: a level in the ladder of a company. IC grades go from Engineer to Distinguished. Manager grades go from Manager to Director+.
+- **Role filter**: the role chips in PE2. They hide the role columns. The filter has no effect in the slice Level × Company.
+- **Posting**: 1 public job posting of 1 company. PE2 counts 64 postings.
+- **Level ladder**: the list of levels of 1 company, from public sources. PE4 shows 7 ladders.
+- **Market research**: the data in PE2 to PE5. Source: AI Agentic People Market Research @ Upstars v2.0.0.

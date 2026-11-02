@@ -1,4 +1,4 @@
-<title>AI Strategy @ Upstars v0.59.0</title>
+<title>AI Strategy @ Upstars v0.60.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2272,6 +2272,90 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 .om-dh h3{font-size:16px}
 .om-dh .om-x{margin-left:auto}
 .om-dlg .pn-gfa{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+/* People v5: market research, roles and grades matrix (lad-) */
+.lad{--lad-ai:#93c5fd;--lad-fill:rgba(59,130,246,.14);--lad-vi:#a78bfa;display:flex;flex-direction:column;gap:16px;min-width:0}
+.lad-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,104px),1fr));gap:6px}
+.lad-kpi{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:6px 12px;display:flex;flex-direction:column;min-width:0}
+.lad-kpi b{font:600 20px var(--f-sans);font-variant-numeric:tabular-nums;line-height:1.1}
+.lad-kpi span{font:10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.04em}
+.lad-live{display:flex;flex-direction:column;gap:14px;min-width:0}
+.lad-rr{display:flex;flex-direction:column;gap:8px}
+.lad-roles{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.lad-rl{font:500 11px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-right:4px}
+.lad-chip{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;max-width:100%;padding:4px 10px 4px 7px;border:1px solid var(--line2);border-radius:999px;background:var(--panel2);font-size:12px;color:var(--muted)}
+.lad-chip::before{content:"";box-sizing:border-box;flex:none;display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border:1.5px solid var(--dim);border-radius:3px;font:700 9px/1 var(--f-sans);color:#0b1220}
+.lad-chip:hover{border-color:var(--accent);color:var(--ink)}
+.lad-chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lad-chip b{font-weight:600;color:inherit}
+.lad-chip small{font:10.5px var(--f-mono);color:var(--dim)}
+.lad-chip[aria-pressed="true"]{color:var(--lad-ai);border-color:rgba(59,130,246,.55);background:var(--lad-fill)}
+.lad-chip[aria-pressed="true"]::before{content:"✓";background:var(--accent);border-color:var(--accent)}
+.lad-chip[aria-pressed="true"] small{color:var(--muted)}
+.lad-cr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:12px;color:var(--muted)}
+.lad-cnt b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.lad-cr .ctl[aria-disabled="true"],.lad-empty .ctl[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.lad-empty{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:18px 16px;border:1px dashed var(--line2);border-radius:10px;background:var(--panel2);color:var(--muted);font-size:13px}
+.lad-scroll{overflow-x:auto;min-width:0;max-width:100%}
+.lad-hm{display:grid;gap:3px;min-width:calc(130px + var(--n)*84px + 64px)}
+.lad-hc{font:500 10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.04em;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding-bottom:4px}
+.lad-hc svg{color:var(--lad-ai)}
+.lad-hc b{font:600 11.5px var(--f-sans);color:var(--ink);text-transform:none;letter-spacing:0}
+.lad-ma{position:relative;width:100%;height:4px;border-radius:2px;background:var(--line)}
+.lad-ma::before{content:"";position:absolute;inset:-6px 0}
+.lad-ma i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+.lad-hr{display:flex;flex-direction:column;justify-content:center;padding-right:8px;min-width:0;position:sticky;left:0;z-index:1;background:var(--panel)}
+.lad-hr b{font-size:12.5px;white-space:nowrap}
+.lad-hr small{font:10.5px var(--f-mono);color:var(--dim)}
+.lad-cell{all:unset;box-sizing:border-box;cursor:pointer;border-radius:7px;min-height:52px;padding:6px 7px;display:flex;flex-direction:column;justify-content:space-between;gap:4px;border:1px solid transparent;position:relative}
+.lad-cell:hover{border-color:var(--line2)}
+.lad-cell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lad-cell[aria-pressed="true"]{border-color:var(--ink)}
+.lad-n{font:600 18px var(--f-sans);font-variant-numeric:tabular-nums;line-height:1}
+.lad-u{font:500 9.5px var(--f-mono);color:var(--muted);margin-left:2px}
+.lad-ds{display:flex;flex-wrap:wrap;gap:3px}
+.lad-cell.lad-z{cursor:default;background:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--line) 70%,transparent) 6px 7px)}
+.lad-rt{display:flex;align-items:center;gap:6px;padding-left:6px;font:600 11.5px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.lad-rt i{display:block;height:6px;border-radius:3px;background:var(--accent)}
+.lad-gap{grid-column:1/-1;height:10px;display:flex;align-items:center;gap:8px;font:500 10px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.lad-gap::after{content:"";flex:1;border-top:1px dashed var(--line2)}
+.lad-lg{display:flex;flex-wrap:wrap;gap:4px 10px;font:11px var(--f-mono);color:var(--muted);align-items:center}
+.lad-lg span{display:inline-flex;align-items:center;gap:4px}
+.lad-ramp{display:inline-block;width:90px;height:8px;border-radius:4px}
+.lad-d{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.lad-d.o{background:transparent!important;box-shadow:inset 0 0 0 1.5px var(--c)}
+.lad-det{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.lad-det h3{margin:0;font:600 13px var(--f-sans);display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.lad-det h3 span{font:11px var(--f-mono);color:var(--dim)}
+.lad-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:4px 14px}
+.lad-pr{display:grid;grid-template-columns:10px 42px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:12px;color:var(--ink);padding:4px 6px;border-radius:6px;text-decoration:none}
+.lad-pr:hover{background:var(--panel2);text-decoration:none}
+.lad-pr:focus-visible,.lad-sr:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.lad-co{font:600 10.5px var(--f-mono);color:var(--muted)}
+.lad-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lad-p{font:11px var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.lad-sh{margin:0;font:600 13px var(--f-sans)}
+.lad-tb{min-width:640px}
+.lad-tb.lad-wide{min-width:820px}
+.lad-tb.lad-narrow{min-width:0}
+.lad-tb th a{color:var(--lad-ai);text-decoration:none}
+.lad-tb th a:hover{text-decoration:underline}
+.lad-r{text-align:right}
+.lad-ri{display:inline-flex;vertical-align:middle;margin-right:8px;color:var(--lad-ai)}
+.lad-src{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px}
+.lad-sg{display:flex;flex-direction:column;gap:2px;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.lad-sg h4{margin:0 0 4px;font:600 13px var(--f-sans);display:flex;gap:8px;align-items:baseline}
+.lad-sg h4 small{font:11px var(--f-mono);color:var(--dim)}
+.lad-sr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 10px;align-items:baseline;padding:4px 6px;border-radius:6px;color:var(--ink);font-size:12.5px;text-decoration:none}
+.lad-sr:hover{background:var(--panel)}
+.lad-sr i{font-style:normal;color:var(--lad-ai)}
+.lad-sr small{grid-column:1/-1;font:11px var(--f-mono);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@container (max-width:560px){
+  .lad-lens .seg{flex-wrap:wrap}
+  .lad-lens .opt{flex:1 1 auto;height:auto;min-height:28px;padding:5px 8px;white-space:normal;line-height:1.2}
+  .lad-chip{font-size:11.5px}
+  .lad-chip small{display:none}
+  .lad-kpi b{font-size:18px}
+}
 #roi,#pg-p,#ppl-s,.pg-sum{--dim:#94a3b8}
 
 /* version 4: time, change, inputs, shared projects (pq), ROI audit (ra) */
@@ -2381,7 +2465,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy @ Upstars v0.59.0</h1>
+    <h1>AI Strategy @ Upstars v0.60.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7475,7 +7559,11 @@ function leaf(pk,e,PM,lab){var pr=e.proj,S=PM.sel,m=S.per.months,shr=e.shared?'<
 /* ---------- People section: below the P&L book. Things that are hard to measure but important ----------
    PE1 Stakeholder map with 2 plans: Engagement plan (power × interest: who to engage and how often), Rollout plan (usage × will: where to start AI pilots).
    Each quadrant gives 1 action and the people in it. A click on a person opens the profile.
-   Data: onboarding deck (stakeholders, readiness, community). */
+   Data: onboarding deck (stakeholders, readiness, community).
+   PE2 Roles and grades: job postings of 8 companies in a matrix. 3 slices (Level × Role, Company × Role, Level × Company), 2 metrics (Postings, Base pay). A role filter hides roles.
+   PE3 Role map: the 8 roles, the classic role of each, what it owns, its pillar.
+   PE4 Level ladders: public level ladders of 7 companies and the manager titles with their equal IC levels.
+   PE5 Sources: 16 links by role and 7 ladder links. Data and code of PE2 to PE5 are in LADM. */
 var TPILL={rev:["p-ok","Revenue"],cost:["p-info","Cost"],both:["p-warn","Both"]};
 function grid2(id,qs,ax,pts,hk){
   return '<div class="pl-mx" role="img" aria-label="'+esc(ax[0]+" and "+ax[1]+" grid")+'">'+
@@ -7555,6 +7643,283 @@ function sqProf(x){var lv={more:["up","More senior than you"],peer:["eq","Peer l
     '<div class="sp-chain">'+step("hand","They ask you",x.ask)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("bot","Use case",x.uc)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("chart","Their metric",x.m)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("gift","They get",x.gets,"sp-get")+'</div>'+
     '<div class="sp-fear"><span class="sp-pi">'+svg(SIC.shield,16)+'</span><div><small>Fear</small><b>'+esc(x.fear)+'</b></div></div>'+
     '<div class="pl-src">'+(x.deck?'Source: onboarding deck, hypothesis. Confirm in the interview.':'Hypothesis, not in the deck. Fill after the interview.')+'</div></div>';}
+/* People: market research (PE2 to PE5). Source: AI Agentic People Market Research @ Upstars v2.0.0.
+   PE2 is a matrix. 3 slices: Level × Role, Company × Role, Level × Company. 2 metrics: Postings, Base pay.
+   The role filter hides role columns. It has no effect in the slice Level × Company.
+   All state is in this module. A People redraw keeps it. Only the role filter is saved (key "ppl-lad-roles"). */
+var LADM=(function(){
+var CO={ant:["ANTH","Anthropic"],oai:["OAI","OpenAI"],goo:["GOOG","Google"],msf:["MSFT","Microsoft"],gh:["GH","GitHub"],aws:["AMZN","Amazon AWS"],sf:["SFDC","Salesforce"],meta:["META","Meta"]};
+var RUNGS=[["e","Engineer","no level word"],["s","Senior",""],["st","Staff",""],["ss","Senior Staff",""],["p","Principal",""],["d","Distinguished",""],["m","Manager","EM, SDM"],["sm","Senior Manager","Senior, Principal EM"],["dir","Director+",""]];
+var V=[
+ {k:"prod",n:"Agent Product",cl:"SWE",own:"Agents in the product",ic:"box",pil:"Business value"},
+ {k:"plat",n:"Agent Platform",cl:"Platform Engineering",own:"Runtime, harness, sandboxes",ic:"layers",pil:"Performance Efficiency"},
+ {k:"sdk",n:"Agent SDK",cl:"DevEx",own:"SDK, protocols, tool use",ic:"code",pil:"Operational Excellence"},
+ {k:"eval",n:"Agent Evals",cl:"AQA + MQA",own:"Evals, harness, judges",ic:"check",pil:"Operational Excellence"},
+ {k:"rel",n:"Agent Reliability",cl:"SRE + DevOps",own:"Autonomy gates, latency, cost",ic:"pulse",pil:"Reliability + Cost"},
+ {k:"sec",n:"Agent Security",cl:"AppSec",own:"Controls, governance",ic:"shield",pil:"Security"},
+ {k:"fde",n:"Forward Deployed",cl:"Solutions Architect",own:"Customer agent deployments",ic:"users",pil:"Business value"},
+ {k:"int",n:"Internal Agents",cl:"Internal Tools",own:"Agents for own teams",ic:"bot",pil:"Business value"}
+];
+/* s: ok = page fetched and open; cl = closed; so = title only (search result or page without text) */
+var P=[
+ ["prod","e","ant","Software Engineer, Claude Code","US","$320k–560k","ok","build and maintain new agentic coding tools for developers","https://job-boards.greenhouse.io/anthropic/jobs/4816198008"],
+ ["prod","e","oai","Software Engineer, Codex Cloud Apps","San Francisco","$230k–325k","ok","delegate increasingly complex work to AI","https://openai.com/careers/software-engineer-codex-cloud-apps-san-francisco"],
+ ["prod","e","aws","Software Development Engineer, Kiro","Seattle","$168.1k–227.4k","ok","a frontier developer tool that independently tackles development tasks","https://www.amazon.jobs/en/jobs/10454129/software-development-engineer-kiro"],
+ ["prod","e","aws","Software Development Engineer, Amazon Q","Arlington","$143.7k–194.4k","ok","agentic experiences that can reason, retrieve information, invoke tools","https://amazon.jobs/en/jobs/10563983/software-development-engineer-amazon-q"],
+ ["prod","e","aws","Software Development Engineer, Agentic Workspaces","Seattle","$143.7k–194.4k","ok","tomorrow those workspaces will host AI agents alongside humans","https://amazon.jobs/en/jobs/10501321/software-development-engineer-agentic-workspaces"],
+ ["prod","s","sf","SMTS Back End Software Engineer, Agentforce","San Francisco","$148.5k–223.9k","ok","ultimately building the next generation of intelligent agents","https://jobs.omegavp.com/companies/salesforce-2/jobs/82357716-smts-back-end-software-engineer-agentforce"],
+ ["prod","s","sf","Senior AI Engineer, Agentforce Operations","San Francisco, Seattle, New York","$148.5k–223.9k","ok","enable agents to execute multi-step workflows autonomously","https://www.purpose.jobs/discover/companies/salesforce-2/jobs/95230810-senior-ai-engineer-agentforce-operations"],
+ ["prod","st","gh","Staff Software Engineer, AI Agents","United Kingdom","—","so","","https://www.github.careers/careers-home/jobs/5740"],
+ ["prod","st","gh","Staff Software Engineer, GitHub Intelligence (Copilot Agents)","United States","—","so","","https://www.github.careers/early-in-profession/jobs/5733?lang=en-us"],
+ ["prod","m","ant","Engineering Manager, Claude Code","US","$320k–485k","ok","Claude Code engineering team","https://job-boards.greenhouse.io/anthropic/jobs/4738189008"],
+ ["prod","m","aws","Software Development Manager, Alexa for shopping (Rufus)","London","—","ok","The team is building agentic AI systems powered by LLMs","https://amazon.jobs/en/jobs/10506805/software-development-manager-alexa-for-shopping-rufus"],
+ ["prod","m","aws","Software Development Manager, Kiro IDE","—","—","so","","https://www.amazon.jobs/en/jobs/10408981/software-development-manager-kiro-ide"],
+ ["prod","dir","sf","Senior Director - Agentic Builder","—","—","so","","https://salesforce.wd12.myworkdayjobs.com/en-US/External_Career_Site/job/Senior-Director---Agentic-Builder_JR338170"],
+
+ ["plat","e","ant","Software Engineer, Agent Platform","US","$300k–485k","ok","delegate large amounts of work to Claude","https://job-boards.greenhouse.io/anthropic/jobs/4965172008"],
+ ["plat","e","oai","Software Engineer, Agent Infrastructure","San Francisco","$230k–385k","ok","the deployment and execution of agents in production","https://openai.com/careers/software-engineer-agent-infrastructure"],
+ ["plat","e","oai","Software Engineer, API Agents","San Francisco","$293k–385k","ok","Design, build, and operate the shared agent harness","https://openai.com/careers/software-engineer-api-agents-san-francisco/"],
+ ["plat","e","oai","Software Engineer, Codex Core Agents","San Francisco","$230k–385k","ok","Design and build execution environments for AI agents","https://openai.com/careers/software-engineer-codex-core-agents-san-francisco/"],
+ ["plat","e","goo","Software Engineer, Enterprise AI Platforms and Agent Architecture","Sunnyvale","$207k–300k","ok","multi-agent workflows","https://www.google.com/about/careers/applications/jobs/results/91999936312156870-software-engineer/"],
+ ["plat","s","aws","Senior Software Engineer, AWS Agentic AI","Bellevue","$168.1k–227.4k","ok","build new or enhance existing Bedrock AgentCore services","https://amazon.jobs/en/jobs/10467664/senior-software-engineer-aws-agentic-ai"],
+ ["plat","s","aws","Sr Software Development Engineer - AgentCore, AWS Agentic AI","—","—","so","","https://www.amazon.jobs/en/jobs/10478272/sr-software-development-engineer-agentcore-aws-agentic-ai"],
+ ["plat","s","msf","Senior Software Engineer, Foundry Agents - CoreAI","Mountain View, Redmond","$119.8k–274.8k","ok","across the end-to-end agent lifecycle","https://jobs.anitab.org/companies/microsoft/jobs/78256447-senior-software-engineer-foundry-agents-coreai"],
+ ["plat","s","gh","Senior Software Engineer, CoPilot Agent Platform","Remote US","$124k–329.2k","ok","enables agents to autonomously perform complex software-development tasks","https://arc.dev/remote-jobs/j/github-senior-software-engineer-copilot-agent-platform-pelbdst5lj"],
+ ["plat","ss","goo","Senior Staff Software Engineer, AI Agent Platform, Vertex","Warsaw","PLN 640k–655k","ok","As a part of the Cloud AI Agent Platform team","https://www.google.com/about/careers/applications/jobs/results/81332285520913094-senior-staff-software-engineer-ai-agent-platform-vertex"],
+ ["plat","p","msf","Principal Software Engineer, Foundry Agents - CoreAI","Redmond","$142.8k–296.4k","ok","deploy and run agents securely at enterprise scale","https://www.builtinseattle.com/job/principal-software-engineer-foundry-agents-coreai/10218910"],
+ ["plat","p","msf","Principal AI Software Engineer (Agent 365)","Redmond","$165.6k–296.4k","cl","AI agents acting as digital co-workers","https://jobs.anitab.org/companies/microsoft-2/jobs/91196486-principal-ai-software-engineer"],
+ ["plat","m","aws","Sofware Development Manager, Ring Agent Platforms","Hawthorne","$184.9k–250.2k","ok","autonomous AI agents that collaborate with each other and with humans","https://www.amazon.jobs/en/jobs/10411159/sofware-development-manager-ring-agent-platforms"],
+ ["plat","m","oai","Engineering Manager, API Agents","San Francisco","—","cl","Directly manage ICs / MLEs on API Agents","https://jobs.coatue.com/companies/openai/jobs/45349604-engineering-manager-api-agents"],
+ ["plat","sm","gh","Principal Engineering Manager, Copilot agent platform","United States","—","so","","https://www.github.careers/careers-home/jobs/5808?lang=en-us"],
+ ["plat","sm","msf","Principal Engineering Manager - AI Agents","Dublin","—","cl","AI agents acting as digital co-workers","https://jobs.anitab.org/companies/microsoft/jobs/60433655-principal-engineering-manager-ai-agents"],
+
+ ["sdk","e","oai","Software Engineer, API SDK","Seattle","$293k–385k","ok","through the Responses API, Agents SDK, Realtime API, and more","https://openai.com/careers/software-engineer-api-sdk-seattle/"],
+ ["sdk","s","goo","Senior Software Engineer, Agent Development Kit","Warsaw","PLN 364k–374k","cl","framework for the next generation of AI agents","https://jobs.anitab.org/companies/google-24698/jobs/84882673-senior-software-engineer-agent-development-kit"],
+ ["sdk","st","goo","Staff Software Engineer, Agent Development Kit","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/104878274315723462-staff-software-engineer-agent-development-kit"],
+ ["sdk","ss","goo","Senior Staff Software Engineer, Agent Protocol, Cloud AI","—","—","so","","https://careers.google.com/jobs/results/107073090919244486-senior-staff-software-engineer/"],
+ ["sdk","m","ant","Engineering Manager, Claude Developer Platform","US","$320k–405k","ok","core capabilities including vision, tool use, and computer use","https://job-boards.greenhouse.io/anthropic/jobs/4721383008"],
+ ["sdk","m","goo","Engineering Manager, Agent Development Kit","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/93280377195373254-engineering-manager/"],
+ ["sdk","sm","aws","Senior Engineering Manager, Strands, AWS Velocity Labs","—","—","so","","https://www.amazon.jobs/en/jobs/10522143/senior-engineering-manager-strands-aws-velocity-labs"],
+
+ ["eval","e","oai","Applied AI Engineer, Codex Core Agent","San Francisco","$230k–385k","ok","Design and iterate on agent behaviors across real-world coding tasks","https://openai.com/careers/applied-ai-engineer-codex-core-agent-san-francisco/"],
+ ["eval","st","ant","Staff Software Engineer, Safeguards Evals","US","$320k–485k","ok","Build and own the evaluation harness for an agentic investigation system","https://jobs.generalcatalyst.com/companies/anthropic/jobs/85283130-staff-software-engineer-safeguards-evals"],
+
+ ["rel","e","aws","Software Development Engineer, Infrastructure Reliability Engineering","Nashville, Arlington","$136.5k–194.4k","ok","Build the foundations that gate agent autonomy","https://www.amazon.jobs/en/jobs/10545098/software-development-engineer-infrastructure-reliability-engineering"],
+ ["rel","e","oai","Performance & Systems Engineer, Codex","San Francisco","$295k–445k","ok","make Codex agents significantly faster and cheaper to serve","https://openai.com/careers/performance-and-systems-engineer-codex-san-francisco/"],
+ ["rel","m","goo","Software Engineering Manager, Site Reliability Engineering, Gemini Enterprise Agent Platform","—","—","so","","https://www.google.com/about/careers/applications/jobs/results/89872784502465222-software-engineering-manager-site-reliability-engineering-gemini-enterprise-agent-platform-google-cloud"],
+
+ ["sec","e","oai","Security Engineer, Agent Security","US","$234.4k–385k","ok","Architecting security controls for agentic AI","https://openai.com/careers/security-engineer-agent-security/"],
+ ["sec","e","goo","Software Engineer, AI Agent Security","Seattle","$147k–210k","ok","secure agent interactions across different environments","https://www.google.com/about/careers/applications/jobs/results/122951453848281798-software-engineer/"],
+ ["sec","e","msf","AI Security Engineer (Red Team)","Remote US","$102.1k–234.7k","ok","frontier AI models and agentic systems","https://www.builtinseattle.com/job/ai-security-engineer/11251152"],
+ ["sec","ss","goo","Senior Staff Software Engineer, Cloud AI, Agent Governance","Sunnyvale","$262k–364k","ok","close the last mile of agentic governance","https://www.google.com/about/careers/applications/jobs/results/140827762716746438-senior-staff-software-engineer-cloud-ai-agent-governance"],
+ ["sec","p","msf","Principal Software Engineer - AI Safety and Security","Redmond","$142.8k–274.8k","ok","Deep understanding of agentic systems","https://www.builtinseattle.com/job/principal-software-engineer-ai-safety-and-security/11196870"],
+
+ ["fde","e","ant","Forward Deployed Engineer, Applied AI","Paris","€205k–220k","ok","agent development, evaluation frameworks, and deployment at scale","https://job-boards.greenhouse.io/anthropic/jobs/5121563008"],
+ ["fde","e","oai","Forward Deployed Software Engineer","San Francisco","—","ok","customer-focused software engineers to build effective custom software","https://openai.com/careers/forward-deployed-software-engineer-sf/"],
+ ["fde","e","msf","Forward Deployed Engineer","United Kingdom","—","cl","summon intelligent, bespoke AI agents","https://jobs.anitab.org/companies/microsoft/jobs/71225774-forward-deployed-engineer"],
+ ["fde","e","sf","Forward Deployed Engineer (Multiple Levels)","Milan, Rome","—","ok","design and build custom intelligent agents using the Agentforce platform","https://www.themuse.com/jobs/salesforce/forward-deployed-engineer-multiple-levels-063f3d"],
+ ["fde","e","meta","Business Engineer, Business Agents","San Francisco","$149k–210k","cl","Experience working with LLMs, agentic AI","https://jobs.accel.com/companies/facebook-2-07d2eb1b-d3ad-4084-93df-74a124ac9233/jobs/82032009-business-engineer-business-agents"],
+ ["fde","s","aws","Senior Specialist Solutions Architect - Agentic AI","10 US cities","$153.6k–239k","ok","security & safety for AI agents","https://www.amazon.jobs/en-gb/jobs/10528482/senior-specialist-solutions-architect-agentic-ai-ags-specialist-solutions-architects"],
+ ["fde","s","aws","Senior Solutions Architect, AI-Applied Guidance, Well-Architected Solutions Innovation","Bellevue, Irvine, Dallas","$153.6k–207.8k","ok","Agentic AI patterns: autonomous agents, multi-agent systems, tool-use architectures","https://www.amazon.jobs/en/jobs/10552038/senior-solutions-architect-ai-applied-guidance-well-architected-solutions-innovation"],
+ ["fde","s","aws","Sr Delivery Consultant: Agentic AI FullStack SDE","Perth, Sydney, Melbourne","—","ok","Architect AI agent and multi-agent systems using emerging protocols","https://www.amazon.jobs/en/jobs/10476203/sr-delivery-consultant-agentic-ai-fullstack-sde-aws-professional-services"],
+ ["fde","s","aws","Senior AI Engineer, DevTx LATAM","Sao Paulo, Belo Horizonte","—","ok","design and deploy agentic systems using Amazon Bedrock","https://amazon.jobs/en/jobs/10469707/senior-ai-engineer-devtx-latam"],
+ ["fde","s","msf","Senior Solution Engineer - AI Apps & Agents, Public Sector","Schiphol","€86.3k–170.8k","cl","building and proving agentic applications on Azure AI Foundry","https://jobs.anitab.org/companies/microsoft-2/jobs/92125434-senior-solution-engineer-ai-apps-agents-public-sector"],
+ ["fde","st","goo","Staff Applied AI Agent Developer","Waterloo, Toronto","$207k–300k","ok","build, deploy, and optimize sophisticated AI agents on our platform","https://www.google.com/about/careers/applications/jobs/results/114910825608553158-staff-applied-ai-agent-developer/"],
+ ["fde","st","goo","Staff Applied AI Agent Engineer","Sunnyvale, Kirkland","$207k–300k","ok","Experience developing and deploying agentic solutions","https://www.google.com/about/careers/applications/jobs/results/123603248421446342-staff-applied-ai-agent-engineer/"],
+ ["fde","d","sf","Distinguished Forward Deployed Engineer","Singapore","—","ok","complex AI agentic deployments","https://www.themuse.com/jobs/salesforce/distinguished-forward-deployed-engineer"],
+ ["fde","m","ant","Manager of Forward Deployed Engineering","London","£255k–325k","ok","focus this team on a portfolio of agent deployments","https://job-boards.greenhouse.io/anthropic/jobs/5183983008"],
+ ["fde","m","oai","Manager, AI Deployment Engineering - Codex","London","—","ok","Own the operating model and engagement strategy for Codex deployment efforts","https://openai.com/careers/manager-ai-deployment-engineering-codex-london-uk/"],
+ ["fde","m","goo","Forward Deployed Engineer Manager, Applied AI, Google Cloud","San Francisco, New York","$262k–364k","ok","jointly deploys bespoke agentic solutions directly within customer environments","https://www.google.com/about/careers/applications/jobs/results/95987882165969606"],
+
+ ["int","st","ant","Staff Software Engineer, GTM AI Engineering","US","$320k–405k","ok","build agents that run complete autonomous motions","https://jobs.generalcatalyst.com/companies/anthropic-2-329084eb-3341-4fee-bf5f-ca45f33adaab/jobs/91163623-staff-software-engineer-gtm-ai-engineering"],
+ ["int","st","oai","Software Engineer, Agent Productivity (Staff in text)","San Francisco","$293k–342k","ok","enable teams to build, connect, and deploy agents quickly and safely","https://openai.com/careers/software-engineer-agent-productivity-san-francisco/"]
+];
+/* Ladder rows: rung, then cells per company in order G, Meta, Amazon, Microsoft, OpenAI, Anthropic, Salesforce */
+var LAD=[
+ ["Engineer I",["L3 · SWE II","E3","L4 · SDE I","59–60 · SDE","L3","—","AMTS"]],
+ ["Engineer II",["L4 · SWE III","E4","L5 · SDE II","61–62 · SDE II","L4","Software Engineer","MTS"]],
+ ["Senior",["L5 · Senior","E5","L6 · SDE III","63 · Senior","L5","Senior","SMTS"]],
+ ["Staff",["L6 · Staff","E6","—","—","L6","Staff · Lead","LMTS"]],
+ ["Senior Staff",["L7 · Senior Staff","E7","—","—","—","Senior Staff","—"]],
+ ["Principal",["L8 · Principal","E8","L7–L8 · Principal","64–66 · Principal","L7","Principal","PMTS"]],
+ ["Distinguished",["L9 · Distinguished","E9","L10 · Distinguished","67–68 · Distinguished","L7+","Principal+","Distinguished"]]
+];
+var LADSRC=[["Google","https://www.levels.fyi/view.html"],["Meta","https://hackernoon.com/metas-software-engineer-levels-explained"],["Amazon","https://www.levels.fyi/blog/amazon-leveling-progress.html"],["Microsoft","https://shiftmag.dev/microsofts-software-engineering-career-ladder-9318/"],["OpenAI","https://www.ctaio.dev/en/salary/ai-lab-levels-explained/"],["Anthropic","https://www.levels.fyi/companies/anthropic/salaries/software-engineer/levels/staff-software-engineer"],["Salesforce","https://www.levels.fyi/companies/salesforce/salaries/software-engineer?country=254"]];
+var MGR=[["Engineering Manager","Senior","Staff"],["Senior EM","Staff","Senior Staff"],["Principal EM","Senior Staff","Principal"],["Director+","Principal","Distinguished"]];
+var DEF=[
+ ["prod","Workflow vs agent","Anthropic · Dec 2024","https://www.anthropic.com/research/building-effective-agents"],
+ ["prod","Context engineering","Anthropic · Sep 2025","https://anthropic.com/engineering/effective-context-engineering-for-ai-agents"],
+ ["eval","Evals for agents","Anthropic · Jan 2026","https://anthropic.com/engineering/demystifying-evals-for-ai-agents"],
+ ["eval","Eval best practices","OpenAI","https://developers.openai.com/api/docs/guides/evaluation-best-practices"],
+ ["eval","LLM evals FAQ","Hamel Husain","https://hamel.dev/blog/posts/evals-faq/what-are-llm-evals.html"],
+ ["rel","AgentOps observability","arXiv 2411.05285","https://arxiv.org/abs/2411.05285"],
+ ["sec","Top 10 agentic risks","OWASP · Dec 2025","https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026"],
+ ["sec","Top 10 LLM risks","OWASP · 2025","https://genai.owasp.org/llm-top-10/"],
+ ["fde","FDE origin","Palantir posting","https://jobs.lever.co/palantir/bf718bd3-b2ef-451e-8033-cb4d2d9c094b"],
+ ["fde","FDE partner network","Salesforce · Apr 2026","https://www.salesforce.com/news/stories/salesforce-launches-forward-deployed-engineer-partner-network-announcement/"],
+ ["fde","AWS FDE org","HR Executive","https://hrexecutive.com/aws-joins-openai-and-anthropic-in-race-to-embed-engineers-inside-enterprises/"],
+ ["plat","VP for Agentic AI","AWS · Jun 2026","https://aws.amazon.com/blogs/machine-learning/how-frontier-teams-are-reinventing-ai-native-development/"],
+ ["all","AI engineer #1 role","LinkedIn Jobs on the Rise 2026","https://www.hrleader.com.au/business/27698-ai-engineer-tops-linkedin-s-2026-jobs-on-the-rise-list"],
+ ["all","AI engineer ≠ ML engineer","swyx · Latent Space 2023","https://www.latent.space/p/ai-engineer"],
+ ["all","Dual ladder IC vs manager","levels.fyi","https://www.levels.fyi/blog/what-are-career-levels-ladders.html"],
+ ["all","Staff archetypes","Will Larson · StaffEng","https://staffeng.com/guides/staff-archetypes/"]
+];
+/* icons: the other 3 role icons (shield, users, bot) come from SIC and IC */
+var LIC={box:'<path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/>',layers:'<path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>',code:'<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',check:'<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>',pulse:'<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>'};
+var LCC={ant:"#e0794f",oai:"#14b8a6",goo:"#3b82f6",msf:"#a78bfa",gh:"#94a3b8",aws:"#eab308",sf:"#22c55e",meta:"#ec4899"};
+var LCK=Object.keys(CO);
+/* the top of the ladder is the most senior grade */
+var LIC_R=[["d","Distinguished","L9"],["p","Principal","L8"],["ss","Senior Staff","L7"],["st","Staff","L6"],["s","Senior","L5"],["e","Engineer","no level word"]];
+var LMG_R=[["dir","Director+","—"],["sm","Senior Manager","Principal EM"],["m","Manager","EM, SDM"]];
+/* key = the index of the field in a posting: 0 role, 1 grade, 2 company */
+var LROWS={level:{ic:LIC_R,mg:LMG_R,key:1,name:"Level"},company:{ic:LCK.map(function(c){return [c,CO[c][1],CO[c][0]];}),mg:[],key:2,name:"Company"}};
+var LCOLS={role:{list:V.map(function(v){return [v.k,v.n,v.cl,v.ic];}),key:0},company:{list:LCK.map(function(c){return [c,CO[c][1],"",null];}),key:2}};
+var LSL=[["lv","Level × Role","level","role"],["cv","Company × Role","company","role"],["lc","Level × Company","level","company"]];
+var LMET=[["n","Postings"],["pay","Base pay, $k"]];
+/* default roles: 5 of 8, in the order of V */
+var LDEF=["prod","plat","eval","rel","fde"];
+var LKEY="ppl-lad-roles";
+var LS={s:"lv",m:"n",sel:null,roles:ladLoad()};
+var LPAY=P.map(ladPay).filter(function(x){return x!=null;});
+
+function ladSvg(k,s){return svg(LIC[k]||SIC[k]||IC[k],s||18);}
+function ladN(n){return n+" posting"+(n===1?"":"s");}
+/* read the saved roles. Wrong data gives the default. An empty list is valid. */
+function ladLoad(){
+  var a=null,out=[];
+  try{a=JSON.parse(lsGet(LKEY));}catch(e){a=null;}
+  if(!Array.isArray(a))return LDEF.slice();
+  V.forEach(function(v){if(a.indexOf(v.k)>=0)out.push(v.k);});
+  return out;}
+function ladSave(){try{lsSet(LKEY,JSON.stringify(LS.roles));}catch(e){}}
+function ladIsDef(){return LS.roles.length===LDEF.length&&LDEF.every(function(k){return LS.roles.indexOf(k)>=0;});}
+function ladSlice(){return LSL.filter(function(x){return x[0]===LS.s;})[0];}
+/* base pay of a posting = the middle of the posted range. Only USD ranges count. */
+function ladPay(p){var m=/^\$([\d.]+)k–([\d.]+)k$/.exec(p[5]);return m?(+m[1]+ +m[2])/2:null;}
+function ladMed(a){if(!a.length)return null;a=a.slice().sort(function(x,y){return x-y;});var k=a.length>>1;return Math.round(a.length%2?a[k]:(a[k-1]+a[k])/2);}
+function ladFill(v,max,m){if(v==null)return"";var t=max?v/max:0;var hue=m==="n"?"var(--accent)":"var(--lad-vi)";return "background:color-mix(in srgb,"+hue+" "+Math.round(12+t*70)+"%,var(--panel2))";}
+/* tooltip: the HTML is escaped once for the attribute. Every text value is escaped before. */
+function ladTip(t,lines){return ' data-tip="'+esc('<b>'+esc(t)+'</b>'+lines.map(function(l){return '<span>'+esc(l)+'</span>';}).join(""))+'"';}
+function ladDot(p){var c=LCC[p[2]];return '<i class="lad-d'+(p[6]==="ok"?"":" o")+'" style="background:'+c+';--c:'+c+'"></i>';}
+function ladSeg(label,a,opts,cur){
+  return '<div class="seg" role="radiogroup" aria-label="'+label+'">'+opts.map(function(o){return '<button type="button" class="opt" role="radio" aria-checked="'+(o[0]===cur)+'" data-lad="'+a+'" data-v="'+o[0]+'">'+esc(o[1])+'</button>';}).join("")+'</div>';}
+function ladRoleRow(){
+  return '<div class="lad-rr"><div class="lad-roles" role="group" aria-label="Roles"><span class="lad-rl">Roles</span>'+
+    V.map(function(v){return '<button type="button" class="lad-chip" aria-pressed="'+(LS.roles.indexOf(v.k)>=0)+'" data-lad="role" data-v="'+v.k+'"><b>'+esc(v.n)+'</b><small>'+esc(v.cl)+'</small></button>';}).join("")+'</div>'+
+    '<div class="lad-cr"><span class="lad-cnt"><b>'+LS.roles.length+'</b> of '+V.length+' roles</span><button type="button" class="ctl" data-lad="reset"'+(ladIsDef()?' aria-disabled="true"':'')+'>Reset to default</button></div></div>';}
+function ladLegend(max){
+  var h=LS.m==="n"?'<span>1</span><i class="lad-ramp" style="background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 12%,var(--panel2)),var(--accent))"></i><span>'+ladN(max)+'</span>'
+    :(max?'<span>low</span><i class="lad-ramp" style="background:linear-gradient(90deg,color-mix(in srgb,var(--lad-vi) 12%,var(--panel2)),var(--lad-vi))"></i><span>$'+max+'k</span>':'<span>No USD base pay in this view</span>');
+  var s=ladSlice();
+  if(s[2]!=="company"&&s[3]!=="company")h+=LCK.map(function(c){return '<span><i class="lad-d" style="background:'+LCC[c]+'"></i>'+CO[c][0]+'</span>';}).join("");
+  return '<div class="lad-lg">'+h+'</div>';}
+/* the matrix, the legend, the count line and the posting list */
+function ladMatrix(){
+  var s=ladSlice(),R=LROWS[s[2]],C=LCOLS[s[3]],onRole=s[3]==="role";
+  var F=onRole?P.filter(function(p){return LS.roles.indexOf(p[0])>=0;}):P;
+  if(!F.length)return '<div class="lad-empty" role="status">No postings for this selection.</div>';
+  var rows=R.ic.concat(R.mg),cols=onRole?C.list.filter(function(c){return LS.roles.indexOf(c[0])>=0;}):C.list;
+  var cellP=function(r,c){return F.filter(function(p){return p[R.key]===r&&p[C.key]===c;});};
+  var val=function(ps){return LS.m==="n"?(ps.length||null):ladMed(ps.map(ladPay).filter(function(x){return x!=null;}));};
+  var max=0;rows.forEach(function(r){cols.forEach(function(c){var v=val(cellP(r[0],c[0]));if(v>max)max=v;});});
+  var colT=cols.map(function(c){return F.filter(function(p){return p[C.key]===c[0];}).length;}),cmax=Math.max.apply(null,colT.concat([1]));
+  var rowT=rows.map(function(r){return F.filter(function(p){return p[R.key]===r[0];}).length;}),rmax=Math.max.apply(null,rowT.concat([1]));
+  /* the selected cell. If it is hidden or empty, use the cell with the most postings. */
+  var sel=LS.sel,a=sel?sel.split("|"):[];
+  if(!(a.length===2&&rows.some(function(r){return r[0]===a[0];})&&cols.some(function(c){return c[0]===a[1];})&&cellP(a[0],a[1]).length)){
+    LS.sel=null;var bn=0;sel=null;
+    rows.forEach(function(r){cols.forEach(function(c){var n=cellP(r[0],c[0]).length;if(n>bn){bn=n;sel=r[0]+"|"+c[0];}});});}
+  var h='<div></div>'+cols.map(function(c,i){
+    return '<div class="lad-hc">'+(c[3]?ladSvg(c[3]):'<i class="lad-d" style="background:'+LCC[c[0]]+';width:10px;height:10px"></i>')+'<b>'+esc(c[1])+'</b>'+(c[2]?'<span>'+esc(c[2])+'</span>':'')+
+      '<span class="lad-ma"'+ladTip(c[1],[ladN(colT[i])])+'><i style="width:'+Math.round(colT[i]/cmax*100)+'%"></i></span></div>';}).join("")+'<div class="lad-hc" style="justify-content:flex-end">Σ</div>';
+  rows.forEach(function(r,ri){
+    if(R.mg.length&&ri===0)h+='<div class="lad-gap">IC track</div>';
+    if(R.mg.length&&ri===R.ic.length)h+='<div class="lad-gap">Manager track</div>';
+    h+='<div class="lad-hr"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+'</small></div>';
+    cols.forEach(function(c){
+      var ps=cellP(r[0],c[0]),v=val(ps),k=r[0]+"|"+c[0];
+      if(!ps.length){h+='<div class="lad-cell lad-z" role="img" aria-label="'+esc(r[1]+", "+c[1]+": no postings")+'"></div>';return;}
+      var pm=ladMed(ps.map(ladPay).filter(function(x){return x!=null;}));
+      var dots=(s[3]==="company"||s[2]==="company")?"":ps.map(ladDot).join("");
+      h+='<button type="button" class="lad-cell" style="'+ladFill(v,max,LS.m)+'" data-lad="cell" data-k="'+k+'" aria-pressed="'+(sel===k)+'" aria-label="'+esc(r[1]+", "+c[1]+": "+ladN(ps.length))+'"'+
+        ladTip(r[1]+" × "+c[1],[ladN(ps.length),pm?"Median base $"+pm+"k":"No USD base pay"])+'><span><span class="lad-n">'+(v==null?"–":v)+'</span><span class="lad-u">'+(LS.m==="n"?"":"k")+'</span></span><span class="lad-ds">'+dots+'</span></button>';});
+    h+='<div class="lad-rt"><i style="width:'+Math.round(rowT[ri]/rmax*34)+'px"></i>'+rowT[ri]+'</div>';});
+  /* detail list of the selected cell */
+  var sa=sel.split("|"),rr=rows.filter(function(r){return r[0]===sa[0];})[0],cc=cols.filter(function(c){return c[0]===sa[1];})[0],ps=cellP(sa[0],sa[1]);
+  var pm2=ladMed(ps.map(ladPay).filter(function(x){return x!=null;}));
+  var det='<div class="lad-det"><h3>'+esc(rr[1])+' × '+esc(cc[1])+'<span>'+ladN(ps.length)+(pm2?' · median base $'+pm2+'k':'')+'</span></h3><div class="lad-list">'+
+    ps.map(function(p){
+      var py=ladPay(p),loc=[p[4],p[5]].filter(function(x){return x&&x!=="—";}),st={ok:"Open, page checked",cl:"Closed",so:"Title only"}[p[6]];
+      var lines=[loc.length?loc.join(" · "):"No location or pay posted",st];if(p[7])lines.push('"'+p[7]+'"');
+      return '<a class="lad-pr" href="'+esc(p[8])+'" target="_blank" rel="noopener"'+ladTip(p[3],lines)+'>'+ladDot(p)+'<span class="lad-co">'+CO[p[2]][0]+'</span><span class="lad-t">'+esc(p[3])+'</span><span class="lad-p">'+(py?"$"+Math.round(py)+"k":esc(p[5]))+' ↗</span></a>';}).join("")+'</div></div>';
+  var show=onRole?"Showing "+F.length+" of "+P.length+" postings in "+LS.roles.length+" of "+V.length+" roles":"Showing "+F.length+" of "+P.length+" postings. The role filter has no effect in this slice.";
+  return '<div class="lad-scroll"><div class="lad-hm" style="--n:'+cols.length+';grid-template-columns:minmax(96px,130px) repeat('+cols.length+',minmax(0,1fr)) 64px">'+h+'</div></div>'+
+    ladLegend(max)+'<div class="pl-src lad-show">'+show+'</div>'+det;}
+/* the part that changes on a click: the 2 segmented controls, the role row and the matrix */
+function ladLive(){
+  var s=ladSlice(),onRole=s[3]==="role";
+  var h='<div class="pl-lens lad-lens">'+ladSeg("Slice","slice",LSL.map(function(x){return [x[0],x[1]];}),LS.s)+ladSeg("Metric","metric",LMET,LS.m)+'</div>';
+  if(onRole)h+=ladRoleRow();
+  if(onRole&&!LS.roles.length)return h+'<div class="lad-empty" role="status"><span>No roles selected. Select at least 1 role.</span><button type="button" class="ctl" data-lad="reset">Reset to default</button></div>';
+  return h+ladMatrix();}
+/* the KPI tiles use all postings. The role filter does not change them. */
+function ladKpis(){
+  return '<div class="lad-kpis">'+[[P.length,"postings"],[P.filter(function(p){return p[6]==="ok";}).length,"open"],[LCK.length,"companies"],[V.length,"roles"],[RUNGS.length,"grades"],["$"+ladMed(LPAY)+"k","median base"]].map(function(k){return '<div class="lad-kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>';}).join("")+'</div>';}
+function ladPe2(){
+  return '<div class="lad">'+ladKpis()+'<div class="lad-live">'+ladLive()+'</div>'+
+    '<div class="pl-src">From: AI Agentic People Market Research @ Upstars v2.0.0, 2026-11-02 · Data of 2026-11-01 · '+P.length+' postings · base pay = midpoint of posted range, USD postings only · ● open, page checked · ○ closed or title only</div></div>';}
+function ladRoleMap(){
+  return '<div class="lad"><div class="tw"><table class="lad-tb"><thead><tr><th>Role</th><th>Classic role</th><th>Owns</th><th>Pillar</th><th class="lad-r">Postings</th></tr></thead><tbody>'+
+    V.map(function(v){var n=P.filter(function(p){return p[0]===v.k;}).length;return '<tr><td class="b"><span class="lad-ri">'+ladSvg(v.ic,16)+'</span>'+esc(v.n)+'</td><td>'+esc(v.cl)+'</td><td>'+esc(v.own)+'</td><td>'+esc(v.pil)+'</td><td class="m lad-r">'+n+'</td></tr>';}).join("")+
+    '</tbody></table></div><div class="pl-src">Classic role: the usual job title for the same work. Postings: the count in PE2.</div></div>';}
+function ladLadders(){
+  var th=LADSRC.map(function(l){return '<th><a href="'+esc(l[1])+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a></th>';}).join("");
+  var t1='<div class="tw"><table class="lad-tb lad-wide"><thead><tr><th>Level</th>'+th+'</tr></thead><tbody>'+
+    LAD.map(function(r){return '<tr><td class="b">'+esc(r[0])+'</td>'+r[1].map(function(c){return '<td class="m nw'+(c==="—"?' na':'')+'">'+esc(c)+'</td>';}).join("")+'</tr>';}).join("")+'</tbody></table></div>';
+  var t2='<div class="tw"><table class="lad-tb lad-narrow"><thead><tr><th>Manager title</th><th>Equal IC level, from</th><th>Equal IC level, to</th></tr></thead><tbody>'+
+    MGR.map(function(r){return '<tr><td class="b">'+esc(r[0])+'</td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>';}).join("")+'</tbody></table></div>';
+  return '<div class="lad"><h4 class="lad-sh">IC levels by company</h4>'+t1+'<h4 class="lad-sh">Manager titles and equal IC levels</h4>'+t2+'<div class="pl-src">Ladders from public sources. Links in the column heads.</div></div>';}
+function ladHost(u){var m=/^https?:\/\/(?:www\.)?([^\/]+)/.exec(u);return m?m[1]:u;}
+function ladGroup(name,rows){
+  return '<div class="lad-sg"><h4>'+esc(name)+'<small>'+rows.length+'</small></h4>'+rows.map(function(r){return '<a class="lad-sr" href="'+esc(r[2])+'" target="_blank" rel="noopener"><span>'+esc(r[0])+'</span><i>↗</i><small>'+esc(r[1])+'</small></a>';}).join("")+'</div>';}
+function ladSources(){
+  var h=["all"].concat(V.map(function(v){return v.k;})).map(function(k){
+    var rows=DEF.filter(function(d){return d[0]===k;});if(!rows.length)return "";
+    var name=k==="all"?"All roles":V.filter(function(v){return v.k===k;})[0].n;
+    return ladGroup(name,rows.map(function(d){return [d[1],d[2],d[3]];}));}).join("");
+  h+=ladGroup("Level ladders",LADSRC.map(function(l){return [l[0],ladHost(l[1]),l[1]];}));
+  return '<div class="lad"><div class="lad-src">'+h+'</div></div>';}
+/* the 4 People sections PE2 to PE5. sec is the helper of pplRender. */
+function ladSecs(sec){
+  return sec("pe2","PE2",IC.score,"Roles and grades","Job postings",P.length+" postings · "+V.length+" roles · "+LCK.length+" companies",ladPe2())+
+    sec("pe3","PE3",LIC.layers,"Role map","Definitions",V.length+" roles",ladRoleMap())+
+    sec("pe4","PE4",IC.trend,"Level ladders","Public ladders",LADSRC.length+" companies · "+LAD.length+" levels",ladLadders())+
+    sec("pe5","PE5",IC.list,"Sources","Reading list",DEF.length+" links · "+LADSRC.length+" ladder links",ladSources());}
+/* redraw only the live part. Hide the tooltip because the hovered node is gone. */
+function ladDraw(root){
+  var live=root.querySelector(".lad-live");if(!live)return;
+  var tt=root.querySelector(".pl-tip");if(tt)tt.hidden=true;
+  live.innerHTML=ladLive();}
+function ladFocus(root,b){
+  var q='[data-lad="'+b.getAttribute("data-lad")+'"]',v=b.getAttribute("data-v"),k=b.getAttribute("data-k");
+  if(v!=null)q+='[data-v="'+v+'"]';if(k!=null)q+='[data-k="'+k+'"]';
+  var n=root.querySelector(".lad-live "+q);if(n)try{n.focus({preventScroll:true});}catch(e){}}
+/* one click handler for all controls (data-lad) */
+function ladClick(e,root){
+  var b=e.target.closest("[data-lad]");if(!b||!root.contains(b))return;
+  var a=b.getAttribute("data-lad"),v=b.getAttribute("data-v");
+  if(a==="slice"){LS.s=v;LS.sel=null;}
+  else if(a==="metric"){LS.m=v;}
+  else if(a==="role"){
+    var on=LS.roles.indexOf(v)>=0;
+    LS.roles=V.map(function(x){return x.k;}).filter(function(k){return k===v?!on:LS.roles.indexOf(k)>=0;});
+    ladSave();}
+  else if(a==="reset"){if(b.getAttribute("aria-disabled")==="true")return;LS.roles=LDEF.slice();ladSave();}
+  else if(a==="cell"){LS.sel=b.getAttribute("data-k");}
+  else return;
+  ladDraw(root);ladFocus(root,b);}
+return {secs:ladSecs,click:ladClick};
+})();
 function pplRender(PM){
   var root=document.getElementById("ppl");if(!root)return;PLAST=PM;
   if(!root.__w){root.__w=1;root.addEventListener("toggle",function(e){var d=e.target;if(d.tagName==="DETAILS"&&d.dataset.k){OPEN[d.dataset.k]=d.open;saveOpen();}},true);
@@ -7562,8 +7927,13 @@ function pplRender(PM){
     root.addEventListener("click",function(e){var l=e.target.closest("[data-lens]");if(l){LENS=l.dataset.lens;lsSet("ppl-lens",LENS);pplRender(PLAST);return;}
       var x=e.target.closest(".om-x");if(x){var dl=root.querySelector("#om-dlg");if(dl&&dl.open)dl.close();return;}
       var d=e.target.closest("[data-row]");if(d&&d.dataset.row)openProf(d.dataset.row,d);});
+    root.addEventListener("click",function(e){LADM.click(e,root);});
     root.addEventListener("keydown",function(e){var d=e.target.closest(".pl-dot[data-row]");if(d&&(e.key==="Enter"||e.key===" ")){e.preventDefault();d.click();}});}
   if(OPEN.pe1==null){OPEN.pe1=true;}
+  if(OPEN.pe2==null){OPEN.pe2=true;}
+  if(OPEN.pe3==null){OPEN.pe3=false;}
+  if(OPEN.pe4==null){OPEN.pe4=false;}
+  if(OPEN.pe5==null){OPEN.pe5=false;}
   var sec=function(k,n,ic,t,tg,meta,body){return '<details class="psec" data-k="'+k+'"'+op(k)+'><summary><span class="num">'+n+'</span><i>'+svg(ic,16)+'</i>'+t+(tg?tag(tg):"")+'<span class="pn-meta">'+meta+'</span><i class="chev">'+CHEV+'</i></summary><div class="body">'+body+'</div></details>';};
   var V=SQ[LENS==="ready"?"ready":"power"],grp={};V.quads.forEach(function(q){grp[q.pos]=[];});
   PEOPLE.forEach(function(x,i){var pt=V.v(x);grp[sqPos(pt)].push({x:x,i:i,pt:pt});});
@@ -7585,7 +7955,7 @@ function pplRender(PM){
     '<div class="sd-grid">'+map+cards+'</div>'+
     '<div class="pl-src">'+esc(V.ax[1]+" × "+V.ax[0])+', 0 to 100 · deck values, hollow dots are hypotheses · click a person to open the profile</div>');
   PROF=sqProf;
-  root.querySelector("#ppl-body").innerHTML=pe1;
+  root.querySelector("#ppl-body").innerHTML=pe1+LADM.secs(sec);
   if(!root.querySelector("#om-dlg"))root.insertAdjacentHTML("beforeend",'<dialog id="om-dlg" class="om-dlg" aria-labelledby="om-dlg-h"><div class="om-dlb"></div></dialog>');
 }
 /* profile popup: the same profile content, opened from a map dot, a key chip or a matrix chip */
