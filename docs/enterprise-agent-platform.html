@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy @ Upstars v0.57.0</title>
+<title>AI Strategy @ Upstars v0.59.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -1942,19 +1942,30 @@ details.pn.pn-pulse{box-shadow:0 0 0 2px var(--accent)}
 :is(#roi,.pg-sum) .pg-lrows .roi-row{grid-template-columns:96px minmax(0,1fr)}
 :is(#roi,.pg-sum) .pg-sumc .roi-tl span.roi-rule{font:10.5px var(--f-mono);color:var(--dim);white-space:normal}
 :is(#roi,.pg-sum) .roi-tl i.roi-shl{background-image:repeating-linear-gradient(135deg,#64748b 0 1.5px,transparent 1.5px 4px);background-color:#1e293b}
-/* ROI Sankey (version 0.57). Profit sources -> Profits -> loss targets. All rules use the "sk-" prefix. */
-#roi .roi-sk{position:relative;min-width:0}
-#roi .sk{display:block;width:100%;height:auto;overflow:visible}
-#roi .sk-f,#roi .sk-n{transition:opacity .15s}
-#roi .sk-hl .sk-f{opacity:.1}#roi .sk-hl .sk-f.on{opacity:.9;fill-opacity:.8}
+/* ROI Sankey (version 0.58): income statement flow. All rules use the "sk-" prefix. */
+#roi .roi-sk{position:relative;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+#roi .sk{display:block;overflow:visible}
+#roi .sk-f,#roi .sk-n,#roi .sk-l,#roi .sk-sub{transition:opacity .15s}
+#roi .sk-sub{opacity:0;pointer-events:none}
+#roi .sk-hl .sk-f{opacity:.1}#roi .sk-hl .sk-f.on{opacity:.9;fill-opacity:.75}
 #roi .sk-hl .sk-n{opacity:.1}#roi .sk-hl .sk-n.on{opacity:.9}
-#roi .sk-hl .sk-n.sk-m{opacity:1}
-#roi .sk-n[data-go]{cursor:pointer}
-#roi .sk-n:focus{outline:none}#roi .sk-n:focus-visible{stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
-#roi .sk text{pointer-events:none;font-family:var(--f-sans)}
-#roi .sk .sk-v{fill:var(--dim);font-variant-numeric:tabular-nums}
-#roi .sk .sk-ml{paint-order:stroke;stroke:var(--panel2);stroke-linejoin:round;font-weight:600}
-@media (prefers-reduced-motion:reduce){#roi .sk-f,#roi .sk-n{transition:none}}
+#roi .sk-hl .sk-sub.on{opacity:.9}
+#roi .sk-hl .sk-n.sk-m,#roi .sk-hl .sk-n.sk-x{opacity:1}
+#roi .sk-hl .sk-l[data-keys]:not(.on){opacity:.25}
+#roi .sk-n[data-k]{cursor:pointer}
+#roi .sk-n.sel{stroke:#f8fafc;stroke-width:1.5}
+#roi .sk-n:focus{outline:none}#roi .sk-n:focus-visible{stroke:var(--accent);stroke-width:2}
+#roi .sk text{pointer-events:none;font-family:var(--f-sans);paint-order:stroke;stroke:var(--panel2);stroke-width:3px;stroke-linejoin:round}
+#roi .sk .sk-tn{fill:var(--ink);font-size:11.5px;font-weight:500}
+#roi .sk .sk-tv{fill:var(--muted);font:500 11px var(--f-mono);font-variant-numeric:tabular-nums}
+#roi .sk .sk-big .sk-tn{font-size:13.5px;font-weight:700}#roi .sk .sk-big .sk-tv{fill:var(--ink);font-size:12px}
+#roi .roi-sc{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+#roi .roi-sc b{color:var(--ink);font-weight:600}
+#roi .roi-sc button{font:500 11.5px var(--f-sans);color:#93c5fd;background:transparent;border:1px solid var(--line2);border-radius:6px;padding:2px 8px;cursor:pointer}
+#roi .roi-sc button:hover{border-color:var(--accent)}
+#roi .roi-sc button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#roi .roi-sc .roi-dl{margin-left:auto}
+@media (prefers-reduced-motion:reduce){#roi .sk-f,#roi .sk-n,#roi .sk-l,#roi .sk-sub{transition:none}}
 
 /* P section (version 2). Same look as the Losses sections: details.psec mirrors details.sec, tiles, tables, pills.
    Own class names so the Losses numbering, Expand all and Collapse all do not include P. Container queries: P is 280 to 1250 px wide. */
@@ -2184,6 +2195,68 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 @container (max-width:420px){.om-chip{font-size:11px;padding:3px 6px}.om-row b{font-size:11px}}
 .om-chip{max-width:100%;box-sizing:border-box;white-space:normal}
 .om-chip b{overflow-wrap:anywhere}
+
+/* People v4: stakeholder map plans (sd-) and profile (sp-) */
+#ppl .sd-lens .opt{gap:6px}
+.sd-qn{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line2);border-radius:10px;background:var(--panel2)}
+.sd-qi{color:#93c5fd;display:inline-flex;padding-top:1px}
+.sd-qn b{display:block;font-size:15px;font-weight:600}
+.sd-qn small{display:block;font-size:12px;color:var(--muted)}
+.sd-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+@container (max-width:860px){.sd-grid{grid-template-columns:minmax(0,1fr)}}
+#ppl .sd-mx{height:320px;margin:4px 0 22px 22px}
+.sd-q{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;padding:6px 8px;background:color-mix(in srgb,var(--q) 9%,transparent)}
+.sd-q b{font:600 10.5px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--q)}
+.sd-q em{font:700 18px/1 var(--f-sans);font-style:normal;color:var(--q)}
+.sd-tl,.sd-tr{border-bottom:1px dashed var(--line2)}.sd-tl,.sd-bl{border-right:1px dashed var(--line2)}
+.sd-tl{border-radius:8px 0 0 0}.sd-tr{border-radius:0 8px 0 0}.sd-bl{border-radius:0 0 0 8px}.sd-br{border-radius:0 0 8px 0}
+#ppl .pl-dot.sd-dot i{background:var(--q)}
+#ppl .pl-dot.sd-dot.om-dnew i{background:var(--panel2);box-shadow:inset 0 0 0 2px var(--q),0 0 0 2px var(--panel2);color:var(--q)}
+.sd-cards{display:flex;flex-direction:column;gap:8px;min-width:0}
+.sd-c{display:flex;flex-direction:column;gap:6px;padding:9px 11px;border:1px solid var(--line);border-left:3px solid var(--q);border-radius:8px;background:var(--panel2);min-width:0}
+.sd-c.sd-top1{border-color:color-mix(in srgb,var(--q) 55%,transparent);border-left-color:var(--q);background:color-mix(in srgb,var(--q) 7%,var(--panel2))}
+.sd-ch{display:flex;align-items:center;gap:8px}
+.sd-ic{display:inline-flex;color:var(--q)}
+.sd-ch b{font-size:13.5px;font-weight:600}
+.sd-first{font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:#0b1220;background:var(--q);border-radius:4px;padding:1px 5px}
+.sd-n{margin-left:auto;font:700 20px/1 var(--f-sans);color:var(--q);font-variant-numeric:tabular-nums}
+.sd-a{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink)}
+.sd-a svg{color:var(--q);flex:none}
+.sd-ppl{display:flex;flex-wrap:wrap;gap:5px}
+.sd-ppl .om-kc i{background:var(--q)}
+.sd-ppl .om-kc.om-new i{background:transparent;box-shadow:inset 0 0 0 2px var(--q);color:var(--q)}
+.sd-none{font:11px var(--f-mono);color:var(--dim)}
+.sp{display:flex;flex-direction:column;gap:10px}
+.sp small{display:block;font:500 10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+.sp-win,.sp-pol,.sp-fear{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;border:1px solid}
+.sp-win{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.08)}.sp-win .sp-wi{color:#86efac;display:inline-flex}.sp-win b{font-size:14.5px;font-weight:600;color:#dcfce7}
+.sp-pol{border-color:rgba(234,179,8,.45);background:rgba(234,179,8,.06)}.sp-pol .sp-pi{color:#fcd34d;display:inline-flex}
+.sp-fear{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.06)}.sp-fear .sp-pi{color:#fca5a5;display:inline-flex}.sp-fear b{color:#fecaca}
+.sp-pol b,.sp-fear b{font-size:13px;font-weight:600}
+.sp-row{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:10px}
+@media (max-width:640px){.sp-row{grid-template-columns:minmax(0,1fr)}}
+.sp-box{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);min-width:0}
+.sp-org{display:flex;flex-direction:column;align-items:center;gap:2px}
+.sp-org>i{display:inline-flex;color:var(--dim)}
+.sp-node{display:inline-flex;padding:4px 12px;border:1px solid var(--line2);border-radius:999px;background:var(--panel);font-size:12.5px;color:var(--muted)}
+.sp-node.sp-me{color:var(--ink);font-weight:600;border-color:var(--accent);background:rgba(59,130,246,.12)}
+.sp-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center}
+.sp-tag{display:inline-flex;align-items:center;gap:4px;font:500 11px var(--f-mono);color:var(--ink);border:1px solid var(--line2);border-radius:4px;padding:1px 6px}
+.sp-rings{display:flex;flex-wrap:wrap;gap:10px 14px}
+.sp-rg{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.sp-ring{position:relative;width:58px;display:flex;flex-direction:column;align-items:center}
+.sp-ring b{position:absolute;top:0;left:0;width:58px;height:58px;display:flex;align-items:center;justify-content:center;font:700 16px var(--f-sans);font-variant-numeric:tabular-nums}
+.sp-ring span{font-size:11px;color:var(--muted)}
+.sp-q{flex-basis:100%;display:inline-flex;align-items:center;gap:5px;font:600 11.5px var(--f-sans);color:var(--q)}
+.sp-chain{display:flex;align-items:stretch;gap:4px;flex-wrap:wrap}
+.sp-st{flex:1 1 130px;display:flex;flex-direction:column;gap:3px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2);min-width:0}
+.sp-st b{font-size:12.5px;font-weight:600}
+.sp-si{display:inline-flex;color:#93c5fd}
+.sp-st.sp-get{border-color:rgba(34,197,94,.45)}.sp-st.sp-get .sp-si{color:#86efac}
+.sp-ar{display:inline-flex;align-items:center;color:var(--dim)}
+@media (max-width:640px){.sp-ar{display:none}.sp-st{flex-basis:45%}}
+.sp-src{font:500 10.5px var(--f-mono);color:#93c5fd;border:1px solid #1e3a8a;border-radius:4px;padding:0 5px}
+.sp-src.sp-hyp{color:var(--dim);border-style:dashed;border-color:var(--line2)}
 /* audit fixes: People popup, numbered map dots, caption contrast */
 #ppl .pl-mx{max-width:none}
 #ppl .pl-dot.om-nd i{width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font:700 10.5px var(--f-mono);color:#0b1220;font-style:normal}
@@ -2309,7 +2382,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy @ Upstars v0.57.0</h1>
+    <h1>AI Strategy @ Upstars v0.59.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7155,63 +7228,108 @@ function roiBuild(root){
     '<span class="roi-ex" tabindex="0" title="Project inputs are examples. Engineering users and the hourly cost come from Chat Traffic and Inefficiency rates.">Example profit inputs</span>'+
     '<span class="roi-mo"><span class="roi-u">Net</span><b id="roi-mo"></b><span class="roi-u">per month</span></span></div>'+
     '<div class="roi-sk" id="roi-sk"></div>'+
+    '<div class="roi-sc" id="roi-sc"></div>'+
     '<div class="roi-tiles">'+
-      '<div class="roi-o"><b id="roi-p"></b><span>Profits</span><small>cost savings per month</small></div>'+
-      '<div class="roi-o"><b id="roi-l"></b><span>Losses</span><small>= Total cost per month</small></div>'+
-      '<div class="roi-o"><b id="roi-n"></b><span>Net</span><small>Profits − Losses</small></div>'+
-      '<div class="roi-o"><b id="roi-r"></b><span>ROI</span><small>Profits ÷ Losses</small></div>'+
-    '</div><div id="roi-aud"></div><div class="pl-tip roi-tip" role="tooltip" hidden></div>';
+      '<div class="roi-o"><b id="roi-p"></b><span>Revenue</span><small id="roi-ps">cost savings per month</small></div>'+
+      '<div class="roi-o"><b id="roi-l"></b><span>Costs</span><small id="roi-ls">= Total cost per month</small></div>'+
+      '<div class="roi-o"><b id="roi-n"></b><span>Net profit</span><small>Revenue − Costs</small></div>'+
+      '<div class="roi-o"><b id="roi-r"></b><span>ROI</span><small>Revenue ÷ Costs</small></div>'+
+    '</div><div class="pl-tip roi-tip" role="tooltip" hidden></div>';
   root.querySelector("#roi-mode").addEventListener("click",function(e){var b=e.target.closest("button[data-m]");if(!b)return;RMODE=b.dataset.m;lsSet("roi-mode",RMODE);if(RLAST)roiRender(RLAST[0],RLAST[1]);pgRender(RLAST[0],RLAST[1]);});
   root.querySelector("#roi-mode").addEventListener("keydown",function(e){if(e.key!=="ArrowRight"&&e.key!=="ArrowLeft")return;e.preventDefault();var ms=["dept","prod"],i=(ms.indexOf(RMODE)+1)%2;RMODE=ms[i];lsSet("roi-mode",RMODE);roiRender(RLAST[0],RLAST[1]);pgRender(RLAST[0],RLAST[1]);root.querySelector('#roi-mode [data-m="'+RMODE+'"]').focus();});
   root.addEventListener("toggle",function(e){var d=e.target;if(d.dataset&&d.dataset.ak){var o;try{o=JSON.parse(lsGet("roi-aud")||"{}");}catch(_){o={};}o[d.dataset.ak]=d.open;lsSet("roi-aud",JSON.stringify(o));}},true);
-  root.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g&&g.tagName==="BUTTON")e.preventDefault();if(g&&window.PL_OPEN_TO){var a=g.dataset.go.split(":");window.PL_OPEN_TO(a[0],a[1]!=null?a[1]:null);}});
-  root.addEventListener("keydown",function(e){var g=e.target.closest("[data-go]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();g.click();}});
+  root.addEventListener("click",function(e){
+    var t=e.target.closest("svg.sk [data-k]");if(t){SKSEL=SKSEL===t.dataset.k?null:t.dataset.k;skApply();skStats();return;}
+    if(e.target.closest("#roi-clr")||(e.target.closest("svg.sk")&&!e.target.closest(".sk-f,.sk-n"))){if(SKSEL){SKSEL=null;skApply();skStats();}return;}
+    var g=e.target.closest("[data-go]");if(g&&g.tagName==="BUTTON")e.preventDefault();if(g&&window.PL_OPEN_TO){var a=g.dataset.go.split(":");window.PL_OPEN_TO(a[0],a[1]!=null?a[1]:null);}});
+  root.addEventListener("keydown",function(e){
+    if(e.key==="Escape"&&SKSEL){SKSEL=null;skApply();skStats();return;}
+    var g=e.target.closest("[data-go],svg.sk [data-k]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();if(g.dataset.k){SKSEL=SKSEL===g.dataset.k?null:g.dataset.k;skApply();skStats();}else g.click();}});
   wireTip(root,".sk-n,.sk-f");
-  /* Sankey highlight: a category node or flow sets "sk-hl" on the SVG and "on" on the 2 nodes and 2 flows of the category */
-  var hl=function(k){var s=root.querySelector("svg.sk");if(!s)return;s.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});
-    if(k==null){s.classList.remove("sk-hl");return;}s.classList.add("sk-hl");s.querySelectorAll('[data-k="'+k+'"]').forEach(function(x){x.classList.add("on");});};
-  root.addEventListener("mouseover",function(e){if(!e.target.closest("svg.sk"))return;var t=e.target.closest("[data-k]");hl(t?t.dataset.k:null);});
-  root.addEventListener("mouseout",function(e){var s=e.target.closest("svg.sk");if(s&&!(e.relatedTarget&&s.contains(e.relatedTarget)))hl(null);});
-  root.addEventListener("focusin",function(e){var t=e.target.closest("svg.sk [data-k]");if(t)hl(t.dataset.k);});
-  root.addEventListener("focusout",function(e){if(e.target.closest("svg.sk"))hl(null);});
+  /* hover or focus a product or a department: highlight its revenue flows and its cost flows. A click selects it and the tiles show its ROI. */
+  var key=function(e){var t=e.target.closest("svg.sk [data-k]");return t?t.dataset.k:null;};
+  root.addEventListener("mouseover",function(e){if(!e.target.closest("svg.sk"))return;var k=key(e);if(k!==SKHOV){SKHOV=k;skApply();}});
+  root.addEventListener("mouseout",function(e){var s=e.target.closest("svg.sk");if(s&&!(e.relatedTarget&&s.contains(e.relatedTarget))){SKHOV=null;skApply();}});
+  root.addEventListener("focusin",function(e){var k=key(e);if(k){SKHOV=k;skApply();}});
+  root.addEventListener("focusout",function(e){if(e.target.closest("svg.sk")){SKHOV=null;skApply();}});
 }
-/* ROI Sankey layout in plain JavaScript. viewBox 1000 x 320. Sizes in px convert to viewBox units with k = 1000 / box width. */
-var SKD=null,SKW=0;
+/* ROI Sankey (version 0.58): income statement flow in plain JavaScript. 1 SVG unit = 1 px.
+   Columns: 0 products, 1 departments, 2 Revenue, 3 Gross profit and department costs, 4 Net profit, Shared platform and product costs.
+   Revenue colors are the category colors. Cost colors are red. Shared platform is hatched gray. */
+var SKD=null,SKW=0,SKSEL=null,SKHOV=null;
+var SKC={rev:"#0a0a0a",gp:"#22c55e",net:"#16a34a",dc:"#dc2626",pc:"#f87171",cf:"#ef4444",def:"#b91c1c"};
+function skTip(st){if(!st)return "";var n=st.rev-st.cost,ro=st.cost?st.rev/st.cost:0;
+  return "<b>"+esc(st.label)+"</b>"+(st.dl?"<span>"+esc(st.dl)+"</span>":"")+"<span>Revenue "+usd(st.rev)+" per month</span><span>Cost "+usd(st.cost)+" per month</span><span>Net "+(n>=0?"":"−")+usd(Math.abs(n))+"</span><span>ROI "+(ro?ro.toFixed(1)+"×":"–")+"</span><span>Click to select</span>";}
 function skDraw(){var box=document.getElementById("roi-sk");if(!box||!SKD)return;
-  var d=SKD,W=box.clientWidth||1000,k=1000/W,H=320,NW=12*k,GAP=6*k,MINH=2*k,LBL=14*k,FS=11*k;SKW=W;
-  var lw=Math.min(220,W*0.27)*k,xL=lw+6*k,xR=1000-lw-6*k-NW,xM=(xL+NW+xR)/2-NW/2;
-  var T=Math.max(d.P,d.L)||1,left=[],right=[];
-  d.rows.forEach(function(r,i){left.push({k:"c"+i,r:r,v:r.p,c:r.c,lab:r.label,tip:r.tip,al:r.label+": profit "+usd(r.p)+" per month"});});
-  if(d.L>d.P)left.push({v:d.L-d.P,c:"#ef4444",lab:"Deficit",tip:"<b>Deficit</b><span>"+usd(d.L-d.P)+" per month</span><span>Losses − Profits</span>"});
-  d.rows.forEach(function(r,i){right.push({k:"c"+i,r:r,v:r.l,c:r.c,lab:r.label,tip:r.tip,al:r.label+": direct loss "+usd(r.l)+" per month"});});
-  right.push({v:d.S,c:"url(#sk-hatch)",lab:"Shared platform",tip:"<b>Shared platform</b><span>"+usd(d.S)+" per month</span><span>People, Services, Infrastructure. Not split.</span>"});
-  if(d.P>d.L)right.push({v:d.P-d.L,c:"#22c55e",lab:"Net",tip:"<b>Net</b><span>"+usd(d.P-d.L)+" per month</span><span>Profits − Losses</span>"});
-  var n=Math.max(left.length,right.length),s=Math.max(0,H-(n-1)*GAP)/T;
-  var place=function(col){var hs=col.map(function(x){x.vh=x.v*s;x.h=Math.max(x.vh,MINH);return x.h;}),ch=hs.reduce(function(a,b){return a+b;},0)+(col.length-1)*GAP,y=(H-ch)/2;
-    col.forEach(function(x){x.y=y;y+=x.h+GAP;});};
-  place(left);place(right);
-  var mh=T*s,my=(H-mh)/2,f=function(n){return n.toFixed(2);};
+  var d=SKD,W=Math.max(box.clientWidth||980,980),H=600,NW=12,GAP=6,MINH=2,LH=30,RM=180;SKW=box.clientWidth;
+  var N={},cols=[[],[],[],[],[]],L=[],f=function(n){return n.toFixed(2);};
+  var add=function(o){o.out=[];o.inn=[];N[o.id]=o;cols[o.c].push(o);return o;};
+  var lnk=function(a,b,v,fill,k,keys,tip,parts){if(!(v>0.0001))return;var l={s:N[a],t:N[b],v:v,fill:fill,k:k,keys:keys||k||"",tip:tip,parts:parts};L.push(l);l.s.out.push(l);l.t.inn.push(l);};
+  var T=Math.max(d.P,d.L),GPv=T-d.D;
+  d.prods.forEach(function(p){add({id:"P"+p.id,c:0,v:p.rev,fill:p.c,lab:p.label,val:p.rev,k:"p:"+p.id,tip:skTip(d.st["p:"+p.id])});});
+  d.depts.forEach(function(x){add({id:"D"+x.id,c:1,v:x.rev,fill:x.c,lab:x.label,val:x.rev,k:"d:"+x.id,tip:skTip(d.st["d:"+x.id])});});
+  if(d.L>d.P)add({id:"DEF",c:1,v:d.L-d.P,fill:SKC.def,lab:"Deficit",val:d.L-d.P,tip:"<b>Deficit</b><span>"+usd(d.L-d.P)+" per month</span><span>Costs − Revenue</span>"});
+  add({id:"REV",c:2,v:T,fill:SKC.rev,lab:"Revenue",val:d.P,big:1,m:1,tip:"<b>Revenue</b><span>"+usd(d.P)+" per month</span><span>Costs "+usd(d.L)+" per month</span>"});
+  add({id:"GP",c:3,v:GPv,fill:SKC.gp,lab:"Gross profit",val:d.P-d.D,tip:"<b>Gross profit</b><span>"+usd(d.P-d.D)+" per month</span><span>Revenue − direct costs</span>"});
+  d.depts.forEach(function(x){add({id:"C"+x.id,c:3,v:x.cost,fill:SKC.dc,lab:x.label+" cost",val:x.cost,k:"d:"+x.id,tip:skTip(d.st["d:"+x.id])});});
+  if(d.P>d.L)add({id:"NET",c:4,v:d.P-d.L,fill:SKC.net,lab:"Net profit",val:d.P-d.L,tip:"<b>Net profit</b><span>"+usd(d.P-d.L)+" per month</span><span>Gross profit − Shared platform</span>"});
+  add({id:"SH",c:4,v:d.S,fill:"url(#sk-hatch)",lab:"Shared platform",val:d.S,tip:"<b>Shared platform</b><span>"+usd(d.S)+" per month</span><span>People, Services, Infrastructure. Not split.</span>"});
+  d.prods.forEach(function(p){add({id:"Q"+p.id,c:4,v:p.cost,fill:SKC.pc,lab:p.label+" cost",val:p.cost,k:"p:"+p.id,tip:skTip(d.st["p:"+p.id])});});
+  var pc={};d.prods.forEach(function(p){pc[p.id]=p.c;});
+  d.depts.forEach(function(x){x.prods.forEach(function(e){lnk("P"+e.p,"D"+x.id,e.rev,pc[e.p],"p:"+e.p,"p:"+e.p+" d:"+x.id,"<b>"+esc(e.label)+" → "+esc(x.label)+"</b><span>"+e.share+"% · revenue "+usd(e.rev)+" per month</span>");});});
+  d.depts.forEach(function(x){lnk("D"+x.id,"REV",x.rev,x.c,"d:"+x.id,"d:"+x.id,skTip(d.st["d:"+x.id]),x.prods.map(function(e){return {v:e.rev,fill:pc[e.p],keys:"p:"+e.p};}));});
+  if(d.L>d.P)lnk("DEF","REV",d.L-d.P,SKC.def,null,"","<b>Deficit</b><span>"+usd(d.L-d.P)+" per month</span>");
+  lnk("REV","GP",GPv,SKC.gp,null,"","<b>Gross profit</b><span>"+usd(d.P-d.D)+" per month</span>");
+  d.depts.forEach(function(x){lnk("REV","C"+x.id,x.cost,SKC.cf,"d:"+x.id,"d:"+x.id,skTip(d.st["d:"+x.id]),x.prods.map(function(e){return {v:e.cost,fill:SKC.pc,keys:"p:"+e.p};}));});
+  if(d.P>d.L)lnk("GP","NET",d.P-d.L,SKC.net,null,"","<b>Net profit</b><span>"+usd(d.P-d.L)+" per month</span>");
+  lnk("GP","SH",Math.min(d.S,GPv),"url(#sk-hatch)",null,"","<b>Shared platform</b><span>"+usd(d.S)+" per month</span>");
+  d.depts.forEach(function(x){x.prods.forEach(function(e){lnk("C"+x.id,"Q"+e.p,e.cost,SKC.pc,"p:"+e.p,"p:"+e.p+" d:"+x.id,"<b>"+esc(x.label)+" → "+esc(e.label)+" cost</b><span>"+e.share+"% · cost "+usd(e.cost)+" per month</span>");});});
+  /* scale: the column with the least free space sets the scale */
+  /* each node takes a slot of at least LH px, so its 2-line label stays next to it. Find the largest scale that fits all columns. */
+  var fits=function(k){return cols.every(function(c){return c.reduce(function(a,o){return a+Math.max(o.v*k,MINH,LH);},0)+(c.length-1)*GAP<=H;});};
+  var s=Infinity;cols.forEach(function(c){var t=c.reduce(function(a,o){return a+o.v;},0);if(t>0)s=Math.min(s,(H-(c.length-1)*GAP)/t);});if(!isFinite(s))s=0;
+  for(var it=0;it<40&&s>0&&!fits(s);it++)s*=0.97;
+  var sp=(W-RM-8-NW)/4;
+  cols.forEach(function(c,ci){var hs=0;c.forEach(function(o){o.vh=o.v*s;o.h=Math.max(o.vh,MINH);o.sl=Math.max(o.h,LH);o.x=8+ci*sp;hs+=o.sl;});var y=(H-hs-(c.length-1)*GAP)/2;c.forEach(function(o){o.y=y+(o.sl-o.h)/2;y+=o.sl+GAP;});});
+  Object.keys(N).forEach(function(id){var o=N[id];
+    o.out.sort(function(a,b){return a.t.y-b.t.y;});var y=o.y+(o.h-o.out.reduce(function(a,l){return a+l.v*s;},0))/2;o.out.forEach(function(l){l.sy=y;y+=l.v*s;});
+    o.inn.sort(function(a,b){return a.s.y-b.s.y;});y=o.y+(o.h-o.inn.reduce(function(a,l){return a+l.v*s;},0))/2;o.inn.forEach(function(l){l.ty=y;y+=l.v*s;});});
   var band=function(x1,a,x2,b,h){var xm=(x1+x2)/2;return "M"+f(x1)+" "+f(a)+"C"+f(xm)+" "+f(a)+" "+f(xm)+" "+f(b)+" "+f(x2)+" "+f(b)+"L"+f(x2)+" "+f(b+h)+"C"+f(xm)+" "+f(b+h)+" "+f(xm)+" "+f(a+h)+" "+f(x1)+" "+f(a+h)+"Z";};
-  var flows="",nodes="",labs="",mi=my,mo=my;
-  var lab=function(x,a,t,v,anc,cls){return '<text x="'+f(x)+'" y="'+f(a)+'" dominant-baseline="central" text-anchor="'+anc+'" font-size="'+f(FS)+'" fill="var(--ink)" data-max="'+f(lw-6*k)+'"'+(cls?' class="'+cls+'"':'')+'>'+esc(t)+'<tspan class="sk-v"> · '+usd(v)+'</tspan></text>';};
-  var node=function(x,o,side){var at=o.k!=null?' data-k="'+o.k+'" tabindex="0" role="button" data-go="'+o.r.go+'" aria-label="'+esc(o.al)+'"':' aria-label="'+esc(o.lab+": "+usd(o.v))+'"';
-    return '<rect class="sk-n sk-'+side+'" x="'+f(x)+'" y="'+f(o.y)+'" width="'+f(NW)+'" height="'+f(o.h)+'" rx="'+f(Math.min(2*k,o.h/2))+'" fill="'+o.c+'" data-h="'+o.vh+'" data-tip="'+esc(o.tip)+'"'+at+'/>';};
-  left.forEach(function(o){var a=o.y+(o.h-o.vh)/2;
-    flows+='<path class="sk-f" d="'+band(xL+NW,a,xM,mi,o.vh)+'" fill="'+o.c+'" fill-opacity=".45" data-tip="'+esc(o.tip)+'"'+(o.k!=null?' data-k="'+o.k+'"':'')+'/>';mi+=o.vh;
-    nodes+=node(xL,o,"l");if(o.h>=LBL)labs+=lab(xL-6*k,o.y+o.h/2,o.lab,o.v,"end");});
-  right.forEach(function(o){var a=o.y+(o.h-o.vh)/2;
-    flows+='<path class="sk-f" d="'+band(xM+NW,mo,xR,a,o.vh)+'" fill="'+o.c+'" fill-opacity=".45" data-tip="'+esc(o.tip)+'"'+(o.k!=null?' data-k="'+o.k+'"':'')+'/>';mo+=o.vh;
-    nodes+=node(xR,o,"r");if(o.h>=LBL)labs+=lab(xR+NW+6*k,o.y+o.h/2,o.lab,o.v,"start");});
-  nodes+='<rect class="sk-n sk-m" x="'+f(xM)+'" y="'+f(my)+'" width="'+f(NW)+'" height="'+f(mh)+'" rx="'+f(2*k)+'" fill="#15803d" data-h="'+mh+'" aria-label="Profits: '+usd(d.P)+'" data-tip="'+esc("<b>Profits</b><span>"+usd(d.P)+" per month</span><span>Losses "+usd(d.L)+" per month</span>")+'"/>';
-  labs+=lab(xM+NW+6*k,my+mh/2,"Profits",d.P,"start","sk-ml").replace('<text ','<text stroke-width="'+f(3*k)+'" ');
-  box.innerHTML='<svg class="sk" viewBox="0 0 1000 320" width="100%" role="group" aria-label="ROI flow: profits by '+(d.mode==="dept"?"department":"product")+' to losses">'+
-    '<defs><pattern id="sk-hatch" width="'+f(6*k)+'" height="'+f(6*k)+'" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="'+f(6*k)+'" height="'+f(6*k)+'" fill="#475569"/><rect width="'+f(2*k)+'" height="'+f(6*k)+'" fill="#1e293b"/></pattern></defs>'+
-    '<g>'+flows+'</g><g>'+nodes+'</g><g>'+labs+'</g></svg>';
-  /* shorten a label that is wider than its column */
-  box.querySelectorAll("text[data-max]").forEach(function(t){var mx=+t.dataset.max,tn=t.firstChild,v=tn.nodeValue;if(t.classList.contains("sk-ml"))return;
-    try{while(t.getComputedTextLength()>mx&&v.length>1){v=v.slice(0,-1);tn.nodeValue=v.replace(/\s+$/,"")+"…";}}catch(e){}});
+  var fl="",sub="",nd="",lb="";
+  L.forEach(function(l){var x1=l.s.x+NW,x2=l.t.x;
+    fl+='<path class="sk-f" d="'+band(x1,l.sy,x2,l.ty,l.v*s)+'" fill="'+l.fill+'" fill-opacity=".4"'+(l.k?' data-k="'+l.k+'"':'')+(l.keys?' data-keys="'+l.keys+'"':'')+' data-tip="'+esc(l.tip||"")+'"/>';
+    if(l.parts){var o=0;l.parts.forEach(function(q){if(q.v>0){sub+='<path class="sk-sub" d="'+band(x1,l.sy+o,x2,l.ty+o,q.v*s)+'" fill="'+q.fill+'" fill-opacity=".8" data-keys="'+q.keys+'"/>';o+=q.v*s;}});}});
+  cols.forEach(function(c,ci){var ls=c.map(function(o){
+      var at=o.k?' data-k="'+o.k+'" data-keys="'+o.k+'" tabindex="0" role="button" aria-label="'+esc(o.lab+": "+usd(o.val))+'"':' aria-label="'+esc(o.lab+": "+usd(o.val))+'"';
+      nd+='<rect class="sk-n'+(o.m?" sk-m":o.k?"":" sk-x")+'" x="'+f(o.x)+'" y="'+f(o.y)+'" width="'+NW+'" height="'+f(o.h)+'" rx="2" fill="'+o.fill+'"'+(o.m?' stroke="#64748b" stroke-width="1"':'')+' data-h="'+o.vh+'" data-col="'+ci+'" data-tip="'+esc(o.tip||"")+'"'+at+'/>';
+      return {o:o,y:o.y+o.h/2};});
+    /* labels sit over the outgoing flow, right of the node. Push labels apart so 2 lines never overlap. */
+    for(var i=0;i<ls.length;i++){ls[i].y=Math.max(ls[i].y,LH/2,i?ls[i-1].y+LH:0);}
+    for(i=ls.length-1;i>=0;i--){ls[i].y=Math.min(ls[i].y,H-LH/2,i<ls.length-1?ls[i+1].y-LH:H);}
+    var mx=ci<4?sp-NW-18:RM-14;
+    ls.forEach(function(q){var o=q.o,x=o.x+NW+6;
+      lb+='<text class="sk-l'+(o.big?" sk-big":"")+'"'+(o.k?' data-keys="'+o.k+'"':'')+' data-max="'+f(mx)+'"><tspan class="sk-tn" x="'+f(x)+'" y="'+f(q.y-3)+'">'+esc(o.lab)+'</tspan><tspan class="sk-tv" x="'+f(x)+'" y="'+f(q.y+11)+'">'+(o.val<0?"−":"")+usd(Math.abs(o.val))+'</tspan></text>';});});
+  box.innerHTML='<svg class="sk" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="group" aria-label="ROI flow: products to departments to Revenue to costs and Net profit">'+
+    '<defs><pattern id="sk-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#475569"/><rect width="2" height="6" fill="#1e293b"/></pattern></defs>'+
+    '<g>'+fl+'</g><g>'+sub+'</g><g>'+nd+'</g><g>'+lb+'</g></svg>';
+  /* shorten a name that is wider than its column */
+  box.querySelectorAll("text[data-max] .sk-tn").forEach(function(t){var mx=+t.parentNode.dataset.max,v=t.textContent;
+    try{while(t.getComputedTextLength()>mx&&v.length>1){v=v.slice(0,-1);t.textContent=v.replace(/\s+$/,"")+"…";}}catch(e){}});
 }
-var SKZ=0;window.addEventListener("resize",function(){clearTimeout(SKZ);SKZ=setTimeout(function(){var b=document.getElementById("roi-sk");if(b&&b.clientWidth!==SKW)skDraw();},120);});
+/* highlight: hover wins over the selection */
+function skApply(){var sv=document.querySelector("#roi svg.sk");if(!sv)return;var k=SKHOV||SKSEL;
+  sv.querySelectorAll(".on,.sel").forEach(function(x){x.classList.remove("on");x.classList.remove("sel");});
+  sv.classList.toggle("sk-hl",!!k);if(k)sv.querySelectorAll('[data-keys~="'+k+'"]').forEach(function(x){x.classList.add("on");});
+  if(SKSEL)sv.querySelectorAll('.sk-n[data-k="'+SKSEL+'"]').forEach(function(x){x.classList.add("sel");});}
+/* tiles and Net in the header: the selected product or department, else all system */
+function skStats(){if(!SKD)return;if(SKSEL&&!SKD.st[SKSEL])SKSEL=null;var st=SKSEL?SKD.st[SKSEL]:{label:"All system",rev:SKD.P,cost:SKD.L};
+  var N=st.rev-st.cost,R=st.cost?st.rev/st.cost:0,set=function(id,t,c){var e=document.getElementById(id);if(!e)return;e.textContent=t;if(c!=null)e.className=c;};
+  set("roi-p",usd(st.rev));set("roi-l",usd(st.cost));
+  set("roi-n",(N>=0?"":"−")+usd(Math.abs(N)),N>=0?"roi-pos":"roi-neg");set("roi-mo",(N>=0?"":"−")+usd(Math.abs(N)),N>=0?"roi-pos":"roi-neg");set("roi-r",R.toFixed(2)+"×",R>=1?"roi-pos":"roi-neg");
+  set("roi-ps",SKSEL?"revenue of "+st.label+" per month":"cost savings per month");set("roi-ls",SKSEL?"direct cost, no Shared platform":"= Total cost per month");
+  var sc=document.getElementById("roi-sc");if(sc)sc.innerHTML=SKSEL?'<span>Scope:</span><b>'+esc(st.label)+'</b><span>'+st.kind+'</span><button type="button" data-go="'+st.go+'">Open in P ↗</button><button type="button" id="roi-clr" aria-label="Show all system">Clear ×</button>'
+    :'<span>Scope:</span><b>All system</b><span class="roi-dl">Hover a product or a department. Click to see its ROI.</span>';}
+var SKZ=0;window.addEventListener("resize",function(){clearTimeout(SKZ);SKZ=setTimeout(function(){var b=document.getElementById("roi-sk");if(b&&b.clientWidth!==SKW){skDraw();skApply();}},120);});
 function seg(c,v,tot,label,tip,go,cls){var w=(tot?v/tot*100:0).toFixed(2);
   return '<i tabindex="0" class="'+(cls||"")+'" style="--c:'+c+';flex:0 0 calc('+w+'% - 2px)" data-tip="'+esc(tip)+'"'+(go?' data-go="'+go+'"':'')+' aria-label="'+esc(label+": "+usd(v))+'">'+esc(label)+'</i>';}
 /* hide a bar label when it does not fit its part */
@@ -7232,27 +7350,15 @@ function roiRender(m,PM){
     :PM.projs.map(function(p,j){return {go:prim(p)+":"+p.id,id:p.id,label:p.n,dl:dl(p),c:PCOL[j%PCOL.length],p:p.v,l:D$*p.ret/U,sh:p.ret/U,kids:Object.keys(p.sh).map(function(k){var d=DEPTS.filter(function(z){return z.id===k;})[0],f=p.sh[k]/100;return {go:k+":"+p.id,label:d.label,share:p.sh[k],shared:Object.keys(p.sh).length>1,p:p.v*f,l:D$*p.ret/U*f,sh:p.ret/U*f};})};});
   var Ls=rows.reduce(function(a,r){return a+r.l;},0)+S$;
   window.ROI_CHECK={profits:P$,losses:L$,lossCategorySum:Lsum,match:Math.abs(Lsum-L$)<0.5,mode:RMODE,splitSum:Ls,splitMatch:Math.abs(Ls-L$)<0.5};
-  var tipC=function(r){var n=r.p-r.l,ro=r.l?r.p/r.l:0;return "<b>"+esc(r.label)+"</b>"+(r.dl?"<span>"+esc(r.dl)+"</span>":"")+"<span>Profit "+usd(r.p)+" per month</span><span>Direct loss "+usd(r.l)+" per month</span><span>Net "+(n>=0?"":"−")+usd(Math.abs(n))+" per month</span><span>ROI "+(ro?ro.toFixed(1)+"×":"–")+"</span><span>Open in P</span>";};
-  {
-    SKD={mode:RMODE,P:P$,L:L$,S:S$,rows:rows.map(function(r){return {label:r.label,c:r.c,p:r.p,l:r.l,go:r.go,tip:tipC(r)};})};skDraw();
-    /* audit: nested rows. Level 1 department or product. Level 2 products of the department, or departments of the product, with share. Level 3 direct loss by category. */
-    var amx=Math.max.apply(null,rows.map(function(r){return Math.max(r.p,r.l);}))||1;
-    var twin=function(r){return '<span class="ra-tw" aria-hidden="true"><s class="ra-p" style="width:'+(r.p/amx*100).toFixed(1)+'%"></s><s class="ra-l" style="width:'+(r.l/amx*100).toFixed(1)+'%"></s></span>';};
-    var nums=function(r){var n=r.p-r.l,ro=r.l?r.p/r.l:0;return '<span class="ra-n"><b class="roi-pos">'+usd(r.p)+'</b><b>'+usd(r.l)+'</b><b class="'+(n>=0?"roi-pos":"roi-neg")+'">'+(n>=0?"":"−")+usd(Math.abs(n))+'</b><b>'+(ro?ro.toFixed(1)+"×":"–")+'</b></span>';};
-    var cats=function(r){return '<div class="ra-cats"><span class="roi-dl">'+esc(r.label)+' direct loss:</span>'+DIRECT.map(function(k){var c=CATS.filter(function(z){return z[0]===k;})[0],v=(cv[k]||0)*r.sh;return '<span><i style="background:var(--c-'+k+')"></i>'+esc(c[1])+'<b>'+usd(v)+'</b></span>';}).join("")+'</div>';};
-    var akey="ra:"+RMODE,ao=(function(){try{return JSON.parse(lsGet("roi-aud")||"{}");}catch(e){return {};}})();
-    var row=function(r,lvl,k){var kk=k+":"+(r.id||r.go);
-      return '<details class="ra ra'+lvl+'" data-ak="'+kk+'"'+(ao[kk]?" open":"")+'><summary><i class="pn-chev">'+CHR+'</i>'+(r.c?'<i class="pl-sw" style="background:'+r.c+'"></i>':'')+'<span class="ra-nm">'+esc(r.label)+(r.shared?' <small class="pq-sh">'+r.share+'%</small>':'')+(r.dl?' <small class="roi-dl">'+esc(r.dl)+'</small>':'')+'</span>'+twin(r)+nums(r)+
-        '<button type="button" class="ra-go" data-go="'+r.go+'" title="Open in P" aria-label="Open '+esc(r.label)+' in P">↗</button></summary>'+
-        '<div class="ra-b">'+(r.kids?r.kids.map(function(c){return row(c,lvl+1,kk);}).join(""):"")+cats(r)+'</div></details>';};
-    document.getElementById("roi-aud").innerHTML='<details class="ra-wrap" data-ak="'+akey+'"'+(ao[akey]===false?"":" open")+'><summary><i class="pn-chev">'+CHR+'</i><b>Audit</b><span class="roi-dl">'+rows.length+(RMODE==="dept"?" departments":" products")+' · open a row for '+(RMODE==="dept"?"its products":"its departments")+' and the loss by category</span>'+
-      '<span class="ra-n ra-h"><b>Profit</b><b>Loss</b><b>Net</b><b>ROI</b></span></summary>'+rows.map(function(r){return row(r,1,akey);}).join("")+
-      '<div class="ra-sh"><i class="pl-sw roi-shl"></i><span class="ra-nm">Shared platform <small class="roi-dl">People, Services, Infrastructure. Not split.</small></span><span class="ra-n"><b>–</b><b>'+usd(S$)+'</b><b class="roi-neg">−'+usd(S$)+'</b><b>–</b></span></div></details>';
-  }
-  fitLabels(root);
-  var N=P$-L$,R=L$?P$/L$:0,set=function(id,t,c){var e=document.getElementById(id);e.textContent=t;if(c!=null)e.className=c;};
-  set("roi-p",usd(P$));set("roi-l",usd(L$));
-  set("roi-n",usd(N),N>=0?"roi-pos":"roi-neg");set("roi-mo",usd(N),N>=0?"roi-pos":"roi-neg");set("roi-r",R.toFixed(2)+"×",R>=1?"roi-pos":"roi-neg");
+  /* Sankey data: products and departments with revenue and direct cost. Shared products split by department share. */
+  var pcol={};PM.projs.forEach(function(p,j){pcol[p.id]=PCOL[j%PCOL.length];});
+  var di={};DEPTS.forEach(function(x,j){di[x.id]=j;});
+  var st={},prods=PM.projs.map(function(p){var pr=prim(p);st["p:"+p.id]={label:p.n,kind:"product",dl:dl(p),rev:p.v,cost:D$*p.ret/U,go:pr+":"+p.id};return {id:p.id,label:p.n,c:pcol[p.id],rev:p.v,cost:D$*p.ret/U,o:di[pr]};});
+  prods.sort(function(a,b){return a.o-b.o;});
+  var depts=PM.depts.map(function(x){st["d:"+x.d.id]={label:x.d.label,kind:"department",rev:x.v,cost:D$*x.ret/U,go:x.d.id};
+    return {id:x.d.id,label:x.d.label,c:x.d.c,rev:x.v,cost:D$*x.ret/U,prods:x.projects.map(function(e){return {p:e.id,label:e.n,share:e.share,rev:e.v,cost:D$*e.ret/U};})};});
+  SKD={P:P$,L:L$,S:S$,D:D$,prods:prods,depts:depts,st:st};
+  skDraw();skApply();skStats();
 }
 /* ---------- P section (version 4): time, absolute values with change, inputs, shared projects ----------
    P bar: Period (Month, Quarter) and the period strip (calendar), Value toggle, Expand all, Collapse all.
@@ -7368,19 +7474,15 @@ function leaf(pk,e,PM,lab){var pr=e.proj,S=PM.sel,m=S.per.months,shr=e.shared?'<
   return '<div class="pn-aar pq-one"><div class="pn-st"><span>AI champions</span><b>'+num(pr.ch)+'</b><small>end of period, whole project</small>'+dlt(pr.ch,pr.prev?pr.prev.ch:null,"num",lab)+'</div></div>';
 }
 /* ---------- People section: below the P&L book. Things that are hard to measure but important ----------
-   PE1 Stakeholder map with 2 views (power and interest, usage and will). PE2 Org matrix: 3 lines (peer reporting, direct reporting, non-reporting) × 3 levels (more senior, peers, less senior), with 1 profile per stakeholder.
-   Data: onboarding deck (stakeholders, readiness, community). Team health scores are examples. */
+   PE1 Stakeholder map with 2 plans: Engagement plan (power × interest: who to engage and how often), Rollout plan (usage × will: where to start AI pilots).
+   Each quadrant gives 1 action and the people in it. A click on a person opens the profile.
+   Data: onboarding deck (stakeholders, readiness, community). */
 var TPILL={rev:["p-ok","Revenue"],cost:["p-info","Cost"],both:["p-warn","Both"]};
-var HITEMS=[["Trust in AI output",1],["Morale",1],["Psychological safety",1],["Job-loss anxiety",-1],["AI literacy",1]];
-var HEALTH={csm:[3.4,3.8,3.6,3.9,2.8],mkt:[3.6,4.0,3.7,3.2,3.1],sales:[3.2,3.6,3.4,2.9,2.7],prod:[3.9,4.1,4.0,2.6,3.6],eng:[3.7,3.9,4.2,2.4,4.1],risk:[2.9,3.5,3.3,3.0,2.9]};
-var IC2={heart:'<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
-  msg:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',gauge:'<path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>',badge:'<path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/>'};
 function grid2(id,qs,ax,pts,hk){
   return '<div class="pl-mx" role="img" aria-label="'+esc(ax[0]+" and "+ax[1]+" grid")+'">'+
     '<span class="pl-q q1">'+qs[0]+'</span><span class="pl-q q2">'+qs[1]+'</span><span class="pl-q q3">'+qs[2]+'</span><span class="pl-q q4">'+qs[3]+'</span>'+
     '<span class="pl-ax pl-ay">'+ax[0]+' ▲</span><span class="pl-ax pl-axx">'+ax[1]+' ▶</span>'+
     pts.map(function(s){var c=hk?(s.k===hk?" pl-sel":" pl-dim"):"";return '<span class="pl-dot'+c+'" style="left:'+s.x+'%;top:'+(100-s.y)+'%" data-tip="<b>'+esc(s.n)+'</b><span>'+esc(ax[1]+" "+s.x+", "+ax[0].toLowerCase()+" "+s.y)+'</span>" tabindex="0"><i></i><em>'+esc(s.n)+'</em></span>';}).join("")+'</div>';}
-function hcol(v,dir){var g=dir>0?v:6-v;return g>=3.8?"#22c55e":g>=3.2?"#f5b83d":"#f87171";}
 /* People: 1 profile per stakeholder. line: peer (peer reporting line: CTO → HoE → Senior SWE), direct (direct reporting line: CTO → HoE AI → Senior AI Product Engineer), non (non-reporting line).
    lvl: more (more senior), peer (peers), less (less senior). p = [interest 0-100, power 0-100], r = [usage 0-100, will 0-100]. deck = from the onboarding deck, else a hypothesis. dept = team health key. */
 var PEOPLE=[
@@ -7406,8 +7508,54 @@ var LINES=[["peer","Peer reporting line","CTO → HoE → Senior SWE"],["direct"
 var LVLS=[["more","More senior"],["peer","Peers"],["less","Less senior"]];
 var LCOL={peer:"rgba(59,130,246,.07)",direct:"rgba(248,113,113,.08)",non:"rgba(234,179,8,.07)"};
 var PLAST=null,LENS=lsGet("ppl-lens")==="ready"?"ready":"power";
-function havg(id){var h=HEALTH[id];return h.reduce(function(s,v,i){return s+(HITEMS[i][1]>0?v:6-v);},0)/h.length;}
-function chip(x){var d=x.dept?havg(x.dept):null;return '<button type="button" class="om-chip'+(x.deck?'':' om-new')+'" data-row="'+x.k+'" title="Open the profile"><b>'+esc(x.n)+'</b>'+(d!=null?'<i class="pn-hdot" style="background:'+hcol(d,1)+'"></i>':'')+'</button>';}
+/* stakeholder map plans. pos: quadrant (tl top left, tr top right, bl bottom left, br bottom right). The first quadrant is the first action. */
+var SIC={target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  crown:'<path d="M11.56 3.27a.5.5 0 0 1 .88 0l2.95 5.6a1 1 0 0 0 1.52.3l4.27-3.67a.5.5 0 0 1 .8.52l-2.83 10.25a1 1 0 0 1-.96.73H5.81a1 1 0 0 1-.96-.73L2.02 6.02a.5.5 0 0 1 .8-.52l4.27 3.67a1 1 0 0 0 1.52-.3z"/><path d="M5 21h14"/>',
+  msg:'<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',eye:'<path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/>',
+  rocket:'<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>',
+  star:'<path d="M11.53 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.17.76a.53.53 0 0 1 .29.9l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0L6.4 21.01a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.79a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/>',
+  shield:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+  hour:'<path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.17a2 2 0 0 0-.59-1.41L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22"/><path d="M7 2v4.17a2 2 0 0 0 .59 1.41L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2"/>',
+  help:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  arrowR:'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',arrowD:'<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
+  landmark:'<path d="M10 18v-7"/><path d="M11.12 2.2a2 2 0 0 1 1.76 0l7.87 3.85c.47.23.31.95-.22.95H3.47c-.53 0-.7-.72-.22-.95z"/><path d="M14 18v-7"/><path d="M18 18v-7"/><path d="M3 22h18"/><path d="M6 18v-7"/>',
+  hand:'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
+  bot:'<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>',
+  chart:'<path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m19 9-5 5-4-4-3 3"/>',
+  gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/>',
+  up:'<path d="m18 15-6-6-6 6"/>',eq:'<path d="M5 9h14"/><path d="M5 15h14"/>',down:'<path d="m6 9 6 6 6-6"/>'};
+var SQ={
+  power:{tag:"Engagement plan",ic:"target",q:"Who do I engage, and how often?",how:"Power to block or fund AI × interest in AI. High power and high interest get the most of your time.",ax:["Power","Interest in AI"],v:function(x){return {x:x.p[0],y:x.p[1]};},
+    quads:[{pos:"tr",t:"Manage closely",c:"#f97316",ic:"target",a:"Weekly 1:1. Co-own the decisions."},
+      {pos:"tl",t:"Keep satisfied",c:"#eab308",ic:"crown",a:"Monthly update. No surprises on cost or risk."},
+      {pos:"br",t:"Keep informed",c:"#3b82f6",ic:"msg",a:"Update every 2 weeks. Recruit as allies."},
+      {pos:"bl",t:"Monitor",c:"#64748b",ic:"eye",a:"Quarterly note. Watch for changes."}]},
+  ready:{tag:"Rollout plan",ic:"rocket",q:"Where do I start AI pilots?",how:"AI usage today × will to use AI. High will and low usage is the fastest win.",ax:["Will to use AI","Usage today"],v:function(x){return {x:x.r[0],y:x.r[1]};},
+    quads:[{pos:"tl",t:"Quick win",c:"#f97316",ic:"rocket",a:"Start pilots here. They want AI, but do not use it yet."},
+      {pos:"tr",t:"Champions",c:"#22c55e",ic:"star",a:"Co-build. Ask them to coach the others."},
+      {pos:"br",t:"Shadow users",c:"#eab308",ic:"shield",a:"Govern. Move their AI use to the platform."},
+      {pos:"bl",t:"Hard sell",c:"#64748b",ic:"hour",a:"Wait. Show results from the champions first."}]}};
+function sqPos(pt){return pt.y>=50?(pt.x>=50?"tr":"tl"):(pt.x>=50?"br":"bl");}
+function sqQuad(view,x){var V=SQ[view],ps=sqPos(V.v(x));return V.quads.filter(function(q){return q.pos===ps;})[0];}
+/* profile: decision first (how to win), then position, scores, politics, value chain, fear */
+function sqRing(v,lab,c){var r=22,L=2*Math.PI*r,d=(Math.max(0,Math.min(100,v))/100*L).toFixed(1);
+  return '<div class="sp-ring"><svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="'+r+'" fill="none" stroke="var(--line2)" stroke-width="6"/><circle cx="29" cy="29" r="'+r+'" fill="none" stroke="'+c+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+d+' '+L.toFixed(1)+'" transform="rotate(-90 29 29)"/></svg><b>'+v+'</b><span>'+lab+'</span></div>';}
+function sqProf(x){var lv={more:["up","More senior than you"],peer:["eq","Peer level"],less:["down","Less senior than you"]}[x.lvl],ln=LINES.filter(function(l){return l[0]===x.line;})[0];
+  var qe=sqQuad("power",x),qr=sqQuad("ready",x);
+  var step=function(ic,lab,t,cls){return '<div class="sp-st'+(cls?" "+cls:"")+'"><span class="sp-si">'+svg(SIC[ic],15)+'</span><small>'+lab+'</small><b>'+esc(t)+'</b></div>';};
+  return '<div class="sp">'+
+    '<div class="sp-win"><span class="sp-wi">'+svg(SIC.target,18)+'</span><div><small>How to win</small><b>'+esc(x.win)+'</b></div></div>'+
+    '<div class="sp-row">'+
+      '<div class="sp-box sp-pos"><small class="sp-h">Position</small><div class="sp-org"><span class="sp-node">'+esc(x.to)+'</span><i>'+svg(SIC.arrowD,14)+'</i><span class="sp-node sp-me">'+esc(x.n)+'</span></div>'+
+        '<div class="sp-tags"><span class="sp-tag">'+svg(SIC[lv[0]],13)+lv[1]+'</span><span class="sp-tag" style="background:'+LCOL[x.line]+'">'+esc(ln[1])+'</span></div></div>'+
+      '<div class="sp-box sp-sc"><small class="sp-h">Scores, 0 to 100</small><div class="sp-rings">'+
+        '<div class="sp-rg">'+sqRing(x.p[1],"Power",qe.c)+sqRing(x.p[0],"Interest",qe.c)+'<span class="sp-q" style="--q:'+qe.c+'">'+svg(SIC[qe.ic],13)+esc(qe.t)+'</span></div>'+
+        '<div class="sp-rg">'+sqRing(x.r[0],"Usage",qr.c)+sqRing(x.r[1],"Will",qr.c)+'<span class="sp-q" style="--q:'+qr.c+'">'+svg(SIC[qr.ic],13)+esc(qr.t)+'</span></div></div></div>'+
+    '</div>'+
+    '<div class="sp-pol"><span class="sp-pi">'+svg(SIC.landmark,16)+'</span><div><small>Politics</small><b>'+esc(x.pol)+'</b></div></div>'+
+    '<div class="sp-chain">'+step("hand","They ask you",x.ask)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("bot","Use case",x.uc)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("chart","Their metric",x.m)+'<i class="sp-ar">'+svg(SIC.arrowR,14)+'</i>'+step("gift","They get",x.gets,"sp-get")+'</div>'+
+    '<div class="sp-fear"><span class="sp-pi">'+svg(SIC.shield,16)+'</span><div><small>Fear</small><b>'+esc(x.fear)+'</b></div></div>'+
+    '<div class="pl-src">'+(x.deck?'Source: onboarding deck, hypothesis. Confirm in the interview.':'Hypothesis, not in the deck. Fill after the interview.')+'</div></div>';}
 function pplRender(PM){
   var root=document.getElementById("ppl");if(!root)return;PLAST=PM;
   if(!root.__w){root.__w=1;root.addEventListener("toggle",function(e){var d=e.target;if(d.tagName==="DETAILS"&&d.dataset.k){OPEN[d.dataset.k]=d.open;saveOpen();}},true);
@@ -7416,46 +7564,35 @@ function pplRender(PM){
       var x=e.target.closest(".om-x");if(x){var dl=root.querySelector("#om-dlg");if(dl&&dl.open)dl.close();return;}
       var d=e.target.closest("[data-row]");if(d&&d.dataset.row)openProf(d.dataset.row,d);});
     root.addEventListener("keydown",function(e){var d=e.target.closest(".pl-dot[data-row]");if(d&&(e.key==="Enter"||e.key===" ")){e.preventDefault();d.click();}});}
-  if(OPEN.pe1==null){OPEN.pe1=true;}if(OPEN.pe2==null){OPEN.pe2=true;}
+  if(OPEN.pe1==null){OPEN.pe1=true;}
   var sec=function(k,n,ic,t,tg,meta,body){return '<details class="psec" data-k="'+k+'"'+op(k)+'><summary><span class="num">'+n+'</span><i>'+svg(ic,16)+'</i>'+t+(tg?tag(tg):"")+'<span class="pn-meta">'+meta+'</span><i class="chev">'+CHEV+'</i></summary><div class="body">'+body+'</div></details>';};
-  /* PE1 map with 2 views */
-  var ready=LENS==="ready",pts=PEOPLE.map(function(s){return {k:s.k,n:s.n,x:ready?s.r[0]:s.p[0],y:ready?s.r[1]:s.p[1]};});
-  var cnt=function(f){return PEOPLE.filter(function(s){return f(s.r[0],s.r[1]);}).length;},ch=cnt(function(x,y){return x>=50&&y>=50;}),qw=cnt(function(x,y){return x<50&&y>=50;});
-  var map=grid2("pe1",ready?["Latent demand: quick win","Champions: co-build","Hard sell: later","Shadow users: govern"]:["Keep satisfied","Manage closely","Monitor","Keep informed"],ready?["Will to use AI","Usage today"]:["Power","Interest in AI"],pts,null)
-    .replace(/<span class="pl-dot" style="([^"]*)" data-tip="([^"]*)" tabindex="0"><i><\/i><em>([^<]*)<\/em><\/span>/g,function(m0,st,tp,nm){var i=PEOPLE.findIndex(function(x){return esc(x.n)===nm;}),s=PEOPLE[i];return '<span class="pl-dot om-nd'+(s&&!s.deck?' om-dnew':'')+'" role="button" aria-label="'+nm+'" data-row="'+(s?s.k:"")+'" style="'+st+'" data-tip="'+tp+'" tabindex="0"><i>'+(i+1)+'</i></span>';});
-  map+='<div class="om-key">'+PEOPLE.map(function(x,i){return '<button type="button" class="om-kc'+(x.deck?'':' om-new')+'" data-row="'+x.k+'"><i>'+(i+1)+'</i>'+esc(x.n)+'</button>';}).join("")+'</div>';
-  var pe1=sec("pe1","PE1",IC.grid,"Stakeholder map",ready?"Readiness":"Mendelow",PEOPLE.length+" stakeholders · "+ch+(ch===1?" champion":" champions")+" · "+qw+(qw===1?" quick win":" quick wins"),
-    '<div class="pl-lens"><div class="seg" role="radiogroup" aria-label="Map view"><button type="button" class="opt" role="radio" data-lens="power" aria-checked="'+!ready+'">Power × interest</button><button type="button" class="opt" role="radio" data-lens="ready" aria-checked="'+ready+'">Usage × will</button></div>'+
-    '<span class="pl-src">'+(ready?"Usage today × will to use AI":"Mendelow power and interest grid")+' · deck values, hollow dots are hypotheses · click a dot to open the profile</span></div>'+map);
-  /* PE2 org matrix: 3 lines × 3 levels, then the profiles grouped by cell */
-  var cell=function(line,lvl){return PEOPLE.filter(function(x){return x.line===line&&x.lvl===lvl&&!(x.span&&line!=="direct");});};
-  var grid='<div class="om" role="table" aria-label="Org matrix: lines and levels"><div class="om-h"></div>'+LINES.map(function(l){return '<div class="om-h om-col" style="background:'+LCOL[l[0]]+'"><b>'+l[1]+'</b><small>'+esc(l[2])+'</small></div>';}).join("")+
-    LVLS.map(function(v){return '<div class="om-h om-row"><b>'+v[1]+'</b></div>'+
-      (v[0]==="more"?'<div class="om-c om-span" style="background:linear-gradient(90deg,'+LCOL.peer+','+LCOL.direct+')">'+PEOPLE.filter(function(x){return x.span;}).map(chip).join("")+'<small class="om-note">manager of both lines</small></div><div class="om-c" style="background:'+LCOL.non+'">'+cell("non","more").map(chip).join("")+'</div>'
-       :LINES.map(function(l){var ps=cell(l[0],v[0]);return '<div class="om-c" style="background:'+LCOL[l[0]]+'">'+(l[0]==="direct"&&v[0]==="peer"?'<span class="om-me">'+esc(ME.n)+'</span>':'')+ps.map(chip).join("")+'</div>';}).join(""));}).join("")+'</div>'+
-    '<div class="om-leg"><span><i class="pn-hdot" style="background:#22c55e"></i>team health 3.8 or more</span><span><i class="pn-hdot" style="background:#f5b83d"></i>3.2 to 3.7</span><span><i class="pn-hdot" style="background:#f87171"></i>below 3.2</span><span><i class="om-lnew"></i>hypothesis, not in the deck</span></div>';
-  var prof=function(x){var k="pe2:"+x.k,tp=TPILL[x.t],h=x.dept?HEALTH[x.dept]:null,a=x.dept?havg(x.dept):null,line=LINES.filter(function(l){return l[0]===x.line;})[0][1],lvl=LVLS.filter(function(l){return l[0]===x.lvl;})[0][1];
-    return '<details class="pn pn3 pn-pr" data-k="'+k+'"'+op(k)+'>'+sum(0,0,'<span class="pn-ic" style="background:'+(x.deck?'#1e3a8a':'#334155')+'">'+svg(IC.users,13)+'</span><span class="pn-nm">'+esc(x.n)+' <small class="pn-head">reports to '+esc(x.to)+'</small></span><span class="pn-u">Fears: '+esc(x.fear)+'</span><span class="pn-dots">'+(h?HITEMS.map(function(it,i){return '<i class="pn-hdot" style="background:'+hcol(h[i],it[1])+'" title="'+esc(it[0]+" "+h[i])+'"></i>';}).join(""):"")+'</span><span class="pill '+tp[0]+'">'+tp[1]+'</span><b class="pn-v" style="'+(a!=null?"color:"+hcol(a,1):"")+'">'+(a!=null?a.toFixed(1):"–")+'</b>')+
-      '<div class="pn-b"><div class="om-prof">'+
-        '<div class="om-pr"><span>Position</span><b>'+lvl+' · '+line+'</b><small>reports to '+esc(x.to)+'</small></div>'+
-        '<div class="om-pr"><span>Power and interest</span><b>Power '+x.p[1]+' · Interest '+x.p[0]+'</b><small>Usage '+x.r[0]+' · Will '+x.r[1]+'</small></div>'+
-        '<div class="om-pr om-wide"><span>Politics</span><b>'+esc(x.pol)+'</b></div>'+
-        '<div class="om-pr om-wide om-win"><span>How to win</span><b>'+esc(x.win)+'</b></div></div>'+
-        '<div class="pn-gfa"><div><span>Gets</span><b>'+esc(x.gets)+'</b></div><div class="pn-fear"><span>Fears</span><b>'+esc(x.fear)+'</b></div><div><span>Asks</span><b>'+esc(x.ask)+'</b></div><div><span>Top use case</span><b>'+esc(x.uc)+'</b></div><div><span>Their metric</span><b>'+esc(x.m)+'</b></div></div>'+
-        (h?'<div class="pn-hl">'+HITEMS.map(function(it,i){return '<div><span>'+it[0]+(it[1]<0?' <small>lower is better</small>':'')+'</span><em><s style="width:'+(h[i]/5*100)+'%;background:'+hcol(h[i],it[1])+'"></s></em><b>'+h[i].toFixed(1)+'</b></div>';}).join("")+'</div>':'')+
-        '<div class="pl-src">'+(x.deck?'Source: onboarding deck, hypothesis. Confirm in the interview.':'Hypothesis, not in the deck. Fill after the interview.')+(h?' Team health: quarterly pulse, example values.':'')+'</div></div></details>';};
-  PROF=prof;
-  var all=PM.depts.reduce(function(a,x){return a+havg(x.d.id);},0)/PM.depts.length;
-  var pe2=sec("pe2","PE2",IC.users,"Org matrix","Lines × levels",PEOPLE.length+" stakeholders · team health <b>"+all.toFixed(1)+"</b> of 5",
-    '<div class="pl-src">Columns: reporting lines. Rows: seniority compared with you. Click a name to open the profile.</div>'+grid);
-  root.querySelector("#ppl-body").innerHTML=pe1+pe2;
+  var V=SQ[LENS==="ready"?"ready":"power"],grp={};V.quads.forEach(function(q){grp[q.pos]=[];});
+  PEOPLE.forEach(function(x,i){var pt=V.v(x);grp[sqPos(pt)].push({x:x,i:i,pt:pt});});
+  var num1=function(o){return '<i>'+(o.i+1)+'</i>';};
+  var qc={};V.quads.forEach(function(q){qc[q.pos]=q;});
+  var map='<div class="pl-mx sd-mx" role="img" aria-label="'+esc(V.ax[0]+" and "+V.ax[1]+" grid")+'">'+
+    ["tl","tr","bl","br"].map(function(pos){var q=qc[pos];return '<span class="sd-q sd-'+pos+'" style="--q:'+q.c+'"><b>'+esc(q.t)+'</b><em>'+grp[pos].length+'</em></span>';}).join("")+
+    '<span class="pl-ax pl-ay">'+V.ax[0]+' ▲</span><span class="pl-ax pl-axx">'+V.ax[1]+' ▶</span>'+
+    PEOPLE.map(function(x,i){var pt=V.v(x),q=qc[sqPos(pt)];return '<span class="pl-dot om-nd sd-dot'+(x.deck?'':' om-dnew')+'" role="button" tabindex="0" aria-label="'+esc(x.n)+'" data-row="'+x.k+'" style="left:'+Math.max(4,Math.min(96,pt.x))+'%;top:'+(100-Math.max(6,Math.min(92,pt.y)))+'%;--q:'+q.c+'" data-tip="<b>'+esc(x.n)+'</b><span>'+esc(q.t)+'</span><span>'+esc(V.ax[1]+" "+pt.x+" · "+V.ax[0]+" "+pt.y)+'</span>"><i>'+(i+1)+'</i></span>';}).join("")+'</div>';
+  var cards='<div class="sd-cards">'+V.quads.map(function(q,qi){var g=grp[q.pos];
+    return '<div class="sd-c'+(qi===0?' sd-top1':'')+'" style="--q:'+q.c+'"><div class="sd-ch"><span class="sd-ic">'+svg(SIC[q.ic],15)+'</span><b>'+esc(q.t)+'</b>'+(qi===0?'<span class="sd-first">first</span>':'')+'<span class="sd-n">'+g.length+'</span></div>'+
+      '<div class="sd-a">'+svg(SIC.arrowR,13)+esc(q.a)+'</div>'+
+      '<div class="sd-ppl">'+(g.length?g.sort(function(a,b){return (b.pt.x+b.pt.y)-(a.pt.x+a.pt.y);}).map(function(o){return '<button type="button" class="om-kc'+(o.x.deck?'':' om-new')+'" data-row="'+o.x.k+'">'+num1(o)+esc(o.x.n)+'</button>';}).join(""):'<span class="sd-none">nobody</span>')+'</div></div>';}).join("")+'</div>';
+  var cnt=function(pos){return grp[pos].length;};
+  var meta=PEOPLE.length+" stakeholders · "+cnt(V.quads[0].pos)+" "+V.quads[0].t.toLowerCase()+" · "+cnt(V.quads[1].pos)+" "+V.quads[1].t.toLowerCase();
+  var pe1=sec("pe1","PE1",IC.grid,"Stakeholder map",V.tag,meta,
+    '<div class="pl-lens sd-lens"><div class="seg" role="radiogroup" aria-label="Plan">'+["power","ready"].map(function(k){var o=SQ[k],on=V===o;return '<button type="button" class="opt" role="radio" data-lens="'+k+'" aria-checked="'+on+'">'+svg(SIC[o.ic],14)+o.tag+'</button>';}).join("")+'</div></div>'+
+    '<div class="sd-qn"><span class="sd-qi">'+svg(SIC.help,16)+'</span><div><b>'+esc(V.q)+'</b><small>'+esc(V.how)+'</small></div></div>'+
+    '<div class="sd-grid">'+map+cards+'</div>'+
+    '<div class="pl-src">'+esc(V.ax[1]+" × "+V.ax[0])+', 0 to 100 · deck values, hollow dots are hypotheses · click a person to open the profile</div>');
+  PROF=sqProf;
+  root.querySelector("#ppl-body").innerHTML=pe1;
   if(!root.querySelector("#om-dlg"))root.insertAdjacentHTML("beforeend",'<dialog id="om-dlg" class="om-dlg" aria-labelledby="om-dlg-h"><div class="om-dlb"></div></dialog>');
 }
 /* profile popup: the same profile content, opened from a map dot, a key chip or a matrix chip */
 var PROF=null;
 function openProf(k,from){var x=PEOPLE.filter(function(p){return p.k===k;})[0],dl=document.getElementById("om-dlg");if(!x||!dl||!PROF)return;
-  var t=document.createElement("div");t.innerHTML=PROF(x);var det=t.firstChild,sm=det.querySelector("summary"),body=det.querySelector(".pn-b");
-  dl.querySelector(".om-dlb").innerHTML='<div class="om-dh"><h3 id="om-dlg-h">'+esc(x.n)+'</h3><span class="pill '+TPILL[x.t][0]+'">'+TPILL[x.t][1]+'</span><button type="button" class="ctl om-x" aria-label="Close">Close</button></div>'+body.innerHTML;
+  dl.querySelector(".om-dlb").innerHTML='<div class="om-dh"><h3 id="om-dlg-h">'+esc(x.n)+'</h3><span class="pill '+TPILL[x.t][0]+'">'+TPILL[x.t][1]+'</span><span class="sp-src'+(x.deck?'':' sp-hyp')+'">'+(x.deck?'deck':'hypothesis')+'</span><button type="button" class="ctl om-x" aria-label="Close">Close</button></div>'+PROF(x);
   dl.__from=from||null;if(dl.showModal&&!dl.open)dl.showModal();else dl.setAttribute("open","");
   if(!dl.__w){dl.__w=1;dl.addEventListener("click",function(e){if(e.target===dl)dl.close();});dl.addEventListener("close",function(){if(dl.__from&&dl.__from.focus)try{dl.__from.focus();}catch(_){}});}}
 /* ---------- Page collapse: P, L and People ----------
@@ -7499,9 +7636,9 @@ function pgRender(m,PM){pgInit();
       '<div class="roi-row"><span>'+(byP?"By product":"By department")+'</span><div class="roi-track"><div class="roi-bar roi-lsplit">'+splBar+'</div></div></div>'+
     '</div>'+
     '<div class="roi-tl">'+CATS.map(function(c){return '<span><i style="--c:var(--c-'+c[0]+')"></i>'+esc(c[1])+'</span>';}).join("")+'<span><i class="roi-shl"></i>Shared platform</span><span class="roi-rule">Split: Chat Traffic, Agent runs, Judges, Guardrails by weekly-user share</span></div></div>');
-  var hav=PM.depts.reduce(function(a,x){var h=HEALTH[x.d.id];return a+h.reduce(function(s,v,i){return s+(HITEMS[i][1]>0?v:6-v);},0)/h.length;},0)/PM.depts.length;
+  var nmc=PEOPLE.filter(function(x){return sqPos(SQ.power.v(x))==="tr";}).length,nqw=PEOPLE.filter(function(x){return sqPos(SQ.ready.v(x))==="tl";}).length;
   t("ppl-sum",'<div class="pg-sumc" role="button" tabindex="0" title="Expand"><div class="pg-sumh"><i>'+svg(IC.users,15)+'</i><h4>People</h4><span class="roi-u">hard to measure, important</span></div>'+
-    '<div class="roi-tiles pg-pt"><div class="roi-o"><b>'+STAKE.length+'</b><span>Stakeholders</span><small>power and interest</small></div><div class="roi-o"><b>'+hav.toFixed(1)+' of 5</b><span>Team health</span><small>pulse, example values</small></div></div></div>');
+    '<div class="roi-tiles pg-pt"><div class="roi-o"><b>'+nmc+' of '+PEOPLE.length+'</b><span>Manage closely</span><small>engagement plan</small></div><div class="roi-o"><b>'+nqw+'</b><span>Quick win</span><small>rollout plan: start pilots here</small></div></div></div>');
   pgApply("p");pgApply("l");
   document.querySelectorAll(".pg-sum").forEach(fitLabels);
   document.querySelectorAll(".pg-sumc").forEach(function(c){if(c.__k)return;c.__k=1;c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click();}});});
