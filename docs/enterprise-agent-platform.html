@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy @ Upstars v0.56.0</title>
+<title>AI Strategy @ Upstars v0.57.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -1942,6 +1942,19 @@ details.pn.pn-pulse{box-shadow:0 0 0 2px var(--accent)}
 :is(#roi,.pg-sum) .pg-lrows .roi-row{grid-template-columns:96px minmax(0,1fr)}
 :is(#roi,.pg-sum) .pg-sumc .roi-tl span.roi-rule{font:10.5px var(--f-mono);color:var(--dim);white-space:normal}
 :is(#roi,.pg-sum) .roi-tl i.roi-shl{background-image:repeating-linear-gradient(135deg,#64748b 0 1.5px,transparent 1.5px 4px);background-color:#1e293b}
+/* ROI Sankey (version 0.57). Profit sources -> Profits -> loss targets. All rules use the "sk-" prefix. */
+#roi .roi-sk{position:relative;min-width:0}
+#roi .sk{display:block;width:100%;height:auto;overflow:visible}
+#roi .sk-f,#roi .sk-n{transition:opacity .15s}
+#roi .sk-hl .sk-f{opacity:.1}#roi .sk-hl .sk-f.on{opacity:.9;fill-opacity:.8}
+#roi .sk-hl .sk-n{opacity:.1}#roi .sk-hl .sk-n.on{opacity:.9}
+#roi .sk-hl .sk-n.sk-m{opacity:1}
+#roi .sk-n[data-go]{cursor:pointer}
+#roi .sk-n:focus{outline:none}#roi .sk-n:focus-visible{stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+#roi .sk text{pointer-events:none;font-family:var(--f-sans)}
+#roi .sk .sk-v{fill:var(--dim);font-variant-numeric:tabular-nums}
+#roi .sk .sk-ml{paint-order:stroke;stroke:var(--panel2);stroke-linejoin:round;font-weight:600}
+@media (prefers-reduced-motion:reduce){#roi .sk-f,#roi .sk-n{transition:none}}
 
 /* P section (version 2). Same look as the Losses sections: details.psec mirrors details.sec, tiles, tables, pills.
    Own class names so the Losses numbering, Expand all and Collapse all do not include P. Container queries: P is 280 to 1250 px wide. */
@@ -2296,7 +2309,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy @ Upstars v0.56.0</h1>
+    <h1>AI Strategy @ Upstars v0.57.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7141,11 +7154,7 @@ function roiBuild(root){
     '<div class="seg roi-seg" role="radiogroup" aria-label="Report by" id="roi-mode">'+M.map(function(x){return '<button type="button" class="opt" role="radio" data-m="'+x[0]+'" aria-checked="false">'+x[1]+'</button>';}).join("")+'</div>'+
     '<span class="roi-ex" tabindex="0" title="Project inputs are examples. Engineering users and the hourly cost come from Chat Traffic and Inefficiency rates.">Example profit inputs</span>'+
     '<span class="roi-mo"><span class="roi-u">Net</span><b id="roi-mo"></b><span class="roi-u">per month</span></span></div>'+
-    '<div class="roi-rows">'+
-      '<div class="roi-row"><span>Profits</span><div class="roi-track"><div class="roi-bar" id="roi-pb" role="group" aria-label="Profits"></div></div><b id="roi-pt"></b></div>'+
-      '<div class="roi-row"><span>Losses</span><div class="roi-track"><div class="roi-bar" id="roi-lb" role="group" aria-label="Losses"></div></div><b id="roi-lt"></b></div>'+
-    '</div>'+
-    '<div class="roi-tl" id="roi-tl" aria-hidden="true"></div>'+
+    '<div class="roi-sk" id="roi-sk"></div>'+
     '<div class="roi-tiles">'+
       '<div class="roi-o"><b id="roi-p"></b><span>Profits</span><small>cost savings per month</small></div>'+
       '<div class="roi-o"><b id="roi-l"></b><span>Losses</span><small>= Total cost per month</small></div>'+
@@ -7157,8 +7166,52 @@ function roiBuild(root){
   root.addEventListener("toggle",function(e){var d=e.target;if(d.dataset&&d.dataset.ak){var o;try{o=JSON.parse(lsGet("roi-aud")||"{}");}catch(_){o={};}o[d.dataset.ak]=d.open;lsSet("roi-aud",JSON.stringify(o));}},true);
   root.addEventListener("click",function(e){var g=e.target.closest("[data-go]");if(g&&g.tagName==="BUTTON")e.preventDefault();if(g&&window.PL_OPEN_TO){var a=g.dataset.go.split(":");window.PL_OPEN_TO(a[0],a[1]!=null?a[1]:null);}});
   root.addEventListener("keydown",function(e){var g=e.target.closest("[data-go]");if(g&&(e.key==="Enter"||e.key===" ")){e.preventDefault();g.click();}});
-  wireTip(root,".roi-bar>i");
+  wireTip(root,".sk-n,.sk-f");
+  /* Sankey highlight: a category node or flow sets "sk-hl" on the SVG and "on" on the 2 nodes and 2 flows of the category */
+  var hl=function(k){var s=root.querySelector("svg.sk");if(!s)return;s.querySelectorAll(".on").forEach(function(x){x.classList.remove("on");});
+    if(k==null){s.classList.remove("sk-hl");return;}s.classList.add("sk-hl");s.querySelectorAll('[data-k="'+k+'"]').forEach(function(x){x.classList.add("on");});};
+  root.addEventListener("mouseover",function(e){if(!e.target.closest("svg.sk"))return;var t=e.target.closest("[data-k]");hl(t?t.dataset.k:null);});
+  root.addEventListener("mouseout",function(e){var s=e.target.closest("svg.sk");if(s&&!(e.relatedTarget&&s.contains(e.relatedTarget)))hl(null);});
+  root.addEventListener("focusin",function(e){var t=e.target.closest("svg.sk [data-k]");if(t)hl(t.dataset.k);});
+  root.addEventListener("focusout",function(e){if(e.target.closest("svg.sk"))hl(null);});
 }
+/* ROI Sankey layout in plain JavaScript. viewBox 1000 x 320. Sizes in px convert to viewBox units with k = 1000 / box width. */
+var SKD=null,SKW=0;
+function skDraw(){var box=document.getElementById("roi-sk");if(!box||!SKD)return;
+  var d=SKD,W=box.clientWidth||1000,k=1000/W,H=320,NW=12*k,GAP=6*k,MINH=2*k,LBL=14*k,FS=11*k;SKW=W;
+  var lw=Math.min(220,W*0.27)*k,xL=lw+6*k,xR=1000-lw-6*k-NW,xM=(xL+NW+xR)/2-NW/2;
+  var T=Math.max(d.P,d.L)||1,left=[],right=[];
+  d.rows.forEach(function(r,i){left.push({k:"c"+i,r:r,v:r.p,c:r.c,lab:r.label,tip:r.tip,al:r.label+": profit "+usd(r.p)+" per month"});});
+  if(d.L>d.P)left.push({v:d.L-d.P,c:"#ef4444",lab:"Deficit",tip:"<b>Deficit</b><span>"+usd(d.L-d.P)+" per month</span><span>Losses − Profits</span>"});
+  d.rows.forEach(function(r,i){right.push({k:"c"+i,r:r,v:r.l,c:r.c,lab:r.label,tip:r.tip,al:r.label+": direct loss "+usd(r.l)+" per month"});});
+  right.push({v:d.S,c:"url(#sk-hatch)",lab:"Shared platform",tip:"<b>Shared platform</b><span>"+usd(d.S)+" per month</span><span>People, Services, Infrastructure. Not split.</span>"});
+  if(d.P>d.L)right.push({v:d.P-d.L,c:"#22c55e",lab:"Net",tip:"<b>Net</b><span>"+usd(d.P-d.L)+" per month</span><span>Profits − Losses</span>"});
+  var n=Math.max(left.length,right.length),s=Math.max(0,H-(n-1)*GAP)/T;
+  var place=function(col){var hs=col.map(function(x){x.vh=x.v*s;x.h=Math.max(x.vh,MINH);return x.h;}),ch=hs.reduce(function(a,b){return a+b;},0)+(col.length-1)*GAP,y=(H-ch)/2;
+    col.forEach(function(x){x.y=y;y+=x.h+GAP;});};
+  place(left);place(right);
+  var mh=T*s,my=(H-mh)/2,f=function(n){return n.toFixed(2);};
+  var band=function(x1,a,x2,b,h){var xm=(x1+x2)/2;return "M"+f(x1)+" "+f(a)+"C"+f(xm)+" "+f(a)+" "+f(xm)+" "+f(b)+" "+f(x2)+" "+f(b)+"L"+f(x2)+" "+f(b+h)+"C"+f(xm)+" "+f(b+h)+" "+f(xm)+" "+f(a+h)+" "+f(x1)+" "+f(a+h)+"Z";};
+  var flows="",nodes="",labs="",mi=my,mo=my;
+  var lab=function(x,a,t,v,anc,cls){return '<text x="'+f(x)+'" y="'+f(a)+'" dominant-baseline="central" text-anchor="'+anc+'" font-size="'+f(FS)+'" fill="var(--ink)" data-max="'+f(lw-6*k)+'"'+(cls?' class="'+cls+'"':'')+'>'+esc(t)+'<tspan class="sk-v"> · '+usd(v)+'</tspan></text>';};
+  var node=function(x,o,side){var at=o.k!=null?' data-k="'+o.k+'" tabindex="0" role="button" data-go="'+o.r.go+'" aria-label="'+esc(o.al)+'"':' aria-label="'+esc(o.lab+": "+usd(o.v))+'"';
+    return '<rect class="sk-n sk-'+side+'" x="'+f(x)+'" y="'+f(o.y)+'" width="'+f(NW)+'" height="'+f(o.h)+'" rx="'+f(Math.min(2*k,o.h/2))+'" fill="'+o.c+'" data-h="'+o.vh+'" data-tip="'+esc(o.tip)+'"'+at+'/>';};
+  left.forEach(function(o){var a=o.y+(o.h-o.vh)/2;
+    flows+='<path class="sk-f" d="'+band(xL+NW,a,xM,mi,o.vh)+'" fill="'+o.c+'" fill-opacity=".45" data-tip="'+esc(o.tip)+'"'+(o.k!=null?' data-k="'+o.k+'"':'')+'/>';mi+=o.vh;
+    nodes+=node(xL,o,"l");if(o.h>=LBL)labs+=lab(xL-6*k,o.y+o.h/2,o.lab,o.v,"end");});
+  right.forEach(function(o){var a=o.y+(o.h-o.vh)/2;
+    flows+='<path class="sk-f" d="'+band(xM+NW,mo,xR,a,o.vh)+'" fill="'+o.c+'" fill-opacity=".45" data-tip="'+esc(o.tip)+'"'+(o.k!=null?' data-k="'+o.k+'"':'')+'/>';mo+=o.vh;
+    nodes+=node(xR,o,"r");if(o.h>=LBL)labs+=lab(xR+NW+6*k,o.y+o.h/2,o.lab,o.v,"start");});
+  nodes+='<rect class="sk-n sk-m" x="'+f(xM)+'" y="'+f(my)+'" width="'+f(NW)+'" height="'+f(mh)+'" rx="'+f(2*k)+'" fill="#15803d" data-h="'+mh+'" aria-label="Profits: '+usd(d.P)+'" data-tip="'+esc("<b>Profits</b><span>"+usd(d.P)+" per month</span><span>Losses "+usd(d.L)+" per month</span>")+'"/>';
+  labs+=lab(xM+NW+6*k,my+mh/2,"Profits",d.P,"start","sk-ml").replace('<text ','<text stroke-width="'+f(3*k)+'" ');
+  box.innerHTML='<svg class="sk" viewBox="0 0 1000 320" width="100%" role="group" aria-label="ROI flow: profits by '+(d.mode==="dept"?"department":"product")+' to losses">'+
+    '<defs><pattern id="sk-hatch" width="'+f(6*k)+'" height="'+f(6*k)+'" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="'+f(6*k)+'" height="'+f(6*k)+'" fill="#475569"/><rect width="'+f(2*k)+'" height="'+f(6*k)+'" fill="#1e293b"/></pattern></defs>'+
+    '<g>'+flows+'</g><g>'+nodes+'</g><g>'+labs+'</g></svg>';
+  /* shorten a label that is wider than its column */
+  box.querySelectorAll("text[data-max]").forEach(function(t){var mx=+t.dataset.max,tn=t.firstChild,v=tn.nodeValue;if(t.classList.contains("sk-ml"))return;
+    try{while(t.getComputedTextLength()>mx&&v.length>1){v=v.slice(0,-1);tn.nodeValue=v.replace(/\s+$/,"")+"…";}}catch(e){}});
+}
+var SKZ=0;window.addEventListener("resize",function(){clearTimeout(SKZ);SKZ=setTimeout(function(){var b=document.getElementById("roi-sk");if(b&&b.clientWidth!==SKW)skDraw();},120);});
 function seg(c,v,tot,label,tip,go,cls){var w=(tot?v/tot*100:0).toFixed(2);
   return '<i tabindex="0" class="'+(cls||"")+'" style="--c:'+c+';flex:0 0 calc('+w+'% - 2px)" data-tip="'+esc(tip)+'"'+(go?' data-go="'+go+'"':'')+' aria-label="'+esc(label+": "+usd(v))+'">'+esc(label)+'</i>';}
 /* hide a bar label when it does not fit its part */
@@ -7179,15 +7232,9 @@ function roiRender(m,PM){
     :PM.projs.map(function(p,j){return {go:prim(p)+":"+p.id,id:p.id,label:p.n,dl:dl(p),c:PCOL[j%PCOL.length],p:p.v,l:D$*p.ret/U,sh:p.ret/U,kids:Object.keys(p.sh).map(function(k){var d=DEPTS.filter(function(z){return z.id===k;})[0],f=p.sh[k]/100;return {go:k+":"+p.id,label:d.label,share:p.sh[k],shared:Object.keys(p.sh).length>1,p:p.v*f,l:D$*p.ret/U*f,sh:p.ret/U*f};})};});
   var Ls=rows.reduce(function(a,r){return a+r.l;},0)+S$;
   window.ROI_CHECK={profits:P$,losses:L$,lossCategorySum:Lsum,match:Math.abs(Lsum-L$)<0.5,mode:RMODE,splitSum:Ls,splitMatch:Math.abs(Ls-L$)<0.5};
-  var pb=document.getElementById("roi-pb"),lb=document.getElementById("roi-lb");
-  pb.style.width=(P$/mx*100).toFixed(2)+"%";lb.style.width=(L$/mx*100).toFixed(2)+"%";
-  var tipP=function(r){return "<b>"+esc(r.label)+"</b>"+(r.dl?"<span>"+esc(r.dl)+"</span>":"")+"<span>Profit "+usd(r.p)+" per month</span><span>Open in P</span>";};
+  var tipC=function(r){var n=r.p-r.l,ro=r.l?r.p/r.l:0;return "<b>"+esc(r.label)+"</b>"+(r.dl?"<span>"+esc(r.dl)+"</span>":"")+"<span>Profit "+usd(r.p)+" per month</span><span>Direct loss "+usd(r.l)+" per month</span><span>Net "+(n>=0?"":"−")+usd(Math.abs(n))+" per month</span><span>ROI "+(ro?ro.toFixed(1)+"×":"–")+"</span><span>Open in P</span>";};
   {
-    pb.innerHTML=rows.map(function(r){return seg(r.c,r.p,P$,r.label,tipP(r),r.go);}).join("");
-    lb.className="roi-bar roi-loss roi-lsplit";
-    lb.innerHTML=rows.map(function(r){return seg(r.c,r.l,L$,r.label,"<b>"+esc(r.label)+"</b><span>Direct cost "+usd(r.l)+" per month</span><span>"+(r.sh*100).toFixed(1)+"% of weekly users</span>",r.go);}).join("")+
-      seg("#475569",S$,L$,"Shared platform","<b>Shared platform</b><span>"+usd(S$)+" per month</span><span>People, Services, Infrastructure. Not split.</span>",null,"roi-sh");
-    document.getElementById("roi-tl").innerHTML='<span><i style="--c:#15803d"></i>'+(RMODE==="dept"?"6 departments":rows.length+" products")+'</span><span><i class="roi-shl"></i>Shared platform</span><span class="roi-rule">Split: Chat Traffic, Agent runs, Judges, Guardrails by weekly-user share</span>';
+    SKD={mode:RMODE,P:P$,L:L$,S:S$,rows:rows.map(function(r){return {label:r.label,c:r.c,p:r.p,l:r.l,go:r.go,tip:tipC(r)};})};skDraw();
     /* audit: nested rows. Level 1 department or product. Level 2 products of the department, or departments of the product, with share. Level 3 direct loss by category. */
     var amx=Math.max.apply(null,rows.map(function(r){return Math.max(r.p,r.l);}))||1;
     var twin=function(r){return '<span class="ra-tw" aria-hidden="true"><s class="ra-p" style="width:'+(r.p/amx*100).toFixed(1)+'%"></s><s class="ra-l" style="width:'+(r.l/amx*100).toFixed(1)+'%"></s></span>';};
@@ -7204,7 +7251,7 @@ function roiRender(m,PM){
   }
   fitLabels(root);
   var N=P$-L$,R=L$?P$/L$:0,set=function(id,t,c){var e=document.getElementById(id);e.textContent=t;if(c!=null)e.className=c;};
-  set("roi-pt",usd(P$));set("roi-lt",usd(L$));set("roi-p",usd(P$));set("roi-l",usd(L$));
+  set("roi-p",usd(P$));set("roi-l",usd(L$));
   set("roi-n",usd(N),N>=0?"roi-pos":"roi-neg");set("roi-mo",usd(N),N>=0?"roi-pos":"roi-neg");set("roi-r",R.toFixed(2)+"×",R>=1?"roi-pos":"roi-neg");
 }
 /* ---------- P section (version 4): time, absolute values with change, inputs, shared projects ----------
