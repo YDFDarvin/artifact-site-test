@@ -1,4 +1,4 @@
-<title>AI Strategy v0.73.0</title>
+<title>AI Strategy v0.74.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -1944,27 +1944,24 @@ a.env-paytag{font-size:10px;color:var(--amber);text-decoration:none;border-botto
 .pg-pt{grid-template-columns:repeat(2,minmax(0,1fr))!important;border-top:0!important;padding-top:0!important}
 .pbar .pl-ec{margin-left:auto;gap:8px}
 details.pn.pn-pulse{box-shadow:0 0 0 2px var(--accent)}
-/* P and L summary cards (v0.73.0): top-down Sankey charts. All rules use the "tds-" prefix.
-   1 hue per card: green for revenue, red for cost, slate for Shared platform. Labels sit inside the node bars. */
+/* P and L summary cards (v0.74.0): left-to-right Sankey charts in the ROI Sankey style. All rules use the "tds-" prefix. */
 .tds-bar{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap}
 .tds-bar .seg{--seg-h:24px}
 .tds-bar .opt{font-size:11.5px;padding:0 9px}
 .tds-bar .tds-l{font:500 10.5px var(--f-mono);color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
-.tds-box{position:relative;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin-top:2px}
-.tds{display:block}
+.tds-box{position:relative;min-width:0;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch}
+.tds{display:block;overflow:visible}
 .tds-f,.tds-n,.tds-t{transition:opacity .15s}
-.tds-f{opacity:.3}
-.tds-f:hover{opacity:.55}
-.tds-hl .tds-f{opacity:.08}.tds-hl .tds-f.on{opacity:.65}
-.tds-hl .tds-n{opacity:.3}.tds-hl .tds-t{opacity:.3}.tds-hl .tds-n.on,.tds-hl .tds-t.on,.tds-hl .tds-n.tds-tot,.tds-hl .tds-t.tds-tot{opacity:1}
+.tds-hl .tds-f{opacity:.1}.tds-hl .tds-f.on{opacity:.9;fill-opacity:.75}
+.tds-hl .tds-n{opacity:.1}.tds-hl .tds-n.on{opacity:.9}
+.tds-hl .tds-n.tds-tot{opacity:1}
+.tds-hl .tds-t[data-keys]:not(.on){opacity:.25}
 .tds-n[data-go]{cursor:pointer}
-.tds-n:focus{outline:none}.tds-n:focus-visible{stroke:#f8fafc;stroke-width:2}
-.tds text{pointer-events:none;font-family:var(--f-sans);fill:#fff;font-size:11.5px;font-weight:600}
-.tds text .tds-tv{font:500 11px var(--f-mono);fill:rgba(255,255,255,.78)}
-.tds text.tds-tot{font-size:13px;font-weight:700}
-.tds text.tds-tot .tds-tv{font-size:12px;fill:#e2e8f0}
-.tds text.tds-up{fill:var(--ink);font-weight:500;font-size:11px}
-.tds text.tds-up .tds-tv{fill:var(--muted)}
+.tds-n:focus{outline:none}.tds-n:focus-visible{stroke:var(--accent);stroke-width:2}
+.tds text{pointer-events:none;font-family:var(--f-sans);paint-order:stroke;stroke:var(--panel2);stroke-width:3px;stroke-linejoin:round}
+.tds .tds-tn{fill:var(--ink);font-size:11.5px;font-weight:500}
+.tds .tds-tv{fill:var(--muted);font:500 11px var(--f-mono);font-variant-numeric:tabular-nums}
+.tds .tds-big .tds-tn{font-size:13.5px;font-weight:700}.tds .tds-big .tds-tv{fill:var(--ink);font-size:12px}
 .tds-hint{font:10.5px var(--f-mono);color:var(--dim)}
 @media (prefers-reduced-motion:reduce){.tds-f,.tds-n,.tds-t{transition:none}}
 #pg-p-sum .pg-sumc[role="group"]{cursor:default}
@@ -2517,7 +2514,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.73.0</h1>
+    <h1>AI Strategy v0.74.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -8055,46 +8052,39 @@ if(["prod","dept","both"].indexOf(TDST.pl)<0)TDST.pl="both";if(["prod","dept","b
 function tdsSeg(key,lab,opts){return '<span class="tds-l">'+lab+'</span><div class="seg" role="radiogroup" aria-label="'+esc(lab)+'">'+opts.map(function(o){var on=TDST[key]===o[0];
   return '<button type="button" class="opt" role="radio" data-tds="'+key+'" data-v="'+o[0]+'" aria-checked="'+on+'" tabindex="'+(on?0:-1)+'">'+o[1]+'</button>';}).join("")+'</div>';}
 function tdsDraw(id){var box=document.getElementById(id),d=TDS[id];if(!box||!d)return;
-  var W=Math.max(box.clientWidth||600,560),GAP=10,NH=24,TH=30,FG=d.rows.length>2?58:78,PX=8,f=function(n){return n.toFixed(2);};
-  var N={},rows=d.rows;rows.forEach(function(r){r.forEach(function(o){o.out=[];o.inn=[];N[o.id]=o;});});
+  var cols=d.rows,nc=cols.length,maxN=Math.max.apply(null,cols.map(function(c){return c.length;}));
+  var W=Math.max(box.clientWidth||900,640),NW=12,GAP=6,MINH=2,LH=30,RM=170,H=Math.max(280,maxN*(LH+GAP)),f=function(n){return n.toFixed(2);};
+  var N={};cols.forEach(function(c,ci){c.forEach(function(o){o.out=[];o.inn=[];o.ci=ci;N[o.id]=o;});});
   var L=d.links.filter(function(l){return l.v>0.0001&&N[l.s]&&N[l.t];});L.forEach(function(l){l.S=N[l.s];l.T=N[l.t];l.S.out.push(l);l.T.inn.push(l);});
-  /* 1 scale for all rows: the widest row with its gaps sets it. The total row has no gaps, so the flows narrow to it. */
-  var sc=Infinity;rows.forEach(function(r){var t=r.reduce(function(a,o){return a+o.v;},0);if(t>0)sc=Math.min(sc,(W-2*PX-(r.length-1)*GAP)/t);});if(!isFinite(sc))sc=0;
-  var LV=14,TOP=3*LV+8,y=TOP;rows.forEach(function(r,ri){var last=ri===rows.length-1;r.forEach(function(o){o.w=Math.max(o.v*sc,3);o.h=last?TH:NH;o.y=y;o.ri=ri;});y+=(last?TH:NH+FG);});
-  var H=y+2;
-  /* place rows from the bottom up: each row sits centered over the nodes it flows into */
-  for(var ri=rows.length-1;ri>=0;ri--){var r=rows[ri],rw=r.reduce(function(a,o){return a+o.w;},0)+(r.length-1)*GAP,cx=W/2;
-    if(ri<rows.length-1){var lo=Infinity,hi=-Infinity;r.forEach(function(o){o.out.forEach(function(l){lo=Math.min(lo,l.T.x);hi=Math.max(hi,l.T.x+l.T.w);});});if(isFinite(lo))cx=(lo+hi)/2;}
-    var x=Math.max(PX,Math.min(W-PX-rw,cx-rw/2));r.forEach(function(o){o.x=x;x+=o.w+GAP;});}
-  Object.keys(N).forEach(function(k){var o=N[k];o.out.sort(function(a,b){return a.T.x-b.T.x;});var x=o.x+(o.w-o.out.reduce(function(a,l){return a+l.v*sc;},0))/2;o.out.forEach(function(l){l.sx=x;x+=l.v*sc;});
-    o.inn.sort(function(a,b){return a.S.x-b.S.x;});x=o.x+(o.w-o.inn.reduce(function(a,l){return a+l.v*sc;},0))/2;o.inn.forEach(function(l){l.tx=x;x+=l.v*sc;});});
-  var band=function(x1,y1,x2,y2,w){var ym=(y1+y2)/2;return "M"+f(x1)+" "+f(y1)+"C"+f(x1)+" "+f(ym)+" "+f(x2)+" "+f(ym)+" "+f(x2)+" "+f(y2)+"L"+f(x2+w)+" "+f(y2)+"C"+f(x2+w)+" "+f(ym)+" "+f(x1+w)+" "+f(ym)+" "+f(x1+w)+" "+f(y1)+"Z";};
+  /* scale: each node takes a slot of at least LH px, so its 2-line label stays next to it */
+  var fits=function(k){return cols.every(function(c){return c.reduce(function(a,o){return a+Math.max(o.v*k,MINH,LH);},0)+(c.length-1)*GAP<=H;});};
+  var sc=Infinity;cols.forEach(function(c){var t=c.reduce(function(a,o){return a+o.v;},0);if(t>0)sc=Math.min(sc,(H-(c.length-1)*GAP)/t);});if(!isFinite(sc))sc=0;
+  for(var it=0;it<40&&sc>0&&!fits(sc);it++)sc*=0.97;
+  var sp=(W-RM-8-NW)/Math.max(1,nc-1);
+  cols.forEach(function(c,ci){var hs=0;c.forEach(function(o){o.vh=o.v*sc;o.h=Math.max(o.vh,MINH);o.sl=Math.max(o.h,LH);o.x=8+ci*sp;hs+=o.sl;});
+    var y=(H-hs-(c.length-1)*GAP)/2;c.forEach(function(o){o.y=y+(o.sl-o.h)/2;y+=o.sl+GAP;});});
+  Object.keys(N).forEach(function(k){var o=N[k];
+    o.out.sort(function(a,b){return a.T.y-b.T.y;});var y=o.y+(o.h-o.out.reduce(function(a,l){return a+l.v*sc;},0))/2;o.out.forEach(function(l){l.sy=y;y+=l.v*sc;});
+    o.inn.sort(function(a,b){return a.S.y-b.S.y;});y=o.y+(o.h-o.inn.reduce(function(a,l){return a+l.v*sc;},0))/2;o.inn.forEach(function(l){l.ty=y;y+=l.v*sc;});});
+  var band=function(x1,a,x2,b,h){var xm=(x1+x2)/2;return "M"+f(x1)+" "+f(a)+"C"+f(xm)+" "+f(a)+" "+f(xm)+" "+f(b)+" "+f(x2)+" "+f(b)+"L"+f(x2)+" "+f(b+h)+"C"+f(xm)+" "+f(b+h)+" "+f(xm)+" "+f(a+h)+" "+f(x1)+" "+f(a+h)+"Z";};
   var fc=function(c){return ' style="fill:'+String(c).replace("url(#tds-hatch)","url(#tds-hatch-"+id+")")+'"';};
   var fl="",nd="",lb="";
-  L.forEach(function(l){fl+='<path class="tds-f" d="'+band(l.sx,l.S.y+l.S.h,l.tx,l.T.y,l.v*sc)+'"'+fc(l.c)+(l.keys?' data-keys="'+l.keys+'"':'')+' data-tip="'+esc(l.tip||"")+'"/>';});
-  rows.forEach(function(r,ri){var last=ri===rows.length-1;r.forEach(function(o){
-    var at=o.go?' data-go="'+o.go+'" tabindex="0" role="button"':'',ky=o.keys?' data-keys="'+o.keys+'"':'';
-    nd+='<rect class="tds-n'+(last?" tds-tot":"")+'" x="'+f(o.x)+'" y="'+f(o.y)+'" width="'+f(o.w)+'" height="'+o.h+'" rx="4"'+fc(o.c)+(o.st?' stroke="'+o.st+'" stroke-width="1"':'')+ky+at+' data-w="'+f(o.v*sc)+'" data-row="'+ri+'" aria-label="'+esc(o.lab+": "+usd(o.v))+'" data-tip="'+esc(o.tip||"")+'"/>';
-    if(ri===0&&!last){lb+='<g class="tds-t tds-top"'+ky+' data-cx="'+f(o.x+o.w/2)+'" data-y="'+f(o.y)+'"><line x1="'+f(o.x+o.w/2)+'" x2="'+f(o.x+o.w/2)+'" y1="'+f(o.y-2)+'" y2="'+f(o.y-2)+'" stroke="#475569" stroke-width="1"/><text class="tds-up" text-anchor="middle" x="'+f(o.x+o.w/2)+'" y="'+f(o.y-6)+'">'+esc(o.lab)+'<tspan class="tds-tv"> '+usd(o.v)+'</tspan></text></g>';return;}
-    lb+='<text class="tds-t'+(last?" tds-tot":"")+'"'+ky+' text-anchor="middle" x="'+f(o.x+o.w/2)+'" y="'+f(o.y+o.h/2+4)+'" data-max="'+f(o.w-10)+'" data-n="'+esc(o.lab)+'" data-v="'+esc(usd(o.v))+'">'+esc(o.lab)+'<tspan class="tds-tv"> '+usd(o.v)+'</tspan></text>';});});
+  L.forEach(function(l){fl+='<path class="tds-f" d="'+band(l.S.x+NW,l.sy,l.T.x,l.ty,l.v*sc)+'"'+fc(l.c)+' fill-opacity=".4"'+(l.keys?' data-keys="'+l.keys+'"':'')+' data-tip="'+esc(l.tip||"")+'"/>';});
+  cols.forEach(function(c,ci){var ls=c.map(function(o){var tot=o.id==="T",ky=o.keys?' data-keys="'+o.keys+'"':'',at=o.go?' data-go="'+o.go+'" tabindex="0" role="button"':'';
+      nd+='<rect class="tds-n'+(tot?" tds-tot":"")+'" x="'+f(o.x)+'" y="'+f(o.y)+'" width="'+NW+'" height="'+f(o.h)+'" rx="2"'+fc(o.c)+(tot?' stroke="#64748b" stroke-width="1"':'')+ky+at+' data-h="'+f(o.vh)+'" data-row="'+ci+'" aria-label="'+esc(o.lab+": "+usd(o.v))+'" data-tip="'+esc(o.tip||"")+'"/>';
+      return {o:o,y:o.y+o.h/2,ky:ky,tot:tot};});
+    /* labels sit right of the node, over its outgoing flow. Push labels apart so 2 labels never overlap. */
+    for(var i=0;i<ls.length;i++)ls[i].y=Math.max(ls[i].y,LH/2,i?ls[i-1].y+LH:0);
+    for(i=ls.length-1;i>=0;i--)ls[i].y=Math.min(ls[i].y,H-LH/2,i<ls.length-1?ls[i+1].y-LH:H);
+    var mx=ci<nc-1?sp-NW-16:RM-12;
+    ls.forEach(function(q){var o=q.o,x=o.x+NW+6;
+      lb+='<text class="tds-t'+(q.tot?" tds-big":"")+'"'+q.ky+' data-max="'+f(mx)+'"><tspan class="tds-tn" x="'+f(x)+'" y="'+f(q.y-3)+'">'+esc(o.lab)+'</tspan><tspan class="tds-tv" x="'+f(x)+'" y="'+f(q.y+11)+'">'+usd(o.v)+'</tspan></text>';});});
   box.innerHTML='<svg class="tds" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" role="group" aria-label="'+esc(d.aria)+'">'+
-    '<defs><pattern id="tds-hatch-'+id+'" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#475569"/><rect width="2" height="6" fill="#334155"/></pattern></defs>'+
+    '<defs><pattern id="tds-hatch-'+id+'" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#475569"/><rect width="2" height="6" fill="#1e293b"/></pattern></defs>'+
     '<g>'+fl+'</g><g>'+nd+'</g><g>'+lb+'</g></svg>';
-  /* fit each label inside its bar: "name value", else the name, else a shorter name, else no label */
-  box.querySelectorAll("text.tds-t").forEach(function(t){var mx=+t.dataset.max,n=t.dataset.n,v=t.dataset.v;
-    var set=function(a,b){t.textContent=a;if(b){var sp=document.createElementNS("http://www.w3.org/2000/svg","tspan");sp.setAttribute("class","tds-tv");sp.textContent=" "+b;t.appendChild(sp);}};
-    try{if(t.getComputedTextLength()<=mx)return;set(n);if(t.getComputedTextLength()<=mx)return;var k=n.length;
-      while(k>3){k--;set(n.slice(0,k).replace(/\s+$/,"")+"…");if(t.getComputedTextLength()<=mx)return;}t.textContent="";}catch(e){}});
-  /* top row labels: put each label on the lowest free level, so 2 labels never overlap. A line joins a raised label to its bar. */
-  /* the largest bars get a label first. A leader line never crosses a label, and a label never covers a leader line. If no level is free, the bar has no label (the tooltip shows it). */
-  var lv=[[],[],[]],lines=[],gs=[].slice.call(box.querySelectorAll("g.tds-top")).map(function(g){var r=g.parentNode&&g.ownerSVGElement.querySelector('rect.tds-n[data-row="0"][data-keys="'+g.getAttribute("data-keys")+'"]');return {g:g,w:r?+r.getAttribute("width"):0};});
-  gs.sort(function(p,q){return q.w-p.w;}).forEach(function(G){var g=G.g,t=g.querySelector("text"),ln=g.querySelector("line"),cx=+g.dataset.cx,by=+g.dataset.y,w;
-    try{w=t.getComputedTextLength();}catch(e){w=80;}var a=Math.max(PX,Math.min(W-PX-w,cx-w/2)),b=a+w,k;
-    var ok=function(k){return lv[k].every(function(q){return b+10<q[0]||a-10>q[1];})&&lines.every(function(L){return L.k<=k||L.x<a-4||L.x>b+4;})&&
-      lv.slice(0,k).every(function(row){return row.every(function(q){return cx<q[0]-4||cx>q[1]+4;});});};
-    for(k=0;k<3;k++){if(ok(k))break;}
-    if(k===3){g.remove();return;}lv[k].push([a,b]);if(k>0)lines.push({x:cx,k:k});
-    t.setAttribute("x",f(a+w/2));t.setAttribute("y",f(by-6-k*LV));if(k>0)ln.setAttribute("y1",f(by-6-k*LV+3));else ln.remove();});
+  /* shorten a name that is wider than its column */
+  box.querySelectorAll("text[data-max] .tds-tn").forEach(function(t){var mx=+t.parentNode.dataset.max,v=t.textContent;
+    try{while(t.getComputedTextLength()>mx&&v.length>1){v=v.slice(0,-1);t.textContent=v.replace(/\s+$/,"")+"…";}}catch(e){}});
   box.__w=box.clientWidth;}
 /* hover or focus: highlight the nodes and flows of 1 product or 1 department. A toggle changes the layers or the view. */
 function tdsWire(sm){if(sm.__tds)return;sm.__tds=1;
@@ -8110,7 +8100,7 @@ function tdsWire(sm){if(sm.__tds)return;sm.__tds=1;
     var bs=[].slice.call(b.parentNode.querySelectorAll("[data-tds]")),i=bs.indexOf(b),n=bs[(i+(e.key==="ArrowRight"?1:bs.length-1))%bs.length];n.click();});}
 var TDSZ=0;window.addEventListener("resize",function(){clearTimeout(TDSZ);TDSZ=setTimeout(function(){Object.keys(TDS).forEach(function(id){var b=document.getElementById(id);if(b&&b.clientWidth&&b.clientWidth!==b.__w)tdsDraw(id);});},120);});
 /* build the rows and links for products, departments or both, into 1 total node */
-function tdsBuild(mode,prods,depts,tot,extra){var rows=[],links=[];
+function tdsBuild(mode,prods,depts,tot,extra,mirror){var rows=[],links=[];
   var pr=prods.map(function(p){return {id:"P"+p.id,v:p.v,c:p.c,lab:p.lab,tip:p.tip,keys:"p:"+p.id,go:p.go};});
   var dr=depts.map(function(x){return {id:"D"+x.id,v:x.v,c:x.c,lab:x.lab,tip:x.tip,keys:"d:"+x.id+" "+x.ps.map(function(e){return "p:"+e.p;}).join(" "),go:x.go};});
   var T={id:"T",v:tot.v,c:tot.c,st:tot.st,lab:tot.lab,tip:tot.tip};
@@ -8120,41 +8110,44 @@ function tdsBuild(mode,prods,depts,tot,extra){var rows=[],links=[];
   else{var r=mode==="prod"?pr:dr;rows=[r.concat(extra||[]),[T]];
     (mode==="prod"?prods:depts).forEach(function(o){links.push({s:(mode==="prod"?"P":"D")+o.id,t:"T",v:o.v,c:o.lc||o.c,keys:(mode==="prod"?"p:":"d:")+o.id,tip:o.tip});});}
   (extra||[]).forEach(function(x){links.push({s:x.id,t:"T",v:x.v,c:x.lc||x.c,tip:x.tip});});
+  /* mirror: the total is the first column and the flows go out of it */
+  if(mirror){rows.reverse();links.forEach(function(l){var a=l.s;l.s=l.t;l.t=a;});}
   return {rows:rows,links:links};}
 function pgRender(m,PM){pgInit();TDSLAST=[m,PM];
   var t=function(id,h){var e=document.querySelector("#"+id+" .pg-sumi");if(e)e.innerHTML=h;};
-  /* Profits widget (v0.72.0): top-down Sankey. Products, departments or both merge into Revenue at the bottom. */
+  /* Profits widget (v0.74.0): Sankey in the ROI style. Products, departments or both flow right into Revenue. */
   var SP=PM.sel||PM,np=SP.projs.length;
   var prim=function(p){var b=null;Object.keys(p.sh).forEach(function(k){if(!b||p.sh[k]>p.sh[b])b=k;});return b;};
   /* summary charts: Risk and KYC first, so the shared Support copilot sits next to both its departments */
   var DO=["risk","csm","mkt","sales","prod","eng"],di={};DO.forEach(function(k,j){di[k]=j;});
-  var C={pn:"#059669",dn:"#047857",pf:"#10b981",cn:"#dc2626",dn2:"#b91c1c",cf:"#ef4444",sn:"#475569",sf:"#64748b"};
+  var pc={};PM.projs.forEach(function(p,j){pc[p.id]=PCOL[j%PCOL.length];});
+  var C={dc:"#dc2626",pc:"#f87171",cf:"#ef4444"};
   var per=esc(SP.per.label);
-  var pp=SP.projs.map(function(p){var pr=prim(p);return {id:p.id,v:p.v,c:C.pn,lc:C.pf,lab:p.n,go:pr+":"+p.id,o:di[pr],tip:"<b>"+esc(p.n)+"</b><span>Revenue "+usd(p.v)+", "+per+"</span><span>Open in P</span>"};}).sort(function(a,b){return a.o-b.o;});
-  var pd=SP.depts.slice().sort(function(a,b){return di[a.d.id]-di[b.d.id];}).map(function(x){return {id:x.d.id,v:x.v,c:C.dn,lc:C.pf,lab:x.d.label,go:x.d.id,tip:"<b>"+esc(x.d.label)+"</b><span>Revenue "+usd(x.v)+", "+per+"</span><span>"+x.projects.length+" products · Open in P</span>",
-    ps:x.projects.map(function(e){return {p:e.id,v:e.v,c:C.pf,lab:e.n,share:e.share};})};});
-  TDS["tds-p"]=tdsBuild(TDST.pl,pp,pd,{v:SP.v,c:"#000",st:"#334155",lab:"Revenue",tip:"<b>Revenue</b><span>"+usd(SP.v)+", "+per+"</span>"});TDS["tds-p"].aria="Revenue by product and department";
+  var pp=SP.projs.map(function(p){var pr=prim(p);return {id:p.id,v:p.v,c:pc[p.id],lab:p.n,go:pr+":"+p.id,o:di[pr],tip:"<b>"+esc(p.n)+"</b><span>Revenue "+usd(p.v)+", "+per+"</span><span>Open in P</span>"};}).sort(function(a,b){return a.o-b.o;});
+  var pd=SP.depts.slice().sort(function(a,b){return di[a.d.id]-di[b.d.id];}).map(function(x){return {id:x.d.id,v:x.v,c:x.d.c,lab:x.d.label,go:x.d.id,tip:"<b>"+esc(x.d.label)+"</b><span>Revenue "+usd(x.v)+", "+per+"</span><span>"+x.projects.length+" products · Open in P</span>",
+    ps:x.projects.map(function(e){return {p:e.id,v:e.v,c:pc[e.id],lab:e.n,share:e.share};})};});
+  TDS["tds-p"]=tdsBuild(TDST.pl,pp,pd,{v:SP.v,c:"#0a0a0a",lab:"Revenue",tip:"<b>Revenue</b><span>"+usd(SP.v)+", "+per+"</span>"});TDS["tds-p"].aria="Revenue by product and department";
   t("pg-p-sum",'<div class="pg-sumc" role="button" tabindex="0" title="Expand"><div class="pg-sumh"><i>'+svg(IC.trend,15)+'</i><h4>Profits</h4><span class="roi-mo"><b>'+usd(SP.v)+'</b><span class="roi-u">'+per+(SP.prev?" · "+(SP.v>=SP.prev.v?"+":"−")+usd(Math.abs(SP.v-SP.prev.v))+" vs "+esc(SP.per.prevLabel):"")+'</span></span></div>'+
-    '<div class="tds-bar">'+tdsSeg("pl","Layers",[["prod","Products"],["dept","Departments"],["both","Both"]])+'<span class="tds-hint">'+np+' products · '+SP.depts.length+' departments → Revenue</span></div>'+
+    '<div class="tds-bar">'+tdsSeg("pl","Layers",[["prod","Products"],["dept","Departments"],["both","Both"]])+'<span class="tds-hint">'+np+' products → '+SP.depts.length+' departments → Revenue</span></div>'+
     '<div class="tds-box" id="tds-p"></div></div>');
   /* Losses widget: shown when L is open or collapsed. Row 1: the 7 categories (as before). Row 2: follows the ROI toggle (Department or Product) with the Shared platform part. */
   var cats=CATS.map(function(c){var x=((m&&m.categories)||[]).filter(function(k){return k&&k.id===c[0];})[0];return {id:c[0],label:c[1],v:x?x.cost||0:0};}),L$=(m&&m.totalMonthly)||0;
   var cv={};cats.forEach(function(c){cv[c.id]=c.v;});
   var D$=DIRECT.reduce(function(a,k){return a+(cv[k]||0);},0),S$=SHARED.reduce(function(a,k){return a+(cv[k]||0);},0),U=PM.ret||1;
-  /* Losses widget (v0.72.0): top-down Sankey into Losses at the bottom. ROI view: products, departments or both, plus Shared platform. Audit view: the 7 cost categories. */
-  var cp=PM.projs.map(function(p){var pr=prim(p);return {id:p.id,v:D$*p.ret/U,c:C.cn,lc:C.cf,lab:p.n,go:pr+":"+p.id,o:di[pr],tip:"<b>"+esc(p.n)+"</b><span>Direct cost "+usd(D$*p.ret/U)+" per month</span><span>"+(p.ret/U*100).toFixed(1)+"% of weekly users</span>"};}).sort(function(a,b){return a.o-b.o;});
-  var cd=PM.depts.slice().sort(function(a,b){return di[a.d.id]-di[b.d.id];}).map(function(x){return {id:x.d.id,v:D$*x.ret/U,c:C.dn2,lc:C.cf,lab:x.d.label,go:x.d.id,tip:"<b>"+esc(x.d.label)+"</b><span>Direct cost "+usd(D$*x.ret/U)+" per month</span><span>"+(x.ret/U*100).toFixed(1)+"% of weekly users</span>",
-    ps:x.projects.map(function(e){return {p:e.id,v:D$*e.ret/U,c:C.cf,lab:e.n,share:e.share};})};});
-  var shN={id:"SH",v:S$,c:"url(#tds-hatch)",lc:C.sf,lab:"Shared platform",tip:"<b>Shared platform</b><span>"+usd(S$)+" per month</span><span>People, Services, Infrastructure. Not split.</span>"};
-  var lTot={v:L$,c:"#7f1d1d",st:"#991b1b",lab:"Losses",tip:"<b>Losses</b><span>"+usd(L$)+" per month = Total cost</span>"};
-  if(TDST.lv==="audit"){var dg={id:"G1",v:D$,c:C.dn2,lab:"Direct cost",tip:"<b>Direct cost</b><span>"+usd(D$)+" per month</span><span>Chat Traffic, Agent runs, Judges, Guardrails. Split by weekly-user share.</span>"};
+  /* Losses widget (v0.74.0): Sankey in the ROI style, mirrored. Losses on the left flow out to departments and products (ROI view) or to the 7 cost categories (Audit view). */
+  var cp=PM.projs.map(function(p){var pr=prim(p);return {id:p.id,v:D$*p.ret/U,c:C.pc,lab:p.n,go:pr+":"+p.id,o:di[pr],tip:"<b>"+esc(p.n)+"</b><span>Direct cost "+usd(D$*p.ret/U)+" per month</span><span>"+(p.ret/U*100).toFixed(1)+"% of weekly users</span>"};}).sort(function(a,b){return a.o-b.o;});
+  var cd=PM.depts.slice().sort(function(a,b){return di[a.d.id]-di[b.d.id];}).map(function(x){return {id:x.d.id,v:D$*x.ret/U,c:C.dc,lc:C.cf,lab:x.d.label,go:x.d.id,tip:"<b>"+esc(x.d.label)+"</b><span>Direct cost "+usd(D$*x.ret/U)+" per month</span><span>"+(x.ret/U*100).toFixed(1)+"% of weekly users</span>",
+    ps:x.projects.map(function(e){return {p:e.id,v:D$*e.ret/U,c:C.pc,lab:e.n,share:e.share};})};});
+  var shN={id:"SH",v:S$,c:"url(#tds-hatch)",lab:"Shared platform",tip:"<b>Shared platform</b><span>"+usd(S$)+" per month</span><span>People, Services, Infrastructure. Not split.</span>"};
+  var lTot={v:L$,c:"#7f1d1d",lab:"Losses",tip:"<b>Losses</b><span>"+usd(L$)+" per month = Total cost</span>"};
+  if(TDST.lv==="audit"){var dg={id:"G1",v:D$,c:C.dc,lab:"Direct cost",tip:"<b>Direct cost</b><span>"+usd(D$)+" per month</span><span>Chat Traffic, Agent runs, Judges, Guardrails. Split by weekly-user share.</span>"};
     var top=cats.filter(function(x){return x.v>0;}).map(function(x){return {id:"K"+x.id,v:x.v,c:"var(--c-"+x.id+")",lab:x.label,keys:"k:"+x.id,tip:"<b>"+esc(x.label)+"</b><span>"+usd(x.v)+" per month, "+(L$?(x.v/L$*100).toFixed(0):0)+"%</span>"};});
-    TDS["tds-l"]={rows:[top,[dg,shN],[{id:"T",v:L$,c:lTot.c,st:lTot.st,lab:"Losses",tip:lTot.tip}]],links:top.map(function(x){var dir=DIRECT.indexOf(x.id.slice(1))>=0;return {s:x.id,t:dir?"G1":"SH",v:x.v,c:x.c,keys:x.keys,tip:x.tip};}).concat([{s:"G1",t:"T",v:D$,c:C.cf,tip:dg.tip},{s:"SH",t:"T",v:S$,c:C.sf,tip:shN.tip}])};}
-  else TDS["tds-l"]=tdsBuild(TDST.ll,cp,cd,lTot,[shN]);
+    TDS["tds-l"]={rows:[[{id:"T",v:L$,c:lTot.c,lab:"Losses",tip:lTot.tip}],[dg,shN],top],links:[{s:"T",t:"G1",v:D$,c:C.cf,tip:dg.tip},{s:"T",t:"SH",v:S$,c:"url(#tds-hatch)",tip:shN.tip}].concat(top.map(function(x){var dir=DIRECT.indexOf(x.id.slice(1))>=0;return {s:dir?"G1":"SH",t:x.id,v:x.v,c:x.c,keys:x.keys,tip:x.tip};}))};}
+  else TDS["tds-l"]=tdsBuild(TDST.ll,cp,cd,lTot,[shN],true);
   TDS["tds-l"].aria="Losses by "+(TDST.lv==="audit"?"cost category":"product and department");
   window.L_WIDGET_CHECK={cat:cats.reduce(function(a,c){return a+c.v;},0),split:cp.reduce(function(a,r){return a+r.v;},0)+S$,total:L$,mode:TDST.lv+":"+TDST.ll};
   t("pg-l-sum",'<div class="pg-sumc" role="button" tabindex="0" title="Expand"><div class="pg-sumh"><i>'+svg(IC.coins,15)+'</i><h4>Losses</h4><span class="roi-mo"><b>'+usd(L$)+'</b><span class="roi-u">per month = Total cost</span></span></div>'+
-    '<div class="tds-bar">'+tdsSeg("lv","View",[["roi","ROI view"],["audit","Audit view"]])+(TDST.lv==="roi"?tdsSeg("ll","Layers",[["prod","Products"],["dept","Departments"],["both","Both"]]):'<span class="tds-hint">7 categories → Direct cost and Shared platform → Losses</span>')+'</div>'+
+    '<div class="tds-bar">'+tdsSeg("lv","View",[["roi","ROI view"],["audit","Audit view"]])+(TDST.lv==="roi"?tdsSeg("ll","Layers",[["prod","Products"],["dept","Departments"],["both","Both"]]):'<span class="tds-hint">Losses → Direct cost and Shared platform → 7 categories</span>')+'</div>'+
     '<div class="tds-box" id="tds-l"></div></div>');
   tdsDraw("tds-p");tdsDraw("tds-l");
   var nmc=PEOPLE.filter(function(x){return sqPos(SQ.power.v(x))==="tr";}).length,nqw=PEOPLE.filter(function(x){return sqPos(SQ.ready.v(x))==="tl";}).length;

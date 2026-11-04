@@ -17,6 +17,6 @@
 - **Posting**: 1 public job posting of 1 company. PE2 counts 64 postings.
 - **Level ladder**: the list of levels of 1 company, from public sources. PE4 shows 7 ladders.
 - **Market research**: the data in PE2 to PE5. Source: AI Agentic People Market Research @ Upstars v2.0.0.
-- **Top-down Sankey**: the chart in the P and L summary cards. Layers go from top to bottom into 1 total node (Revenue or Losses).
+- **Summary Sankey**: the chart in the P and L summary cards, in the ROI Sankey style. Profits: products → departments → Revenue. Losses: Losses → departments → products.
 - **ROI view**: the L summary card view by product and department, with Shared platform.
 - **Audit view**: the L summary card view by the 7 cost categories, through Direct cost and Shared platform.
