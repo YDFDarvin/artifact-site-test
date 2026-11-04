@@ -1,4 +1,4 @@
-<title>AI Strategy v0.74.0</title>
+<title>AI Strategy v0.75.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2502,11 +2502,15 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 .pg-h h2{font-size:17px}
 .pg-h small{margin-left:auto;font:11px var(--f-mono);color:var(--dim)}
 .pg-todo{border:1px dashed var(--line2);border-radius:10px;padding:14px;display:flex;flex-wrap:wrap;gap:6px}
-/* 1600 px and wider: P left, L right, full screen width. L keeps at least its old width (1248 px content + 28 px padding). Below 1600 px: no frame and no padding, so L keeps 100% of its old width. Title and ROI keep the old width. */
+/* 1600 px and wider (v0.75.0): P left, L right, 50/50, full screen width. Below 1600 px: P and L stack, no frame and no padding. Title and ROI keep the old width.
+   In the 50/50 layout the L bar (Cloud tabs, Judges menu) wraps to the width of its column. Wide tables and diagrams scroll inside their own boxes. */
 @media (min-width:1600px){
   main.wrap{max-width:none}
   main.wrap>:not(.book){width:100%;max-width:1248px;margin-inline:auto}
-  .book{grid-template-columns:minmax(280px,1fr) minmax(1278px,1fr);gap:0;border:1px solid var(--line2);border-radius:14px}
+  .book{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border:1px solid var(--line2);border-radius:14px}
+  .book .topbar .wrap{flex-wrap:wrap;max-width:100%}
+  .book .topbar .seg{flex-wrap:wrap;max-width:100%}
+  .book .topbar .fld{flex-wrap:wrap;min-width:0;max-width:100%}
   .book>.pg{padding:14px}
   .book>.pg-p{border-right:1px solid var(--line2);align-self:stretch}
 }
@@ -2514,7 +2518,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.74.0</h1>
+    <h1>AI Strategy v0.75.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
