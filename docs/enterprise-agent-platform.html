@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy v0.79.0</title>
+<title>AI Strategy v0.80.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2586,7 +2586,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.79.0</h1>
+    <h1>AI Strategy v0.80.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -2713,7 +2713,7 @@ model: judge-small</pre></div>
   <details class="sec" open id="s-topo"><summary><span class="num"></span><i data-i="Map"></i>Platform Topology<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body">
     <div id="topo"></div>
   </div></details>
-  <details class="sec" open id="s-harness"><summary><span class="num"></span><i data-i="Layers"></i>AI Harnesses<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body"><div id="teams-harness"></div></div></details>
+  <!-- AI Harnesses: disabled in v0.80.0 by the owner. Restore class="sec" open and remove hidden to enable. --><details class="sec-off" id="s-harness" hidden><summary><span class="num"></span><i data-i="Layers"></i>AI Harnesses<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body"><div id="teams-harness"></div></div></details>
   <details class="sec" open id="s-saga"><summary><span class="num"></span><i data-i="RotateCcw"></i>Agentic Resiliency<i class="chev" data-i="ChevronDown"></i></summary><div class="body">
 <!-- RS-START: Agentic Resiliency drop-in. Replaces the whole <div class="res-grid"> ... </div> block inside #s-saga .body -->
 <style id="rs-css">
@@ -7803,7 +7803,7 @@ var B=[
   {k:"bk",q:"Backlogs"},
   {k:"ow",of:[["сформувати AI operating model: ownership, правила запуску AI-ініціатив, пріоритизацію, розділення sandbox, pilot і production"],"No AI ownership or priority rules yet. You define them. Ask who owns each product now."],q:"Owners and voters with capacity per product: roles and names",go:"tree"},
   {k:"pl",of:[["побудувати або обрати архітектуру internal AI gateway: auth, RBAC, logging, model routing, cost limits, usage tracking, audit trail та policy controls"],"No central AI gateway yet, so no single source of token and cost data. Expect numbers from vendor invoices."],q:"Platform numbers: token usage, infra usage and the 7 cost categories",go:"build"},
-  {k:"au",of:[["провести інвентаризацію AI-інструментів, vendors, внутрішніх ботів, витрат, owners, ризиків і shadow AI", "визначити approved AI stack: інструменти, vendors, моделі, gateway/proxy layer, SaaS, зовнішні API, self-hosted або власні компоненти"],"No full list of AI tools, bots, vendors and owners. No approved stack. The audit builds both."],q:"Audit scope: repos, environments, people, stack, libraries",go:"harness"},
+  {k:"au",of:[["провести інвентаризацію AI-інструментів, vendors, внутрішніх ботів, витрат, owners, ризиків і shadow AI", "визначити approved AI stack: інструменти, vendors, моделі, gateway/proxy layer, SaaS, зовнішні API, self-hosted або власні компоненти"],"No full list of AI tools, bots, vendors and owners. No approved stack. The audit builds both."],q:"Audit scope: repos, environments, people, stack, libraries",go:"build"},
   {k:"mp",q:"Maps: org chart, resources, people, finance",go:"econ"},
   {k:"cm",of:[["впровадити AI observability, evaluation та cost visibility: якість, latency, reliability, hallucination risk, usage, бюджети та ROI"],"Metrics to build: quality, latency, reliability, hallucination risk, usage, budget and ROI."],q:"Correlated metrics that we can track",go:"metrics"}]},
  {k:"sty",t:"Working style",m:10,c:"#a855f7",fw:"Watkins: style conversation",it:[
