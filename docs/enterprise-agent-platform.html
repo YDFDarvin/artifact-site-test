@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy v0.77.0</title>
+<title>AI Strategy v0.78.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2376,6 +2376,14 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 .cn-oc textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 .cn-orow:nth-child(2) .cn-oc:first-of-type{border-left-color:#fcd34d}
 @media (max-width:520px){.cn-org{margin-left:0}.cn-orow{grid-template-columns:minmax(0,1fr)}}
+.cn-of{grid-column:1/-1;margin-left:22px;display:flex;flex-direction:column;gap:4px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28);border-radius:8px;padding:6px 10px}
+.cn-oft{display:inline-flex;align-items:center;gap:5px;font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:#7dd3fc}
+.cn-of blockquote{margin:0;padding:0 0 0 8px;border-left:2px solid #38bdf8;font:italic 12.5px/1.45 var(--f-sans);color:var(--ink)}
+.cn-ofa{font-size:12px;color:var(--ink)}
+.cn-ofa b{font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:#7dd3fc;margin-right:4px}
+.cn-ofc{font:10.5px var(--f-mono);color:var(--dim)}
+.cn-ofb{font:600 9.5px var(--f-mono);font-style:normal;text-transform:uppercase;color:#0b1220;background:#7dd3fc;border-radius:3px;padding:0 4px;margin-left:4px;vertical-align:1px}
+@media (max-width:520px){.cn-of{margin-left:0}}
 .om-dlb{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px}
 .om-dh{display:flex;align-items:center;gap:10px}
 .om-dh h3{font-size:16px}
@@ -2578,7 +2586,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.77.0</h1>
+    <h1>AI Strategy v0.78.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7771,9 +7779,9 @@ var B=[
   {k:"bm",q:"What is the business model? Who pays for the codebase: licence, revenue share or service fee?",go:"roi"},
   {k:"cl",q:"Who are the clients? How many, and in which markets?"},
   {k:"bd",q:"Is there a board? Do you report to the CEO?",go:"pe2"},
-  {k:"vi",q:"What is your AI vision for 12 months? Which goal must you achieve?"},
-  {k:"bn",q:"From your interviews, where is the biggest bottleneck?"},
-  {k:"ad",q:"Which adoption stage is each department in: innovators, early adopters, early majority, late majority or laggards?",go:"pe1",p:"Map each department on the Rogers adoption curve"}]},
+  {k:"vi",of:[["побудувати AI strategy та roadmap для компанії з фокусом на IT як платформенний центр експертизи", "сформувати ядро AI Platform / AI Engineering команди та федеративну модель, де центральна команда створює платформу й стандарти, а доменні команди запускають свої use cases на керованій основі"],"IT is the platform center of expertise. A central AI team builds the platform and the standards. Domain teams run their own use cases on it."],q:"What is your AI vision for 12 months? Which goal must you achieve?"},
+  {k:"bn",of:[["впроваджувати AI у ключові workflow: engineering productivity, code review, test generation, QA automation, legacy refactoring, support, analytics, product та marketing scenarios"],"The offer names 8 workflows. Ask the CTO to rank the top 3 by pain."],q:"From your interviews, where is the biggest bottleneck?"},
+  {k:"ad",of:[["побудувати adoption-модель: AI literacy, role-based training, AI champions, playbooks, office hours і безпечні практики використання AI"],"No adoption model yet. You build it. Ask which departments use AI now."],q:"Which adoption stage is each department in: innovators, early adopters, early majority, late majority or laggards?",go:"pe1",p:"Map each department on the Rogers adoption curve"}]},
  {k:"stk",t:"Stakeholders",m:15,c:"#22c55e",fw:"Mendelow: power × interest",it:[
   {k:"ls",q:"List the stakeholders: name and role for each group.",go:"pe1",grp:[
     ["Above you",[["bd","Board and owners","Chair, investors"],["mg","Your managers","CEO, others you report to"]]],
@@ -7783,28 +7791,28 @@ var B=[
   {k:"sp",q:"Which peers support AI adoption: CFO, CPO, others?",go:"pe1"},
   {k:"bl",q:"Who can make AI difficult but has low power?",go:"pe1"},
   {k:"hp",q:"Who has high power but low interest in AI?",go:"pe1"},
-  {k:"tm",q:"In my team, whom must I know first?"},
+  {k:"tm",of:[["сформувати ядро AI Platform / AI Engineering команди"],"The core AI team does not exist yet. You form it."],q:"In my team, whom must I know first?"},
   {k:"pr",q:"In your peers' teams: with whom do I build a relationship? Whom do I avoid? Who will help?",go:"pe2"},
   {k:"hw",q:"For each person you recommend: how do I win them, and what do I not do?",go:"pe2"}]},
  {k:"res",t:"Assets and resources",m:10,c:"#f5b83d",fw:"Ask to share after the 1:1",ask:true,it:[
-  {k:"rm",q:"Roadmap"},
+  {k:"rm",of:[["побудувати AI strategy та roadmap для компанії з фокусом на IT як платформенний центр експертизи"],"No AI roadmap yet. You build it. Ask for the product roadmap."],q:"Roadmap"},
   {k:"pf",q:"Product portfolio: P&L, lifespan, adoption and customer base per product",go:"tree"},
   {k:"bk",q:"Backlogs"},
-  {k:"ow",q:"Owners and voters with capacity per product: roles and names",go:"tree"},
-  {k:"pl",q:"Platform numbers: token usage, infra usage and the 7 cost categories",go:"build"},
-  {k:"au",q:"Audit scope: repos, environments, people, stack, libraries",go:"harness"},
+  {k:"ow",of:[["сформувати AI operating model: ownership, правила запуску AI-ініціатив, пріоритизацію, розділення sandbox, pilot і production"],"No AI ownership or priority rules yet. You define them. Ask who owns each product now."],q:"Owners and voters with capacity per product: roles and names",go:"tree"},
+  {k:"pl",of:[["побудувати або обрати архітектуру internal AI gateway: auth, RBAC, logging, model routing, cost limits, usage tracking, audit trail та policy controls"],"No central AI gateway yet, so no single source of token and cost data. Expect numbers from vendor invoices."],q:"Platform numbers: token usage, infra usage and the 7 cost categories",go:"build"},
+  {k:"au",of:[["провести інвентаризацію AI-інструментів, vendors, внутрішніх ботів, витрат, owners, ризиків і shadow AI", "визначити approved AI stack: інструменти, vendors, моделі, gateway/proxy layer, SaaS, зовнішні API, self-hosted або власні компоненти"],"No full list of AI tools, bots, vendors and owners. No approved stack. The audit builds both."],q:"Audit scope: repos, environments, people, stack, libraries",go:"harness"},
   {k:"mp",q:"Maps: org chart, resources, people, finance",go:"econ"},
-  {k:"cm",q:"Correlated metrics that we can track",go:"metrics"}]},
+  {k:"cm",of:[["впровадити AI observability, evaluation та cost visibility: якість, latency, reliability, hallucination risk, usage, бюджети та ROI"],"Metrics to build: quality, latency, reliability, hallucination risk, usage, budget and ROI."],q:"Correlated metrics that we can track",go:"metrics"}]},
  {k:"sty",t:"Working style",m:10,c:"#a855f7",fw:"Watkins: style conversation",it:[
-  {k:"fq",q:"How often do we meet?",p:"Weekly, 45 min"},
+  {k:"fq",of:[["гнучкий початок робочого дня – з 8.00 до 10.00"],"Book the weekly 1:1 after 10:00. Then all people are online."],q:"How often do we meet?",p:"Weekly, 45 min"},
   {k:"rp",q:"Which report format and frequency do you expect?",p:"Friday note, 5 lines: wins, risks, decisions, AI spend, next week"},
   {k:"im",q:"What must you know at once, and what can wait?",p:"Bad news within 24 h, with 2 options"},
-  {k:"es",q:"Risk escalation rule",p:"esc"}]},
+  {k:"es",of:[["побудувати AI governance & security: правила роботи з production code, private repositories, customer data, PII, credentials/secrets, logs, incidents, internal documentation та business data"],"You own the AI governance rules. Escalate at once an incident with customer data, PII or secrets."],q:"Risk escalation rule",p:"esc"}]},
  {k:"tl",t:"Timeline",m:10,c:"#f87171",fw:"Watkins: 90-day expectations",it:[
   {k:"t1",q:"When does the scope interview round end?",d:21},
   {k:"t2",q:"When does the relationship phase end?",d:30},
   {k:"t3",q:"When does the audit end?",d:45},
-  {k:"t4",q:"When do I start to build the team: hiring plan?",d:60}]}];
+  {k:"t4",of:[["сформувати ядро AI Platform / AI Engineering команди"],"Team build is in scope. The offer gives no date. Propose day 60."],q:"When do I start to build the team: hiring plan?",d:60}]}];
 var ALL=B.reduce(function(a,b){return a.concat(b.it.map(function(i){return b.k+"."+i.k;}));},[]);
 function propose(i){if(i.p==="esc")return "I inform you if a risk touches 25% of employees (325 of 1,300) or costs more than "+money(xLive())+" per month (10% of AI spend). Else I own it.";return i.p||"";}
 function bar(){var tot=B.reduce(function(a,b){return a+b.m;},0);
@@ -7813,8 +7821,9 @@ function tline(b){var mx=90;return '<div class="cn-tl" role="img" aria-label="Pr
   b.it.map(function(i,n){return '<span class="cn-tm" style="left:'+(i.d/mx*100)+'%;top:'+(4+n*14)+'px;height:'+(71-4-n*14)+'px"><i></i>day '+i.d+'</span>';}).join("")+'</div>';}
 function org(id,i,s){var v=s.g||{};return '<div class="cn-org" role="group" aria-label="Stakeholder groups by level">'+i.grp.map(function(r){return '<div class="cn-orow"><span class="cn-lv">'+esc(r[0])+'</span>'+r[1].map(function(c){return '<label class="cn-oc"><b>'+esc(c[1])+'</b><textarea rows="1" data-cng="'+id+'|'+c[0]+'" placeholder="'+esc(c[2])+'" aria-label="'+esc(c[1])+': names and roles">'+esc(v[c[0]]||"")+'</textarea></label>';}).join("")+'</div>';}).join("")+'</div>';}
 function item(b,i){var id=b.k+"."+i.k,s=ST[id]||{},g=i.go&&GO[i.go],pp=propose(i);
-  return '<div class="cn-it'+(s.done?" cn-done":"")+'"><label class="cn-ck"><input type="checkbox" data-cn="'+id+'"'+(s.done?" checked":"")+' aria-label="'+(b.ask?"Received":"Asked")+'"><span>'+esc(i.q)+(i.d?' <em class="cn-d">propose day '+i.d+'</em>':'')+'</span></label>'+
+  return '<div class="cn-it'+(s.done?" cn-done":"")+'"><label class="cn-ck"><input type="checkbox" data-cn="'+id+'"'+(s.done?" checked":"")+' aria-label="'+(b.ask?"Received":"Asked")+'"><span>'+esc(i.q)+(i.of?' <em class="cn-ofb">in offer</em>':'')+(i.d?' <em class="cn-d">propose day '+i.d+'</em>':'')+'</span></label>'+
     (g?'<button type="button" class="cn-go" data-cngo="'+i.go+'" title="Open '+esc(g[1])+'">'+esc(g[1])+' ↗</button>':'<span></span>')+
+    (i.of?'<div class="cn-of"><span class="cn-oft">'+svg('<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/>',13)+'In your offer</span>'+i.of[0].map(function(q){return '<blockquote lang="uk">«'+esc(q)+'»</blockquote>';}).join("")+'<div class="cn-ofa"><b>Likely answer</b> '+esc(i.of[1])+'</div><div class="cn-ofc">Confirm with the CTO.</div></div>':'')+
     (pp?'<div class="cn-pp"><b>Propose</b> '+esc(pp)+'</div>':'')+(i.grp?org(id,i,s):'')+
     '<textarea rows="1" data-cnn="'+id+'" placeholder="CTO answer" aria-label="CTO answer">'+esc(s.note||"")+'</textarea></div>';}
 function html(){var done=ALL.filter(function(id){return ST[id]&&ST[id].done;}).length;
