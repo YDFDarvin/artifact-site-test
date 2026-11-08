@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy v0.78.0</title>
+<title>AI Strategy v0.79.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2374,7 +2374,7 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 .cn-oc b{font:600 11.5px var(--f-sans)}
 .cn-oc textarea{background:transparent;border:0;color:var(--ink);font:12px var(--f-sans);resize:vertical;min-height:22px;padding:0;margin:0;width:100%}
 .cn-oc textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.cn-orow:nth-child(2) .cn-oc:first-of-type{border-left-color:#fcd34d}
+.cn-orow:nth-child(3) .cn-lv{color:#fcd34d}
 @media (max-width:520px){.cn-org{margin-left:0}.cn-orow{grid-template-columns:minmax(0,1fr)}}
 .cn-of{grid-column:1/-1;margin-left:22px;display:flex;flex-direction:column;gap:4px;background:rgba(56,189,248,.07);border:1px solid rgba(56,189,248,.28);border-radius:8px;padding:6px 10px}
 .cn-oft{display:inline-flex;align-items:center;gap:5px;font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:#7dd3fc}
@@ -2586,7 +2586,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.78.0</h1>
+    <h1>AI Strategy v0.79.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7781,19 +7781,22 @@ var B=[
   {k:"bd",q:"Is there a board? Do you report to the CEO?",go:"pe2"},
   {k:"vi",of:[["побудувати AI strategy та roadmap для компанії з фокусом на IT як платформенний центр експертизи", "сформувати ядро AI Platform / AI Engineering команди та федеративну модель, де центральна команда створює платформу й стандарти, а доменні команди запускають свої use cases на керованій основі"],"IT is the platform center of expertise. A central AI team builds the platform and the standards. Domain teams run their own use cases on it."],q:"What is your AI vision for 12 months? Which goal must you achieve?"},
   {k:"bn",of:[["впроваджувати AI у ключові workflow: engineering productivity, code review, test generation, QA automation, legacy refactoring, support, analytics, product та marketing scenarios"],"The offer names 8 workflows. Ask the CTO to rank the top 3 by pain."],q:"From your interviews, where is the biggest bottleneck?"},
+  {k:"pa",q:"Which AI attempts happened before? What failed, who owned it, and why did it fail?"},
+  {k:"ng",q:"What must I not change in the first 90 days?"},
   {k:"ad",of:[["побудувати adoption-модель: AI literacy, role-based training, AI champions, playbooks, office hours і безпечні практики використання AI"],"No adoption model yet. You build it. Ask which departments use AI now."],q:"Which adoption stage is each department in: innovators, early adopters, early majority, late majority or laggards?",go:"pe1",p:"Map each department on the Rogers adoption curve"}]},
  {k:"stk",t:"Stakeholders",m:15,c:"#22c55e",fw:"Mendelow: power × interest",it:[
   {k:"ls",q:"List the stakeholders: name and role for each group.",go:"pe1",grp:[
-    ["Above you",[["bd","Board and owners","Chair, investors"],["mg","Your managers","CEO, others you report to"]]],
-    ["Your level",[["ct","CTO","You"],["cp","Your peers","CFO, CPO, COO, CMO"]]],
-    ["Reports to you",[["cr","Your reports","My peers: Head of Eng, Head of Data, Security"],["pr","Your peers' reports","Heads under CFO, CPO, COO"]]],
-    ["Next level",[["mr","My peers' reports","EMs, TLs, architects"],["me","My reports","AI team"]]]]},
+    ["Above CTO",[["bd","Board and owners","Chair, investors"],["mg","CTO's managers","CEO, others the CTO reports to"]]],
+    ["CTO level",[["ct","CTO","My manager"],["cp","CTO's peers","CFO, CPO, COO, CMO"]]],
+    ["My level · Head of AI",[["cr","My peers","Head of Eng, Head of Data, Security"],["pr","CTO peers' reports","Heads under CFO, CPO, COO"]]],
+    ["Below me",[["mr","My peers' reports","EMs, TLs, architects"],["me","My reports","AI team"]]]]},
   {k:"sp",q:"Which peers support AI adoption: CFO, CPO, others?",go:"pe1"},
   {k:"bl",q:"Who can make AI difficult but has low power?",go:"pe1"},
   {k:"hp",q:"Who has high power but low interest in AI?",go:"pe1"},
   {k:"tm",of:[["сформувати ядро AI Platform / AI Engineering команди"],"The core AI team does not exist yet. You form it."],q:"In my team, whom must I know first?"},
   {k:"pr",q:"In your peers' teams: with whom do I build a relationship? Whom do I avoid? Who will help?",go:"pe2"},
-  {k:"hw",q:"For each person you recommend: how do I win them, and what do I not do?",go:"pe2"}]},
+  {k:"hw",q:"For each person you recommend: how do I win them, and what do I not do?",go:"pe2"},
+  {k:"in",q:"Will you introduce me to your peers this week? In which channel?",p:"An intro message from you this week, plus 10 min in your next staff meeting"}]},
  {k:"res",t:"Assets and resources",m:10,c:"#f5b83d",fw:"Ask to share after the 1:1",ask:true,it:[
   {k:"rm",of:[["побудувати AI strategy та roadmap для компанії з фокусом на IT як платформенний центр експертизи"],"No AI roadmap yet. You build it. Ask for the product roadmap."],q:"Roadmap"},
   {k:"pf",q:"Product portfolio: P&L, lifespan, adoption and customer base per product",go:"tree"},
@@ -7807,14 +7810,17 @@ var B=[
   {k:"fq",of:[["гнучкий початок робочого дня – з 8.00 до 10.00"],"Book the weekly 1:1 after 10:00. Then all people are online."],q:"How often do we meet?",p:"Weekly, 45 min"},
   {k:"rp",q:"Which report format and frequency do you expect?",p:"Friday note, 5 lines: wins, risks, decisions, AI spend, next week"},
   {k:"im",q:"What must you know at once, and what can wait?",p:"Bad news within 24 h, with 2 options"},
-  {k:"es",of:[["побудувати AI governance & security: правила роботи з production code, private repositories, customer data, PII, credentials/secrets, logs, incidents, internal documentation та business data"],"You own the AI governance rules. Escalate at once an incident with customer data, PII or secrets."],q:"Risk escalation rule",p:"esc"}]},
+  {k:"es",of:[["побудувати AI governance & security: правила роботи з production code, private repositories, customer data, PII, credentials/secrets, logs, incidents, internal documentation та business data"],"You own the AI governance rules. Escalate at once an incident with customer data, PII or secrets."],q:"Risk escalation rule",p:"esc"},
+  {k:"dr",q:"What can I decide alone? What is my spend limit?",p:"dr"},
+  {k:"dg",q:"How do you want me to disagree with you: in private or in the meeting?",p:"In private first. In a group meeting only with data."},
+  {k:"cf",q:"What can I share with peers about the AI strategy now?",p:"The structure of the strategy. Not the numbers and not the people notes."}]},
  {k:"tl",t:"Timeline",m:10,c:"#f87171",fw:"Watkins: 90-day expectations",it:[
   {k:"t1",q:"When does the scope interview round end?",d:21},
   {k:"t2",q:"When does the relationship phase end?",d:30},
   {k:"t3",q:"When does the audit end?",d:45},
   {k:"t4",of:[["сформувати ядро AI Platform / AI Engineering команди"],"Team build is in scope. The offer gives no date. Propose day 60."],q:"When do I start to build the team: hiring plan?",d:60}]}];
 var ALL=B.reduce(function(a,b){return a.concat(b.it.map(function(i){return b.k+"."+i.k;}));},[]);
-function propose(i){if(i.p==="esc")return "I inform you if a risk touches 25% of employees (325 of 1,300) or costs more than "+money(xLive())+" per month (10% of AI spend). Else I own it.";return i.p||"";}
+function propose(i){if(i.p==="dr")return "Alone: sandbox tools and pilots up to "+money(Math.round(xLive()*0.2/500)*500)+" per month in total. With you: production launches, new vendors and hires.";if(i.p==="esc")return "I inform you if a risk touches 25% of employees (325 of 1,300) or costs more than "+money(xLive())+" per month (10% of AI spend). Else I own it.";return i.p||"";}
 function bar(){var tot=B.reduce(function(a,b){return a+b.m;},0);
   return '<div class="cn-bar" role="img" aria-label="60 minutes in 5 blocks">'+B.map(function(b){return '<i style="flex:'+b.m+';background:'+b.c+'" title="'+esc(b.t+", "+b.m+" min")+'"><b>'+esc(b.t)+'</b><em>'+b.m+'</em></i>';}).join("")+'</div>';}
 function tline(b){var mx=90;return '<div class="cn-tl" role="img" aria-label="Proposed day targets">'+'<span class="cn-tla"></span>'+[0,90].map(function(d){return '<em class="cn-e'+d+'" style="left:'+(d/mx*100)+'%">day '+d+'</em>';}).join("")+
