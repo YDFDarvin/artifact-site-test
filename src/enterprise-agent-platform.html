@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy v0.76.0</title>
+<title>AI Strategy v0.77.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2366,6 +2366,15 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 .cn-tm i{order:2;width:8px;height:8px;border-radius:50%;background:#f87171;margin-bottom:-3px}
 @media (max-width:520px){.cn-in{padding:10px}.cn-pp,.cn-it textarea{margin-left:0;width:100%}.cn-bar b{display:none}}
 .cn-tl>em.cn-e90{transform:translateX(-100%)}
+.cn-org{grid-column:1/-1;margin-left:22px;display:flex;flex-direction:column;gap:4px}
+.cn-orow{display:grid;grid-template-columns:92px repeat(2,minmax(0,1fr));gap:4px;align-items:stretch}
+.cn-lv{font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.04em;color:#86efac;align-self:center}
+.cn-oc{display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line);border-left:3px solid #22c55e;border-radius:6px;padding:4px 6px}
+.cn-oc b{font:600 11.5px var(--f-sans)}
+.cn-oc textarea{background:transparent;border:0;color:var(--ink);font:12px var(--f-sans);resize:vertical;min-height:22px;padding:0;margin:0;width:100%}
+.cn-oc textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cn-orow:nth-child(2) .cn-oc:first-of-type{border-left-color:#fcd34d}
+@media (max-width:520px){.cn-org{margin-left:0}.cn-orow{grid-template-columns:minmax(0,1fr)}}
 .om-dlb{display:flex;flex-direction:column;gap:8px;padding:14px 16px 16px}
 .om-dh{display:flex;align-items:center;gap:10px}
 .om-dh h3{font-size:16px}
@@ -2568,7 +2577,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.76.0</h1>
+    <h1>AI Strategy v0.77.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -7765,6 +7774,11 @@ var B=[
   {k:"bn",q:"From your interviews, where is the biggest bottleneck?"},
   {k:"ad",q:"Which adoption stage is each department in: innovators, early adopters, early majority, late majority or laggards?",go:"pe1",p:"Map each department on the Rogers adoption curve"}]},
  {k:"stk",t:"Stakeholders",m:15,c:"#22c55e",fw:"Mendelow: power × interest",it:[
+  {k:"ls",q:"List the stakeholders: name and role for each group.",go:"pe1",grp:[
+    ["Above you",[["bd","Board and owners","Chair, investors"],["mg","Your managers","CEO, others you report to"]]],
+    ["Your level",[["ct","CTO","You"],["cp","Your peers","CFO, CPO, COO, CMO"]]],
+    ["Reports to you",[["cr","Your reports","My peers: Head of Eng, Head of Data, Security"],["pr","Your peers' reports","Heads under CFO, CPO, COO"]]],
+    ["Next level",[["mr","My peers' reports","EMs, TLs, architects"],["me","My reports","AI team"]]]]},
   {k:"sp",q:"Which peers support AI adoption: CFO, CPO, others?",go:"pe1"},
   {k:"bl",q:"Who can make AI difficult but has low power?",go:"pe1"},
   {k:"hp",q:"Who has high power but low interest in AI?",go:"pe1"},
@@ -7796,10 +7810,11 @@ function bar(){var tot=B.reduce(function(a,b){return a+b.m;},0);
   return '<div class="cn-bar" role="img" aria-label="60 minutes in 5 blocks">'+B.map(function(b){return '<i style="flex:'+b.m+';background:'+b.c+'" title="'+esc(b.t+", "+b.m+" min")+'"><b>'+esc(b.t)+'</b><em>'+b.m+'</em></i>';}).join("")+'</div>';}
 function tline(b){var mx=90;return '<div class="cn-tl" role="img" aria-label="Proposed day targets">'+'<span class="cn-tla"></span>'+[0,90].map(function(d){return '<em class="cn-e'+d+'" style="left:'+(d/mx*100)+'%">day '+d+'</em>';}).join("")+
   b.it.map(function(i,n){return '<span class="cn-tm" style="left:'+(i.d/mx*100)+'%;top:'+(4+n*14)+'px;height:'+(71-4-n*14)+'px"><i></i>day '+i.d+'</span>';}).join("")+'</div>';}
+function org(id,i,s){var v=s.g||{};return '<div class="cn-org" role="group" aria-label="Stakeholder groups by level">'+i.grp.map(function(r){return '<div class="cn-orow"><span class="cn-lv">'+esc(r[0])+'</span>'+r[1].map(function(c){return '<label class="cn-oc"><b>'+esc(c[1])+'</b><textarea rows="1" data-cng="'+id+'|'+c[0]+'" placeholder="'+esc(c[2])+'" aria-label="'+esc(c[1])+': names and roles">'+esc(v[c[0]]||"")+'</textarea></label>';}).join("")+'</div>';}).join("")+'</div>';}
 function item(b,i){var id=b.k+"."+i.k,s=ST[id]||{},g=i.go&&GO[i.go],pp=propose(i);
   return '<div class="cn-it'+(s.done?" cn-done":"")+'"><label class="cn-ck"><input type="checkbox" data-cn="'+id+'"'+(s.done?" checked":"")+' aria-label="'+(b.ask?"Received":"Asked")+'"><span>'+esc(i.q)+(i.d?' <em class="cn-d">propose day '+i.d+'</em>':'')+'</span></label>'+
     (g?'<button type="button" class="cn-go" data-cngo="'+i.go+'" title="Open '+esc(g[1])+'">'+esc(g[1])+' ↗</button>':'<span></span>')+
-    (pp?'<div class="cn-pp"><b>Propose</b> '+esc(pp)+'</div>':'')+
+    (pp?'<div class="cn-pp"><b>Propose</b> '+esc(pp)+'</div>':'')+(i.grp?org(id,i,s):'')+
     '<textarea rows="1" data-cnn="'+id+'" placeholder="CTO answer" aria-label="CTO answer">'+esc(s.note||"")+'</textarea></div>';}
 function html(){var done=ALL.filter(function(id){return ST[id]&&ST[id].done;}).length;
   return '<div class="cn-hd"><span class="cn-pin" aria-hidden="true">'+svg('<path d="M15.5 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/>',18)+'</span><h3 id="cn-h">CTO · first 1:1 note</h3><span class="cn-pg">'+done+' of '+ALL.length+' done</span>'+
@@ -7809,14 +7824,15 @@ function html(){var done=ALL.filter(function(id){return ST[id]&&ST[id].done;}).l
       return '<details class="cn-b" data-cnb="'+b.k+'"'+(ST["open."+b.k]===false?"":" open")+'><summary><i class="cn-sw" style="background:'+b.c+'"></i><b>'+esc(b.t)+'</b><span class="cn-m">'+b.m+' min</span><span class="cn-fw">'+esc(b.fw)+'</span><span class="cn-n">'+n+' of '+b.it.length+'</span></summary>'+
         (b.k==="tl"?tline(b):'')+'<div class="cn-its">'+b.it.map(function(i){return item(b,i);}).join("")+'</div></details>';}).join("")+
     '<div class="pl-src">Draft. All page numbers are mocked. Check every item against the CTO answer. Notes stay in this browser only.</div>';}
-function md(){return "# CTO first 1:1 note\n"+B.map(function(b){return "\n## "+b.t+" ("+b.m+" min)\n"+b.it.map(function(i){var s=ST[b.k+"."+i.k]||{};return "- ["+(s.done?"x":" ")+"] "+i.q+(s.note?"\n  - "+s.note.replace(/\n/g,"\n    "):"");}).join("\n");}).join("\n")+"\n";}
+function md(){return "# CTO first 1:1 note\n"+B.map(function(b){return "\n## "+b.t+" ("+b.m+" min)\n"+b.it.map(function(i){var s=ST[b.k+"."+i.k]||{};return "- ["+(s.done?"x":" ")+"] "+i.q+(i.grp?i.grp.map(function(r){return r[1].map(function(c){var t=(s.g||{})[c[0]];return t?"\n  - "+c[1]+": "+t.replace(/\n/g,"; "):"";}).join("");}).join(""):"")+(s.note?"\n  - "+s.note.replace(/\n/g,"\n    "):"");}).join("\n");}).join("\n")+"\n";}
 function dlg(){var d=document.getElementById("cn-dlg");if(d)return d;
   document.body.insertAdjacentHTML("beforeend",'<dialog id="cn-dlg" class="cn-dlg" aria-labelledby="cn-h"><div class="cn-in"></div></dialog>');d=document.getElementById("cn-dlg");
   d.addEventListener("click",function(e){if(e.target===d){d.close();return;}
     var a=e.target.closest("[data-cnact]");if(a){if(a.dataset.cnact==="close")d.close();else{var t=md();try{navigator.clipboard.writeText(t).then(function(){a.textContent="Copied";setTimeout(function(){a.textContent="Copy notes";},1500);});}catch(_){}}return;}
     var g=e.target.closest("[data-cngo]");if(g){var G=GO[g.dataset.cngo];d.__from=null;d.close();if(G[2]&&window.PG_OPEN)window.PG_OPEN(G[2]);setTimeout(function(){var el=document.querySelector(G[0]);if(!el)return;if(el.tagName==="DETAILS")el.open=true;el.scrollIntoView({behavior:"smooth",block:"start"});},60);}});
   d.addEventListener("change",function(e){var c=e.target.closest("[data-cn]");if(!c)return;var id=c.dataset.cn;ST[id]=ST[id]||{};ST[id].done=c.checked;save();var y=d.querySelector(".cn-in").scrollTop;render();d.querySelector(".cn-in").scrollTop=y;});
-  d.addEventListener("input",function(e){var n=e.target.closest("[data-cnn]");if(!n)return;var id=n.dataset.cnn;ST[id]=ST[id]||{};ST[id].note=n.value;save();n.style.height="auto";n.style.height=n.scrollHeight+"px";});
+  d.addEventListener("input",function(e){var q=e.target.closest("[data-cng]");if(q){var pq=q.dataset.cng.split("|");ST[pq[0]]=ST[pq[0]]||{};ST[pq[0]].g=ST[pq[0]].g||{};ST[pq[0]].g[pq[1]]=q.value;save();q.style.height="auto";q.style.height=q.scrollHeight+"px";return;}
+    var n=e.target.closest("[data-cnn]");if(!n)return;var id=n.dataset.cnn;ST[id]=ST[id]||{};ST[id].note=n.value;save();n.style.height="auto";n.style.height=n.scrollHeight+"px";});
   d.addEventListener("toggle",function(e){var b=e.target.closest&&e.target.closest("[data-cnb]");if(b&&e.target===b){ST["open."+b.dataset.cnb]=b.open;save();}},true);
   d.addEventListener("close",function(){if(d.__from&&d.__from.focus)try{d.__from.focus({preventScroll:true});}catch(_){}});
   return d;}
