@@ -1,5 +1,5 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>AI Strategy v0.80.0</title>
+<title>AI Strategy v0.81.0</title>
 <style>
 /* Module teams: team cards (4.1) and AI Harnesses (4.2). Prefix: teams- */
 .teams-box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 14px 12px;min-width:0;display:flex;flex-direction:column;gap:10px}
@@ -2317,6 +2317,10 @@ details.pn3.pn-pr>summary,details.pn3.pn-pr>summary:has(.pill){grid-template-col
 .om-kc.om-new{border-style:dashed}.om-kc.om-new i{background:transparent;box-shadow:inset 0 0 0 2px #60a5fa;color:#93c5fd}
 .om-dlg{width:min(760px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0;border:1px solid var(--line2);border-radius:12px;background:var(--panel);color:var(--ink);box-shadow:0 20px 50px rgba(0,0,0,.6)}
 .om-dlg::backdrop{background:rgba(2,6,15,.7)}
+.sec-dis>summary{cursor:not-allowed;opacity:.6}
+.sec-dis>summary .chev{opacity:.4}
+.dis-tag{display:inline-block;margin-left:8px;padding:1px 6px;border:1px solid var(--line2);border-radius:4px;font:600 10px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);vertical-align:middle}
+.dis-tag.dis-wip{color:var(--amber,#f5b83d);border-color:var(--amber-line,rgba(245,184,61,.4))}
 /* CTO note (v0.76.0): sticker beside the CTO and the 1:1 note dialog (cn-) */
 .cn-st{display:inline-flex;align-items:center;gap:3px;padding:2px 6px 2px 5px;border:0;border-radius:2px 2px 8px 2px;background:#fde68a;color:#422006;font:600 10.5px var(--f-sans);cursor:pointer;box-shadow:2px 3px 0 rgba(0,0,0,.35);transform:rotate(-3deg);vertical-align:middle;margin-left:4px;line-height:1.4}
 .cn-st:hover{background:#fcd34d;transform:rotate(0)}
@@ -2585,7 +2589,7 @@ details.pn.pq>summary .pl-lay,details.pn.pq>summary .pill,details.pn.pq>summary 
 
 <main class="wrap">
   <div>
-    <h1>AI Strategy v0.80.0</h1>
+    <h1>AI Strategy v0.81.0</h1>
   </div>
   <section id="roi" aria-label="ROI: Profits and Losses"></section>
 <div class="book" role="group" aria-label="P&amp;L">
@@ -3063,6 +3067,10 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   </div>
 
 </div></details>
+  <!-- v0.81.0 Guardrails: WIP and disabled. The summary does not open (data-wip). Remove data-wip and sec-dis to enable. -->
+  <details class="sec sec-dis" id="s-guard" data-wip aria-disabled="true"><summary title="Disabled: WIP"><span class="num"></span><i data-i="ShieldCheck"></i>Guardrails<span class="dis-tag dis-wip">WIP</span><span class="dis-tag">Disabled</span><span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body">
+    <div class="note">Guardrails section. Content comes later.</div>
+  </div></details>
   <details class="sec" open id="s-judges"><summary><span class="num"></span><i data-i="Scale"></i>LLM Judges<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body">
     <div class="wip-block" id="jo-after"><span class="wip-tag">WIP</span><span class="jo-tag jo-after">AFTER</span>
     <div class="lbl">Judge platform options: the Judges dropdown in the top bar picks the solution</div>
@@ -3124,7 +3132,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
   </div></details>
   </section>
   <section class="grp" id="g-cost" aria-labelledby="g-cost-h"><div class="grp-h"><span class="grp-ic" data-i="Coins"></span><h2 id="g-cost-h">Cost Optimization</h2><span class="grp-n">1 section</span></div>
-  <details class="sec" open id="s-econ"><summary><span class="num"></span><i data-i="Coins"></i>Economics and Expenses<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body">
+  <!-- v0.81.0 Economics and Expenses: WIP and disabled by the owner. Remove data-wip and sec-dis, and add open, to enable. --><details class="sec sec-dis" id="s-econ" data-wip aria-disabled="true"><summary title="Disabled: WIP"><span class="num"></span><i data-i="Coins"></i>Economics and Expenses<span class="dis-tag dis-wip">WIP</span><span class="dis-tag">Disabled</span><span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body">
     <span class="assume">Plan estimate ±50%, verify in vendor calculators, tokens priced the same on every combination</span>
     <div class="wip-block"><span class="wip-tag">WIP</span>
     <div class="split" style="align-items:stretch">
@@ -3166,7 +3174,7 @@ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",
                     <div class="note">Prices: <a href="https://platform.claude.com/docs/en/about-claude/pricing" target="_blank" rel="noopener">Claude pricing</a>, <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching" target="_blank" rel="noopener">prompt cache, min cacheable length</a>, checked 2026-10-17</div>
     <div class="note">Calculators: <a href="https://calculator.aws/" target="_blank" rel="noopener">AWS</a>, <a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank" rel="noopener">Azure</a>, <a href="https://cloud.google.com/products/calculator" target="_blank" rel="noopener">GCP</a></div>
   </div></details>
-  <details class="sec" open id="s-route"><summary><span class="num"></span><i data-i="Route"></i>Model Routing<span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body"><div class="route-root" id="route-root"></div></div></details>
+  <!-- v0.81.0 Model Routing: WIP and disabled by the owner. Remove data-wip and sec-dis, and add open, to enable. --><details class="sec sec-dis" id="s-route" data-wip aria-disabled="true"><summary title="Disabled: WIP"><span class="num"></span><i data-i="Route"></i>Model Routing<span class="dis-tag dis-wip">WIP</span><span class="dis-tag">Disabled</span><span class="wip-count"></span><i class="chev" data-i="ChevronDown"></i></summary><div class="body"><div class="route-root" id="route-root"></div></div></details>
   </section>
   </div>
   </section>
@@ -7803,7 +7811,7 @@ var B=[
   {k:"ow",of:[["сформувати AI operating model: ownership, правила запуску AI-ініціатив, пріоритизацію, розділення sandbox, pilot і production"],"No AI ownership or priority rules yet. You define them. Ask who owns each product now."],q:"Owners and voters with capacity per product: roles and names",go:"tree"},
   {k:"pl",of:[["побудувати або обрати архітектуру internal AI gateway: auth, RBAC, logging, model routing, cost limits, usage tracking, audit trail та policy controls"],"No central AI gateway yet, so no single source of token and cost data. Expect numbers from vendor invoices."],q:"Platform numbers: token usage, infra usage and the 7 cost categories",go:"build"},
   {k:"au",of:[["провести інвентаризацію AI-інструментів, vendors, внутрішніх ботів, витрат, owners, ризиків і shadow AI", "визначити approved AI stack: інструменти, vendors, моделі, gateway/proxy layer, SaaS, зовнішні API, self-hosted або власні компоненти"],"No full list of AI tools, bots, vendors and owners. No approved stack. The audit builds both."],q:"Audit scope: repos, environments, people, stack, libraries",go:"build"},
-  {k:"mp",q:"Maps: org chart, resources, people, finance",go:"econ"},
+  {k:"mp",q:"Maps: org chart, resources, people, finance"},
   {k:"cm",of:[["впровадити AI observability, evaluation та cost visibility: якість, latency, reliability, hallucination risk, usage, бюджети та ROI"],"Metrics to build: quality, latency, reliability, hallucination risk, usage, budget and ROI."],q:"Correlated metrics that we can track",go:"metrics"}]},
  {k:"sty",t:"Working style",m:10,c:"#a855f7",fw:"Watkins: style conversation",it:[
   {k:"fq",of:[["гнучкий початок робочого дня – з 8.00 до 10.00"],"Book the weekly 1:1 after 10:00. Then all people are online."],q:"How often do we meet?",p:"Weekly, 45 min"},
